@@ -1,0 +1,22 @@
+{
+  "partners": [
+    {
+      "id": 1,
+      "image": "https://picsum.photos/512/512",
+      "name": "National LifeLong Learning",
+      "description": "NCLL is a non-profit organization that provides training and education to community members."
+    },
+    {
+      "id": 2,
+      "image": "https://picsum.photos/512/513",
+      "name": "Innovative Solution",
+      "description": "Innovative Solution is a company that specializes in providing innovative solutions to community problems."
+    },
+    {
+      "id": 3,
+      "image": "https://picsum.photos/512/514",
+      "name": "Community Development",
+      "description": "Community Development is a organization that focuses on community development and improvement."
+    }
+  ]
+}

@@ -20,8 +20,8 @@ export const toastVariants = cva(
       variant: {
         success: 'border bg-green-500 text-gray-50 dark:border-green-900 dark:bg-green-900 dark:text-gray-50',
         default: 'border bg-white text-gray-950 dark:bg-gray-950 dark:text-gray-50',
-        destructive:
-                    'destructive group border-red-500 bg-red-500 text-gray-50 dark:border-red-900 dark:bg-red-900 dark:text-gray-50',
+        warning: 'border bg-yellow-500 text-gray-50 dark:border-yellow-900 dark:bg-yellow-900 dark:text-gray-50',
+        destructive: 'destructive group border-red-500 bg-red-500 text-gray-50 dark:border-red-900 dark:bg-red-900 dark:text-gray-50',
       },
     },
     defaultVariants: {
