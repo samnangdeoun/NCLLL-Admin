@@ -4,7 +4,7 @@
     :open="isOpen"
     @update:open="emit('update:open', $event)"
   >
-    <DialogContent class="sm:max-w-[425px] bg-white p-5 shadow">
+    <DialogContent class="sm:max-w-[725px] bg-white p-5 shadow rounded-sm">
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
         <DialogDescription>{{ description }}</DialogDescription>
@@ -28,7 +28,7 @@
 <!-- components/CustomConfirmDialog.vue -->
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Button } from '@/components/ui/button'
+import { Button } from '../../components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -36,7 +36,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from '../../components/ui/dialog'
 
 export default defineComponent({
   name: 'CustomConfirmDialog',

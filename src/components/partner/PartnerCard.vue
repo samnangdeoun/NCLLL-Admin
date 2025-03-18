@@ -1,21 +1,26 @@
 <template>
-    <div class="w-[20rem] h-[23em] p-4 rounded-xl shadow-lg bg-white flex flex-col items-center">
+    <div class="w-full max-w-sm p-4 rounded-xl shadow-lg bg-white flex flex-col items-center">
         <h1 class="text-center font-bold text-sm">{{ partner.name }}</h1>
-        <div class="mb-1 mt-3 w-[15rem] h-[15rem]">
-            <img :src="partner.image" alt="" class="w-full h-full">
+        <div class="mt-3 w-full max-w-[15rem] h-auto">
+            <img :src="partner.image" alt="" class="w-full h-auto object-cover rounded-lg">
         </div>
-        <div class="flex flex-row justify-between items-end">
-            <button @click="emit('updatePartner', partner)" class="bg-white py-1 px-4 rounded-md mt-3 text-green-600 flex space-x-1 uppercase">
-                <Icon icon="mdi:square-edit-outline" width="24" height="24" />
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-3 w-full">
+            <button 
+                @click="emit('updatePartner', partner)" 
+                class="bg-white py-2 px-4 rounded-md text-green-600 flex items-center space-x-1 uppercase border border-green-600 hover:bg-green-100 transition">
+                <Icon icon="mdi:square-edit-outline" width="20" height="20" />
                 <span>{{ $t('edit') }}</span>
             </button>
-            <button @click="emit('removePartner', partner)" class="bg-white  py-1 px-4 rounded-md mt-3 text-red-600 flex space-x-1 uppercase">
-                <Icon icon="mdi:delete-outline" width="24" height="24" />
+            <button 
+                @click="emit('removePartner', partner)" 
+                class="bg-white py-2 px-4 rounded-md text-red-600 flex items-center space-x-1 uppercase border border-red-600 hover:bg-red-100 transition">
+                <Icon icon="mdi:delete-outline" width="20" height="20" />
                 <span>{{ $t('remove') }}</span>
             </button>
         </div>
     </div>
 </template>
+
 
 <script setup>
 // import 

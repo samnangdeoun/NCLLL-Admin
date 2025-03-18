@@ -1,8 +1,18 @@
 <template>
     <div class="h-full w-full overflow-auto">
-        <div class="grid grid-cols-3 gap-4 overflow-hidden scrollbar-hide">
-            <PartnerCard v-for="partner in partners" @updatePartner="hanldeUpdatePartner"
-                @removePartner="handleRemovePartner" :key="partner.id" :partner="partner" />
+
+        <div class="flex justify-end items-center rounded-md pb-2">
+            <button class="bg-green-600 rounded-md px-5 py-2 " >{{ $t('new')}}</button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-x-auto scrollbar-hide">
+            <PartnerCard 
+                v-for="partner in partners" 
+                :key="partner.id" 
+                :partner="partner" 
+                @updatePartner="handleUpdatePartner"
+                @removePartner="handleRemovePartner" 
+            />
         </div>
 
         <!-- Confirm Dialog -->

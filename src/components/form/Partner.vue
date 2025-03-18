@@ -4,7 +4,7 @@
       <DialogTrigger as-child>
         <!-- Trigger is handled by the button above -->
       </DialogTrigger>
-      <DialogContent class="sm:max-w-[625px] bg-white">
+      <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
           <DialogTitle>Partner</DialogTitle>
           <DialogDescription>
@@ -14,9 +14,6 @@
         
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div class="grid gap-4 py-4">
-            <!-- ID Field (hidden) -->
-            <input type="hidden" v-model="partnerInfo.id" />
-
             <!-- Image URL Field -->
             <div class="grid grid-cols-4 items-center gap-4">
               <Label for="image" class="text-right">Image URL</Label>
@@ -44,6 +41,7 @@
               <Label for="description" class="text-right">Description</Label>
               <Textarea
                 id="description"
+                rows="5"
                 v-model="partnerInfo.description"
                 class="col-span-3"
                 placeholder="Enter description"
