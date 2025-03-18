@@ -1,84 +1,78 @@
 <template>
     <div class="h-full w-full overflow-auto">
-
         <div class="flex justify-end items-center rounded-md pb-2">
-            <button class="bg-green-600 rounded-md px-5 py-2 " >{{ $t('new')}}</button>
+            <button class="bg-green-600 rounded-md px-5 py-2" @click="onCreatePartner">
+                {{ $t('new') }}
+            </button>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-x-auto scrollbar-hide">
-            <PartnerCard 
-                v-for="partner in partners" 
-                :key="partner.id" 
-                :partner="partner" 
-                @updatePartner="handleUpdatePartner"
-                @removePartner="handleRemovePartner" 
-            />
+            <PartnerCard v-for="partner in partners" :key="partner.id" :partner="partner"
+                @updatePartner="handleUpdatePartner" @removePartner="handleRemovePartner" />
         </div>
 
-        <!-- Confirm Dialog -->
-        <div>
-            <ConfirmDialog v-model:open="showConfirmDialog" title="Delete Item"
-                description="Are you sure you want to delete this item? This action cannot be undone."
-                confirm-text="Delete" cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
-        </div>
+        <ConfirmDialog v-model:open="showConfirmDialog" title="Delete Item"
+            description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
+            cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <!-- Partner Form -->
-        <PartnerForm v-model:open="showPartnerForm" :initialData="assignPartner" @update="handleUpdate"
-            @close="handleClose" />
+        <PartnerForm :showForm="showPartnerForm" @closeForm="showPartnerForm = false" :partner="selectedPartner"
+            @updateForm="handleUpdateForm" />
     </div>
 </template>
 
-
 <script setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast';
+import Partner from '../../scripts/model/Partner.ts';
+import partnerInfo from '../../fake-information/partners.json';
 
-// Define Components
 const PartnerForm = defineAsyncComponent(() => import('../../components/form/Partner.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
 const PartnerCard = defineAsyncComponent(() => import('../../components/partner/PartnerCard.vue'));
 
-// Fake INfo
-import partnerInfo from '../../fake-information/partners.json'
-
-// Define Variables
 const { toast } = useToast();
-const partners = ref(partnerInfo.partners)
-const showConfirmDialog = ref(false)
-const showPartnerForm = ref(false)
-const assignPartner = ref(null)
+const partners = ref(partnerInfo.partners);
+const showConfirmDialog = ref(false);
+const showPartnerForm = ref(false);
+const selectedPartner = ref(null);
 
-
-// Define Functions
-const hanldeUpdatePartner = (partner) => {
-    console.log(partner, '-> updatePartner')
-    if (partner && partner.id) {
-        assignPartner.value = partner;
-        showPartnerForm.value = true
+const handleUpdatePartner = (partner) => {
+    if (partner?.id) {
+        selectedPartner.value = new Partner(partner);
+        showPartnerForm.value = true;
     }
-}
+};
+
+const onCreatePartner = () => {
+    selectedPartner.value = new Partner({});
+    showPartnerForm.value = true;
+};
+
+const handleUpdateForm = (partner) => {
+    console.log(partner, ' handleUpdateForm');
+    if(partner && partner.status == 'New') {
+        partners.value.push(partner);
+    }else{
+        const index = partners.value.findIndex(p => p.id === partner.id);
+        if (index !== -1) {
+            partners.value[index] = new Partner(partner);
+        }
+    }
+};
 
 const handleRemovePartner = (partner) => {
-    console.log(partner, '-> removePartner')
-    if (partner && partner.id) {
-        showConfirmDialog.value = true
+    if (partner?.id) {
+        selectedPartner.value = new Partner(partner);
+        showConfirmDialog.value = true;
     }
-}
+};
 
 const handleConfirm = () => {
-    toast({
-        title: 'Item Deleted',
-        description: 'The item has been deleted.',
-        variant: 'success',
-    })
-}
+    partners.value = partners.value.filter(p => p.id !== selectedPartner.value.id);
+    toast({ title: 'Item Deleted', description: 'The item has been deleted.', variant: 'success' });
+};
 
 const handleCancel = () => {
-    toast({
-        title: 'Item Not Deleted',
-        description: 'The item has not been deleted.',
-        variant: 'warning',
-    })
-}
-
+    toast({ title: 'Item Not Deleted', description: 'The item has not been deleted.', variant: 'warning' });
+};
 </script>
