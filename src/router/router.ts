@@ -38,6 +38,12 @@ const routes = [
         name: "News",
         component: () => import("../views/news/News.vue"),
         meta: { title: "News", auth: true },
+      },
+      {
+        path: "/member",
+        name: "Member",
+        component: () => import("../views/member/Member.vue"),
+        meta: { title: "Member", auth: true },
       }
     ]
   },
