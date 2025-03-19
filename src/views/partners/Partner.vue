@@ -23,7 +23,7 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast';
-import Partner from '../../scripts/model/Partner.ts';
+import Partner from '../../scripts/model/partner/Partner.ts';
 import partnerInfo from '../../fake-information/partners.json';
 
 const PartnerForm = defineAsyncComponent(() => import('../../components/form/Partner.vue'));
