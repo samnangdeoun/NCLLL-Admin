@@ -19,7 +19,7 @@
             <transition name="fade" class="relative">
               <img
                 v-show="store.sidebarExpanded"
-                src="@/assets/images/NCLLL.jpg"
+                src="@/assets/images/NCLLL_Logo.png"
                 alt="NCLLL"
                 class="w-[7rem]"
               />

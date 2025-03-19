@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-col items-center justify-center h-screen border-2">
     <div class="w-1/3 shadow-lg rounded-3xl">
+      <div class="flex justify-center items-center">
+        <img src="@/assets/images/NCLLL_Logo.png" alt="logo" class="w-1/3  rounded-t-3xl" />
+      </div>
       <form class="relative rounded-b-3xl flex flex-col bg-white p-10">
         <h1 class="text-2xl font-bold mb-5">{{ $t("login") }}</h1>
         <div class="mb-5 w-full">
@@ -57,7 +60,7 @@ const handleLogin = async (e: { preventDefault: () => void }) => {
     console.log(loginForm.value);
     e.preventDefault();
     setTimeout(() => {
-      router.push({ name: "dashboard" });
+      router.push({ name: "Dashboard" });
     }, 500);
     emitter?.emit("stateLoading", true);
     const { message, data, statusCode } = await userLoginHandler(loginForm.value);
