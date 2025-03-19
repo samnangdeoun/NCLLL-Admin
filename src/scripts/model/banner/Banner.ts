@@ -1,5 +1,5 @@
 export default interface Banner {
-    id?: string;
+    _id?: string;
     title: string;
     imageUrl: string;
 }

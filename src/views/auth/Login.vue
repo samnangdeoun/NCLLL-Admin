@@ -21,7 +21,7 @@
         </div>
         
         <div class="mt-5">
-          <button @click="router.push({ name: 'dashboard' })"
+          <button @click="handleLogin"
             class="w-full bg-green-500 text-black font-bold py-2 px-4 rounded-md">
             {{ $t("login") }}
           </button>
@@ -35,10 +35,10 @@
 // import Swal from 'sweetalert2'
 import { Icon } from "@iconify/vue";
 import type LoginModel from "../../scripts/model/auth/Auth.ts";
+import { userLoginHandler } from "../../scripts/handler/auth/Auth.ts";
 import { useI18n } from "vue-i18n";
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
-// import { setCookie } from '../../scripts/handler/cookie.ts';
 import type { Emitter } from 'mitt';
 import { useToast } from '../../components/ui/toast/use-toast';
 
@@ -56,29 +56,28 @@ const toggleShowPassword = () => {
 const handleLogin = async (e: { preventDefault: () => void }) => {
   try {
     console.log(loginForm.value);
-    // e.preventDefault();
-    // setTimeout(() => {
-    //   router.push({ name: "dashboard" });
-    // }, 500);
-    // emitter?.emit("stateLoading", true);
-    // const { message, data, statusCode } = await userLoginHandler(loginForm.value);
-    // setTimeout(() => {
-    //   emitter?.emit("stateLoading", false);
-    //   if (statusCode !== 200 || data && data == null) {
-    //     toast({
-    //       title: t("error"),
-    //       variant: "destructive",
-    //       description: message as string,
-    //     });
-    //   } else {
-    //     toast({
-    //       variant: "success",
-    //       title: t("success"),
-    //       description: message as string,
-    //     });
-
-    //   }
-    // }, 1000);
+    e.preventDefault();
+    setTimeout(() => {
+      router.push({ name: "dashboard" });
+    }, 500);
+    emitter?.emit("stateLoading", true);
+    const { message, data, statusCode } = await userLoginHandler(loginForm.value);
+    setTimeout(() => {
+      emitter?.emit("stateLoading", false);
+      if (statusCode !== 200 || data && data == null) {
+        toast({
+          title: t("error"),
+          variant: "destructive",
+          description: message as string,
+        });
+      } else {
+        toast({
+          variant: "success",
+          title: t("success"),
+          description: message as string,
+        });
+      }
+    }, 1000);
   } catch (error) {
     console.log(error);
   }

@@ -1,7 +1,7 @@
 import type Position from '../position/Position.ts'
 
 export default interface Member {
-    id?: string;
+    _id?: string;
     en: PersonalInfo;
     kh: PersonalInfo;
     position: Position;

@@ -1,5 +1,5 @@
 export default interface Position {
-    id?: string;
+    _id?: string;
     en: PositionLevel;
     kh: PositionLevel;
 }

@@ -1,5 +1,5 @@
 export default interface Sponsor {
-    id?: string;
+    _id?: string;
     en: SponsorInfo;
     kh: SponsorInfo;
 }
