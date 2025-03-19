@@ -2,7 +2,7 @@
   <div v-if="visible" persistent class="loading-overlay">
     <div class="spinner bg-white">
     </div>
-    <img hight="160" width="160" class="absolute mr-6" src="../assets/images/FullFlowerJX2.png" />
+    <img hight="160" width="160" class="absolute" src="../assets/images/NCLLL_Logo.png" />
   </div>
 </template>
 <script setup>
@@ -29,8 +29,8 @@ const props = defineProps({
 }
 
 .spinner {
-  border: 5px solid #a59e9e;
-  border-top: 5px solid #92d050;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #16a34a ;
   border-radius: 50%;
   width: 160px;
   height: 160px;

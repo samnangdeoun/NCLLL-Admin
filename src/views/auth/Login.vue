@@ -1,20 +1,19 @@
 <template>
   <div class="flex flex-col items-center justify-center h-screen border-2">
     <div class="w-1/3 shadow-lg rounded-3xl">
-      <AuthFormHeader />
       <form class="relative rounded-b-3xl flex flex-col bg-white p-10">
-        <h1 class="text-2xl font-bold mb-5">{{ $t("admin_login") }}</h1>
+        <h1 class="text-2xl font-bold mb-5">{{ $t("login") }}</h1>
         <div class="mb-5 w-full">
-          <label for="email" class="block">{{ $t("username") }}</label>
+          <label for="username" class="block">{{ $t("username") }}</label>
           <input type="text" v-model="loginForm.username"
             class="font-sans w-full bg-gray-50 px-4 py-2 border rounded-md" />
         </div>
         <div class="w-full mb-5">
           <label for="password" class="block">{{ $t("password") }}</label>
           <div class="relative">
-            <input :type="showPassword ? 'text' : 'password'" v-model="loginForm.password"
+            <input :type="showPassword ? 'text' : 'password'" autocomplete="off" v-model="loginForm.password"
               class="font-sans w-full bg-gray-50 px-4 py-2 border rounded-md" />
-            <button type="button" @click="toggleShowPassword" class="absolute right-2 top-2">
+            <button type="button" @click="toggleShowPassword" class="absolute right-2 top-1/2 transform -translate-y-1/2">
               <Icon :icon="showPassword ? 'mdi:eye' : 'mdi:eye-off'" />
             </button>
           </div>
@@ -22,7 +21,7 @@
         
         <div class="mt-5">
           <button @click="handleLogin"
-            class="w-full bg-green-500 text-black font-bold py-2 px-4 rounded-md">
+            class="w-full bg-green-600 text-black font-bold py-2 px-4 rounded-md">
             {{ $t("login") }}
           </button>
         </div>

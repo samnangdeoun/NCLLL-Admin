@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { getCookie } from "../scripts/cookie/cookie.ts";
 
 const routes = [
   {
@@ -12,31 +13,31 @@ const routes = [
         path: "/event",
         name: "Event",
         component: () => import("../views/event/Event.vue"),
-        meta: { title: "Overview" },
+        meta: { title: "Overview", auth: true },
       },
       {
         path: "/partner",
         name: "Partner",
         component: () => import("../views/partners/Partner.vue"),
-        meta: { title: "Partner" },
+        meta: { title: "Partner", auth: true },
       },
       {
         path: "/resource",
         name: "Resource",
         component: () => import("../views/resource/Resource.vue"),
-        meta: { title: "Resource" },
+        meta: { title: "Resource", auth: true },
       },
       {
         path: "/overview",
         name: "Overview",
         component: () => import("../views/overview/Overview.vue"),
-        meta: { title: "Overview" },
+        meta: { title: "Overview", auth: true },
       },
       {
         path: "/news",
         name: "News",
         component: () => import("../views/news/News.vue"),
-        meta: { title: "News" },
+        meta: { title: "News", auth: true },
       }
     ]
   },
@@ -57,6 +58,24 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes,
+});
+
+router.beforeEach(async (to, _from, next) => {
+  const userToken = getCookie("userToken");
+
+  if (userToken) {
+    if (to.name === "Login") {
+      next({ name: "dashboard" });
+    } else {
+      next();
+    }
+  } else {
+    if (to.meta.auth) {
+      next({ name: "Login" });
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;
