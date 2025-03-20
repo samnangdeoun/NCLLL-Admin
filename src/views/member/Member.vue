@@ -44,12 +44,12 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" /> -->
 
-        <MemberForm :showForm="showMemberForm" @closeForm="showMemberForm = false" :member="selectedMember"
+        <MemberForm :showForm="showMemberForm" @closeForm="showMemberForm = $event" :member="selectedMember"
             @updateForm="handleUpdateForm" />
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, inject } from 'vue';
+import { onMounted, ref, inject, defineAsyncComponent } from 'vue';
 import {
     Table,
     TableBody,
@@ -62,10 +62,16 @@ import {
 
 import type Member from '../../scripts/model/member/Member.ts'
 import { retriveMemberHandler } from '../../scripts/handler/member/Member.ts'
+
 import type { Emitter } from 'mitt';
 
 // Define Component
-import MemberForm from '../../components/form/Member.vue'
+const MemberForm = defineAsyncComponent({
+    loader: () => import('../../components/form/Member.vue'),
+    loadingComponent: { template: '<div>Loading...</div>' },
+    delay: 300,
+    timeout: 3000
+})
 
 // Define Event
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
@@ -74,6 +80,7 @@ const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 const memberList = ref<Member[]>([] as Member[])
 const showMemberForm = ref<boolean>(false)
 const selectedMember = ref<Member>({} as Member)
+
 
 // Define Function
 const onLoadMember = async () => {
@@ -92,6 +99,7 @@ const onLoadMember = async () => {
         }, 1000);
     }
 }
+
 
 const onCreateMember = () => {
     selectedMember.value = {} as Member
