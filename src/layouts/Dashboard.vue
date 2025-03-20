@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full h-screen justify-center bg-gray-200">
+  <div class="flex justify-center w-full h-screen bg-gray-200">
     <div class="flex w-full h-full">
       <!-- Sidebar -->
       <DashboardSidebar />
@@ -11,7 +11,7 @@
       }">
         <!-- Header Navigation -->
         <DashboardNavbar />
-        <div class=" p-6 transition-all duration-300  overflow-auto" :style="{
+        <div class="p-6 overflow-auto transition-all duration-300 " :style="{
           height: `calc(100% - ${store.navHeight}px)`,
           marginTop: `${store.navHeight}px`,
         }">

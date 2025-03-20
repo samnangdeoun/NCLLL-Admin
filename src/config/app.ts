@@ -41,6 +41,12 @@ export const APP_MENU = {
         icon: "",
         description: "",
       },
+      {
+        title: "contact",
+        path: "contact",
+        icon: "",
+        description: "",
+      }
     ],
   },
 };

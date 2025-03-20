@@ -44,7 +44,13 @@ const routes = [
         name: "Member",
         component: () => import("../views/member/Member.vue"),
         meta: { title: "Member", auth: true },
-      }
+      },
+      {
+        path: "/contact",	
+        name: "Contact",
+        component: () => import("../views/contact/Contact.vue"),
+        meta: { title: "Contact", auth: true },
+      },
     ]
   },
   {
