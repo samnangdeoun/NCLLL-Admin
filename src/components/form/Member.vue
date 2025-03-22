@@ -39,7 +39,8 @@
                       <!-- Nationality Field -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('nationality') }}</Label>
-                        <Input v-model="member.en.nationality" required class="col-span-3 " :placeholder="$t('nationality')" />
+                        <Input v-model="member.en.nationality" required class="col-span-3 "
+                          :placeholder="$t('nationality')" />
                       </div>
                       <!-- Date of Birth -->
                       <div class="flex flex-col items-start justify-center mb-4">
@@ -104,13 +105,15 @@
                   <div class="flex flex-col items-start justify-center mb-3 w-full">
                     <Label class="text-left mb-1">{{ $t('career_status') }}</Label>
                     <keep-alive>
-                      <CareerStatus :cereerStatusList="member.en.careerStatus" @careerChange="positionList = $event" />
+                      <CareerStatus :cereerStatusList="member.en.careerStatus"
+                        @careerChange="member.en.careerStatus = $event" />
                     </keep-alive>
                   </div>
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('experience') }}</Label>
                     <keep-alive>
-                      <Experience :experienceList="member.en.experience" @experienceChange="handlePositionChange" />
+                      <Experience :experienceList="member.en.experience"
+                        @experienceChange="member.en.experience = $event" />
                     </keep-alive>
                   </div>
                 </div>

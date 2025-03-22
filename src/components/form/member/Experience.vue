@@ -132,7 +132,7 @@ const removeItem = (index) => {
 
 watch(props.experienceList, (value) => {
     console.log(value, 'value')
-    if (Object.keys(value).length > 0) {
+    if (value && Object.keys(value).length > 0) {
         experienceList.value = value.experienceList;
 
     }
