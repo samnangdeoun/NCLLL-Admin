@@ -5,7 +5,6 @@
         </SelectTrigger>
         <SelectContent class="bg-white">
             <SelectGroup>
-                <SelectLabel>{{ $t('position') }}</SelectLabel>
                 <SelectItem v-for="(position, index) in positionList" :key="index" :value="position"
                     @change="$emit('positionChange', position)">
                     {{ position.en.title }} - {{ position.kh.title }}

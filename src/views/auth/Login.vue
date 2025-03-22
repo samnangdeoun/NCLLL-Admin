@@ -59,9 +59,6 @@ const handleLogin = async (e: { preventDefault: () => void }) => {
   try {
     console.log(loginForm.value);
     e.preventDefault();
-    setTimeout(() => {
-      router.push({ name: "Dashboard" });
-    }, 500);
     emitter?.emit("stateLoading", true);
     const { message, data, statusCode } = await userLoginHandler(loginForm.value);
     setTimeout(() => {
@@ -78,6 +75,9 @@ const handleLogin = async (e: { preventDefault: () => void }) => {
           title: t("success"),
           description: message as string,
         });
+        setTimeout(() => {
+          router.push({ name: "Dashboard" });
+        }, 500);
       }
     }, 1000);
   } catch (error) {

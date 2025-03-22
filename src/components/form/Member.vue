@@ -26,7 +26,7 @@
                     <!-- Name Field -->
                     <div class="flex flex-col items-start justify-center mb-4">
                       <Label class="text-left mb-1">{{ $t('name') }}</Label>
-                      <Input v-model="member.en.name" class="col-span-3" :placeholder="$t('name')" />
+                      <Input v-model="member.en.name" required class="col-span-3" :placeholder="$t('name')" />
                     </div>
                     <!-- Description Field -->
                     <div class="flex flex-col items-start justify-center mb-4">
@@ -35,18 +35,21 @@
                         :rules="[validationRules.required, validationRules.email]" class="col-span-3"
                         :placeholder="$t('email')" />
                     </div>
-                    <!-- Nationality Field -->
-                    <div class="flex flex-col items-start justify-center mb-4">
-                      <Label class="text-left mb-1">{{ $t('nationality') }}</Label>
-                      <Input v-model="member.en.nationality" class="col-span-3" :placeholder="$t('nationality')" />
-                    </div>
-                    <!-- Date of Birth -->
-                    <div class="flex flex-col items-start justify-center mb-4">
-                      <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                      <DatePicker v-model="member.en.birthDate" class="col-span-3" :placeholder="$t('birth_date')" />
+                    <div class="grid grid-cols-2 gap-2">
+                      <!-- Nationality Field -->
+                      <div class="flex flex-col items-start justify-center mb-4">
+                        <Label class="text-left mb-1">{{ $t('nationality') }}</Label>
+                        <Input v-model="member.en.nationality" required class="col-span-3 " :placeholder="$t('nationality')" />
+                      </div>
+                      <!-- Date of Birth -->
+                      <div class="flex flex-col items-start justify-center mb-4">
+                        <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
+                        <DatePicker v-model="member.en.birthDate" class="col-span-3 w-full"
+                          :placeholder="$t('birth_date')" />
+                      </div>
                     </div>
                   </div>
-                  <h1 class="mb-4 font-bold">{{ $t('place_of_birth') }}</h1>
+                  <h1 class="mb-4 mt-3 font-bold">{{ $t('place_of_birth') }}</h1>
                   <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('house_number') }}</Label>
@@ -82,24 +85,33 @@
                       <PositionSelection :positionList="positionList" @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
-                  <!-- Preview -->
-                  <div class="flex flex-col items-start justify-center mb-3">
-                    <Label class="text-left mb-1">{{ $t('preview') }}</Label>
-                    <div class="h-[8.8rem] w-full border rounded-md">
-                      <img v-if="previewImage" :src="previewImage" alt="Partner Logo"
-                        class="w-full h-full  object-cover bg-cover rounded-md">
+                  <div class="grid grid-cols-3 gap-2">
+                    <!-- Preview -->
+                    <div class="flex flex-col items-start justify-center mb-3 col-span-2">
+                      <Label class="text-left mb-1">{{ $t('preview') }}</Label>
+                      <div class="h-[8rem] w-full border rounded-md">
+                        <img v-if="previewImage" :src="previewImage" alt="Partner Logo"
+                          class="w-full h-full  object-cover bg-cover rounded-md">
+                      </div>
+                    </div>
+                    <!-- Upload Image -->
+                    <div class="flex justify-center items-end mb-3 col-span-1">
+                      <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
+                        accept="image/jpeg,image/png,image/gif" />
                     </div>
                   </div>
-                  <!-- Upload Image -->
-                  <div class="flex flex-col items-start justify-center mb-3">
-                    <Label class="text-left mb-1">{{ $t('upload_image') }}</Label>
-                    <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class="col-span-3"
-                      accept="image/jpeg,image/png,image/gif" />
+
+                  <div class="flex flex-col items-start justify-center mb-3 w-full">
+                    <Label class="text-left mb-1">{{ $t('career_status') }}</Label>
+                    <keep-alive>
+                      <CareerStatus :cereerStatusList="member.en.careerStatus" @careerChange="positionList = $event" />
+                    </keep-alive>
                   </div>
-                  <!-- Description -->
                   <div class="flex flex-col items-start justify-center mb-3">
-                    <Label class="text-left mb-1">{{ $t('description') }}</Label>
-                    <Textarea rows="8" v-model="member.en.description" class="col-span-3" placeholder="Enter description" />
+                    <Label class="text-left mb-1">{{ $t('experience') }}</Label>
+                    <keep-alive>
+                      <Experience :experienceList="member.en.experience" @experienceChange="handlePositionChange" />
+                    </keep-alive>
                   </div>
                 </div>
               </div>
@@ -139,7 +151,6 @@ import {
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
-import { Textarea } from '../ui/textarea'
 
 import { validationRules } from '../../utils/validationRule.ts'
 import type { Emitter } from 'mitt';
@@ -148,8 +159,11 @@ import { retrivePositionHandler } from '../../scripts/handler/position/Position.
 import { createMember } from '../../scripts/model/member/Member.ts'
 
 // Components
-const DatePicker = defineAsyncComponent(() => import('../../components/custom/DatePicker.vue'))
-const PositionSelection = defineAsyncComponent(() => import('../../components/selection/Position.vue'))
+const Experience = defineAsyncComponent(() => import('./member/Experience.vue'))
+const CareerStatus = defineAsyncComponent(() => import('./member/CareerStatus.vue'))
+const DatePicker = defineAsyncComponent(() => import('../custom/DatePicker.vue'))
+const PositionSelection = defineAsyncComponent(() => import('../selection/Position.vue'))
+
 
 // Define Props
 const props = defineProps({
@@ -178,7 +192,6 @@ const emit = defineEmits(['updateForm', 'closeForm'])
 const handlePositionChange = (position: Position) => {
   console.log(position, 'position')
 }
-
 
 const onLoadPosition = async () => {
   try {

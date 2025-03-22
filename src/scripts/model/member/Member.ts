@@ -7,7 +7,6 @@ export const createMember = (data: Partial<Member> = {}): Member => ({
         email: data.en?.email || '',
         nationality: data.en?.nationality || '',
         name: data.en?.name || '',
-        description: data.en?.description || '',
         placeOfBirth: {
             houseNumber: data.en?.placeOfBirth?.houseNumber || '',
             street: data.en?.placeOfBirth?.street || '',
@@ -74,7 +73,6 @@ export interface PersonalInfo {
     email: string;
     nationality: string;
     name: string;
-    description: string;
     placeOfBirth: CurrentAddress;
     currentAddress: CurrentAddress;
     careerStatus: CareerStatus[];
