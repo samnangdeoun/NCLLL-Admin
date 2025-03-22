@@ -19,6 +19,7 @@
           </TabsList>
           <TabsContent value="KHMER">
             <!-- KHMER FORM VERSION -->
+             {{ member.position }}
             <form @submit.prevent="onHandleSummitForm" class="space-y-4">
               <div class="grid grid-cols-2 gap-4 py-4">
                 <div>
@@ -54,26 +55,23 @@
                   <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('house_number') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.houseNumber" class="col-span-3"
-                        :placeholder="$t('house_number')" />
+                      <Input v-model="member.en.placeOfBirth.houseNumber" class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('street') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.street" class="col-span-3" :placeholder="$t('street')" />
+                      <Input v-model="member.en.placeOfBirth.street" class="col-span-3" />
                     </div>
                     <div class="flex flex-col col-span-2 items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('district') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.houseNumber" class="col-span-3"
-                        :placeholder="$t('district')" />
+                      <Input v-model="member.en.placeOfBirth.district" class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('city') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.houseNumber" class="col-span-3"
-                        :placeholder="$t('city')" />
+                      <Input v-model="member.en.placeOfBirth.city" class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('country') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.street" class="col-span-3" :placeholder="$t('country')" />
+                      <Input v-model="member.en.placeOfBirth.country" class="col-span-3" />
                     </div>
                   </div>
                 </div>
@@ -193,7 +191,10 @@ const emit = defineEmits(['updateForm', 'closeForm'])
 
 // Define methods
 const handlePositionChange = (position: Position) => {
-  console.log(position, 'position')
+  console.log(position, 'position -> her')
+  if(position) {
+    member.value.position = position
+  }
 }
 
 const onLoadPosition = async () => {

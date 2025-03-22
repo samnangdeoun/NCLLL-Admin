@@ -119,8 +119,8 @@ const onHandleSummitForm = () => {
             variant: 'success',
             title: t("success"),
         });
-        emit('experienceChange', experienceList.value)
         experience.value = { title: '', description: '' }
+        emit('experienceChange', experienceList.value)
     } catch (e) {
         console.log(e)
     }
@@ -131,7 +131,6 @@ const removeItem = (index) => {
 }
 
 watch(props.experienceList, (value) => {
-    console.log(value, 'value')
     if (value && Object.keys(value).length > 0) {
         experienceList.value = value.experienceList;
 

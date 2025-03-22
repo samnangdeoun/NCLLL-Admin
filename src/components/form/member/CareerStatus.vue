@@ -119,8 +119,8 @@ const onHandleSummitForm = () => {
             variant: 'success',
             title: t("success"),
         });
-        emit('careerChange', careerList.value)
         career.value = { title: '', description: '' }
+        emit('careerChange', careerList.value)
     } catch (e) {
         console.log(e)
     }
