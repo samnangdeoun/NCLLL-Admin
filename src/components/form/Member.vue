@@ -19,7 +19,6 @@
           </TabsList>
           <TabsContent value="KHMER">
             <!-- KHMER FORM VERSION -->
-             {{ member.position }}
             <form @submit.prevent="onHandleSummitForm" class="space-y-4">
               <div class="grid grid-cols-2 gap-4 py-4">
                 <div>
@@ -81,7 +80,7 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" @positionChange="handlePositionChange" />
+                      <PositionSelection :positionList="positionList" :initPosition="member.position" @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
                   <div class="grid grid-cols-3 gap-2">
@@ -249,6 +248,7 @@ watch(props, () => {
   if (props.member && props.member.id == "") {
     member.value = createMember(); 
     status.value = "New";
+    previewImage.value = "";
   } else {
     status.value = "Update";
     member.value = createMember(props.member); 

@@ -31,8 +31,8 @@
                         <TableCell>{{ member.kh.name }}</TableCell>
                         <TableCell>{{ member.position.en.title }} {{ member.position.kh.title }}</TableCell>
                         <TableCell class="text-right">
-                            <button class="bg-green-600 rounded-md px-5 py-2">
-                                {{ $t('edit') }}
+                            <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(member)">
+                                {{ $t('update') }}
                             </button>
                         </TableCell>
                     </TableRow>
@@ -103,6 +103,11 @@ const onLoadMember = async () => {
 
 const onCreateMember = () => {
     selectedMember.value = {} as Member
+    showMemberForm.value = true
+}
+
+const onUpdateMember = (member: Member) => {
+    selectedMember.value = member as Member
     showMemberForm.value = true
 }
 

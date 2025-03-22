@@ -26,22 +26,34 @@ import { ref, watch } from 'vue'
 import type Position from '../../scripts/model/position/Position.ts'
 
 // Define Props
-defineProps({
+const props = defineProps({
     positionList: {
         type: Array as () => Position[],
         required: true,
     },
+    initPosition: {
+        type: Object as () => Position | null,
+        required: false,
+        default: null
+    },
 })
 
 // Define Variables
-const selectedPosition = ref<Position | null>(null)
+const selectedPosition = ref<Position | null>(props.initPosition)
 
 // Emit event
 const emit = defineEmits(['positionChange'])
 
 // Watch for changes in selectedPosition and emit event
-watch(selectedPosition, (newValue) => {
-    console.log(newValue, 'selectedPosition')
+watch(selectedPosition, (newValue: Position | null) => {
     if (newValue) emit('positionChange', newValue)
 })
+
+// Watch for changes in initPosition and update selectedPosition accordingly
+watch(() => props.initPosition, (newPosition: Position | null) => {
+    console.log(newPosition, 'newPosition')
+    if (newPosition) {
+        selectedPosition.value = newPosition
+    }
+}, { immediate: true })
 </script>
