@@ -20,10 +20,12 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 // import 
 import { Icon } from '@iconify/vue'
-import { defineEmits } from 'vue'
+import { defineEmits, watch } from 'vue'
+import { ref } from 'vue'
+import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
 
 // Define Emits
 const emit = defineEmits(['updateBanner', 'removeBanner'])
@@ -36,5 +38,13 @@ const props = defineProps({
 
 
 // Define Variable
-const { banner } = props
+const banner = ref<BannerModel>({} as BannerModel)
+
+watch(
+    () => props.banner,
+    () => {
+        banner.value = props.banner as BannerModel
+    },
+    { immediate: true, deep: true }
+)
 </script>

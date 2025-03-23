@@ -48,8 +48,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref, Text, watch } from 'vue'
+<script setup lang="ts">
+import { ref, watch, inject } from 'vue'
 import {
   Dialog,
   DialogContent,
@@ -57,12 +57,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '.././ui/dialog'
 import { Button } from '.././ui/button'
 import { Input } from '.././ui/input'
 import { Textarea } from '.././ui/textarea'
 import { Label } from '.././ui/label'
+import { useToast } from '.././ui/toast/use-toast'
+import { useI18n } from 'vue-i18n'
+import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
+import { createBanner } from '../../scripts/model/banner/BannerModel.ts'
+import { createBannerHandler, updateBannerHandler } from '../../scripts/handler/banner/BannerHandler.ts'
+import type { Emitter } from 'mitt';
 
 const props = defineProps({
   banner: {
@@ -76,16 +81,21 @@ const props = defineProps({
 })
 
 console.log(props)
+const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
+const { t } = useI18n()
+const { toast } = useToast()
 
+// Define Variable
+const previewImage = ref(props.banner.imageUrl)
 const banner = ref(props.banner)
 const showForm = ref(props.showForm)
 const status = ref("New")
 
 // Define props and emits
-const emit = defineEmits(['updateForm'])
+const emit = defineEmits(['updateForm', "closeForm"])
 
 // Define methods
-const handleFileInput = (event) => {
+const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
@@ -94,27 +104,76 @@ const handleFileInput = (event) => {
   reader.readAsDataURL(file)
 }
 
-const onHandleSummitForm = () => {
+const onHandleSummitForm = async () => {
+  if(status.value == "New") onHandleCreateBanner()
+  else onHandleUpdateBanner()
+}
+
+const onHandleUpdateBanner = async () => {
   try {
-    emit('updateForm', {
-      ...banner.value,
-      status: status.value
-    })
-    emit('closeForm')
+    emitter?.emit("stateLoading", true);
+    const { message, data, statusCode } = await updateBannerHandler(banner.value as BannerModel);
+    console.log(message, data, statusCode);
+    if (statusCode == 200 && data) {
+      emit('updateForm', {
+        ...data,
+        status: status.value
+      })
+      toast({
+        description: t('update_banner_success'),
+        variant: 'success',
+        title: t("success"),
+      });
+      emit('closeForm')
+    }
   } catch (e) {
     console.log(e)
+  } finally {
+    setTimeout(() => {
+      emitter?.emit("stateLoading", false);
+    }, 500);
+  }
+}
+
+const onHandleCreateBanner = async () => {
+  try {
+    emitter?.emit("stateLoading", true);
+    banner.value.imageUrl = "https://picsum.photos/512/513"
+    const { message, data, statusCode } = await createBannerHandler(banner.value as BannerModel);
+    console.log(message, data, statusCode);
+    if (statusCode == 200 && data) {
+      emit('updateForm', {
+        ...data,
+        status: status.value
+      })
+      toast({
+        description: t('create_banner_success'),
+        variant: 'success',
+        title: t("success"),
+      });
+      emit('closeForm')
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    setTimeout(() => {
+      emitter?.emit("stateLoading", false);
+    }, 500);
   }
 }
 
 // Define Watch
-watch(props, () => {
-  banner.value = props.banner
-  showForm.value = props.showForm
-  console.log(banner.value, ' banner')
-  if (banner.value && banner.value._id && banner.value._id !== "") {
-    status.value = "New"
-  } else {
-    status.value = "Update"
-  }
-})
+watch(
+  () => [props.banner, props.showForm],
+  () => {
+    if (props.banner && props.banner._id && props.banner._id) {
+      banner.value = createBanner(props.banner);
+      status.value = "Update";
+    } else {
+      banner.value = createBanner();
+      status.value = "New";
+      previewImage.value = "";
+    }
+    showForm.value = props.showForm
+  }, { immediate: true, })
 </script>
