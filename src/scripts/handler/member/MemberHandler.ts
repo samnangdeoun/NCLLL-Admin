@@ -29,6 +29,57 @@ export const createMemberHandler = async (params: Member) => {
     }
 };
 
+export const updateMemberHandler = async (params: Member) => {
+    try {
+        const response = await fetch(memberAPI.memberAPI().update_member, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getCookie('userToken')}`,
+            },
+            body: JSON.stringify(params),
+        });
+
+        const data = (await response.json()) as ApiResponse;
+
+        return {
+            message: data.message as string || '',
+            data: data.data as any || null,
+            statusCode: data.code as number
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            data: null,
+        };
+    }
+};
+
+export const removeMemberHandler = async (member: Member) => {
+    try {
+        const response = await fetch(memberAPI.memberAPI(member._id).delete_member, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getCookie('userToken')}`,
+            },
+        });
+
+        const data = (await response.json()) as ApiResponse;
+
+        return {
+            message: data.message as string || '',
+            data: data.data as any || null,
+            statusCode: data.code as number
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            data: null,
+        };
+    }
+};
+
 export const retriveMemberHandler = async () => {
     try {
         const response = await fetch(memberAPI.memberAPI().retrive_member, {
