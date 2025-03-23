@@ -46,6 +46,12 @@ const routes = [
         meta: { title: "Member", auth: true },
       },
       {
+        path: "/sponsor",
+        name: "Sponsor",
+        component: () => import("../views/sponsor/Sponsor.vue"),
+        meta: { title: "Sponsor", auth: true },
+      },
+      {
         path: "/banner",
         name: "Banner",
         component: () => import("../views/banner/Banner.vue"),
