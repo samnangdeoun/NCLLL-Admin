@@ -4,10 +4,10 @@
             <!-- Preview -->
             <form @submit.prevent="onHandleSummitForm" class="flex justify-center items-center gap-2">
                 <div class="flex items-start justify-center mb-3 ">
-                    <Textarea rows="3" v-model="experience.title" required :placeholder="$t('title')" />
+                    <Textarea rows="3" v-model="experience.title" required  />
                 </div>
                 <div class="flex items-start justify-center mb-3 w-full">
-                    <Textarea rows="3" v-model="experience.description" required :placeholder="$t('description')" />
+                    <Textarea rows="3" v-model="experience.description" required  />
                 </div>
                 <!-- Upload Image -->
                 <div class="flex flex-col justify-center items-end mb-3">
@@ -139,8 +139,6 @@ const removeItem = (index) => {
 watch(
     () => props.experienceList,
     (newVal) => {
-        console.log(newVal, 'new experienceList');
-        console.log(props.showForm, 'props.showForm');
         if (props.showForm && Array.isArray(newVal) && newVal.length > 0) {
             experienceList.value = [...newVal]; 
         }else

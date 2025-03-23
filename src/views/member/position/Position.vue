@@ -1,81 +1,82 @@
 <template>
     <div class="h-full w-full overflow-auto">
         <div class="flex justify-end items-center rounded-md pb-2">
-            <button class="bg-green-600 rounded-md px-5 py-2" @click="onCreateSponsor">
+            <button class="bg-green-600 rounded-md px-5 py-2" @click="onCreatePosition">
                 {{ $t('new') }}
             </button>
         </div>
 
         <div class="w-full scrollbar-hide">
-            <SponsorCard :sponsors="sponsors" @updateSponsor="handleUpdateSponsor" @removeSponsor="handleRemoveSponsor" />
+            <PositionCard :positions="positions" @updatePosition="handleUpdatePosition"
+                @removePosition="handleRemovePosition" />
         </div>
 
         <ConfirmDialog v-model:open="showConfirmDialog" title="Delete Item"
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <SponsorForm :showForm="showSponsorForm" @closeForm="showSponsorForm = false" :sponsor="selectedSponsor"
+        <PositionForm :showForm="showPositionForm" @closeForm="showPositionForm = false" :position="selectedPosition"
             @updateForm="handleUpdateForm" />
     </div>
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted, inject } from 'vue';
-import { useToast } from '../../components/ui/toast/use-toast';
-import type SponsorModel from '../../scripts/model/sponsor/SponsorModel.ts';
+import { useToast } from '../../../components/ui/toast/use-toast';
+import type PositionModel from '../../../scripts/model/position/PositionModel.ts';
 import type { Emitter } from 'mitt';
-import { retriveSponsorHandler, removeSponsorHandler } from '../../scripts/handler/sponsor/SponsorHandler.ts';
+import { retrivePositionHandler, removePositionHandler } from '../../../scripts/handler/position/PositionHandler.ts';
 
-const SponsorForm = defineAsyncComponent(() => import('../../components/form/SponsorForm.vue'));
-const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
-const SponsorCard = defineAsyncComponent(() => import('../../components/cards/SponsorCard.vue'));
+const PositionForm = defineAsyncComponent(() => import('../../../components/form/PositionForm.vue'));
+const ConfirmDialog = defineAsyncComponent(() => import('../../../components/custom/ConfirmDialog.vue'));
+const PositionCard = defineAsyncComponent(() => import('../../../components/cards/PositionCard.vue'));
 
 const { toast } = useToast();
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
-const sponsors = ref<SponsorModel[]>([]);
+const positions = ref<PositionModel[]>([]);
 const showConfirmDialog = ref(false);
-const showSponsorForm = ref(false);
-const selectedSponsor = ref<SponsorModel>({} as SponsorModel);
+const showPositionForm = ref(false);
+const selectedPosition = ref<PositionModel>({} as PositionModel);
 
-const handleUpdateSponsor = (banner: any) => {
+const handleUpdatePosition = (banner: any) => {
     if (banner?._id) {
-        selectedSponsor.value = banner;
-        showSponsorForm.value = true;
+        selectedPosition.value = banner;
+        showPositionForm.value = true;
     }
 };
 
-const onCreateSponsor = () => {
-    selectedSponsor.value = {} as SponsorModel;
-    showSponsorForm.value = true;
+const onCreatePosition = () => {
+    selectedPosition.value = {} as PositionModel;
+    showPositionForm.value = true;
 };
 
 const handleUpdateForm = (banner: any) => {
     console.log(banner, ' handleUpdateForm');
     if (banner && banner.status == 'New') {
-        sponsors.value.push(banner);
+        positions.value.push(banner);
     } else {
-        const index = sponsors.value.findIndex(p => p._id == banner._id);
+        const index = positions.value.findIndex(p => p._id == banner._id);
         if (index !== -1) {
-            sponsors.value[index] = (banner) as SponsorModel;
+            positions.value[index] = (banner) as PositionModel;
         }
     }
 };
 
-const handleRemoveSponsor = (sponsor: SponsorModel) => {
-    if (sponsor?._id) {
-        selectedSponsor.value = sponsor;
+const handleRemovePosition = (position: PositionModel) => {
+    if (position?._id) {
+        selectedPosition.value = position;
         showConfirmDialog.value = true;
     }
 };
 
-const onLoadSponsors = async () => {
+const onLoadPosition = async () => {
     // Define Function
     try {
         emitter?.emit("stateLoading", true);
-        const { message, data, statusCode } = await retriveSponsorHandler()
+        const { message, data, statusCode } = await retrivePositionHandler()
         console.log(message, data, statusCode);
         if (statusCode == 200) {
-            sponsors.value = data
+            positions.value = data
         }
     } catch (error) {
         console.error(error);
@@ -89,11 +90,11 @@ const onLoadSponsors = async () => {
 const handleConfirm = async () => {
     try {
         emitter?.emit("stateLoading", true);
-        console.log(selectedSponsor.value, '-> valuue');
-        const { statusCode } = await removeSponsorHandler(selectedSponsor.value as SponsorModel);
+        console.log(selectedPosition.value, '-> valuue');
+        const { statusCode } = await removePositionHandler(selectedPosition.value as PositionModel);
         console.log(statusCode);
         if (statusCode == 200) {
-            sponsors.value = sponsors.value.filter(p => p._id !== selectedSponsor?.value?._id);
+            positions.value = positions.value.filter(p => p._id !== selectedPosition?.value?._id);
             toast({ title: 'Item Deleted', description: 'The item has been deleted.', variant: 'success' });
         }
     } catch (error) {
@@ -110,6 +111,6 @@ const handleCancel = () => {
 };
 
 onMounted(async () => {
-    await onLoadSponsors();
+    await onLoadPosition();
 });
 </script>

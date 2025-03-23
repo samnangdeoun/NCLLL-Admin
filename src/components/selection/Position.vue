@@ -1,11 +1,11 @@
 <template>
-    <Select v-model="selectedPosition" class="w-full">
+    <Select v-model="selectedPosition" required class="w-full">
         <SelectTrigger>
-            <SelectValue :placeholder="$t('select_position')" />
+            <SelectValue :value="selectedPosition" :placeholder="$t('select_position')" />
         </SelectTrigger>
         <SelectContent class="bg-white">
             <SelectGroup>
-                <SelectItem v-for="(position, index) in positionList" :key="index" :value="position">
+                <SelectItem v-for="(position, index) in positionList" :key="index" :value="position._id || ''">
                     {{ position.en.title }} - {{ position.kh.title }}
                 </SelectItem>
             </SelectGroup>
@@ -32,28 +32,28 @@ const props = defineProps({
         required: true,
     },
     initPosition: {
-        type: Object as () => Position | null,
+        type: String,
         required: false,
         default: null
     },
 })
 
 // Define Variables
-const selectedPosition = ref<Position | null>(props.initPosition)
+const selectedPosition = ref<string | null>(props.initPosition)
 
 // Emit event
 const emit = defineEmits(['positionChange'])
 
 // Watch for changes in selectedPosition and emit event
-watch(selectedPosition, (newValue: Position | null) => {
+watch(selectedPosition, (newValue: string | null) => {
     if (newValue) emit('positionChange', newValue)
 })
 
 // Watch for changes in initPosition and update selectedPosition accordingly
-watch(() => props.initPosition, (newPosition: Position | null) => {
-    console.log(newPosition, 'newPosition')
+watch(() => props.initPosition, (newPosition: string | null) => {
     if (newPosition) {
         selectedPosition.value = newPosition
     }
 }, { immediate: true })
 </script>
+

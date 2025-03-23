@@ -4,10 +4,10 @@
             <!-- Preview -->
             <form @submit.prevent="onHandleSummitForm" class="flex justify-center items-center gap-2">
                 <div class="flex items-start justify-center mb-3 ">
-                    <Textarea rows="3" v-model="career.title" required :placeholder="$t('title')" />
+                    <Textarea rows="3" v-model="career.title" required  />
                 </div>
                 <div class="flex items-start justify-center mb-3 w-full">
-                    <Textarea rows="3" v-model="career.description" required :placeholder="$t('description')" />
+                    <Textarea rows="3" v-model="career.description" required />
                 </div>
                 <!-- Upload Image -->
                 <div class="flex flex-col justify-center items-end mb-3">
@@ -116,8 +116,6 @@ const cereerForm = ref(false);
 
 const onHandleSummitForm = () => {
     try {
-        console.log(Array.isArray(careerList.value), 'careerList.value')
-        console.log(career.value, 'career.value')
         if (career.value.title !== '' && career.value.description !== '' && Array.isArray(careerList.value)) {
             careerList.value.push({
                 value: career.value.title,
@@ -143,7 +141,6 @@ const removeItem = (index) => {
 watch(
     () => props.careerStatusList,
     (newVal) => {
-        console.log(newVal, 'new careerStatusList');
         if (props.showForm && Array.isArray(newVal) && newVal.length > 0) {
             careerList.value = [...newVal]; // Ensure reactivity
         } else {
