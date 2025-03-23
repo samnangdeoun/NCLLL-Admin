@@ -100,19 +100,26 @@ const onLoadMember = async () => {
     }
 }
 
-
 const onCreateMember = () => {
     selectedMember.value = {} as MemberModel
     showMemberForm.value = true
 }
 
-const onUpdateMember = (MemberModel: MemberModel) => {
-    selectedMember.value = MemberModel as MemberModel
+const onUpdateMember = (member: MemberModel) => {
+    selectedMember.value = member as MemberModel
     showMemberForm.value = true
 }
 
-const handleUpdateForm = (MemberModel: any) => {
-    console.log(MemberModel, ' handleUpdateForm');
+const handleUpdateForm = (member: any) => {
+    console.log(member, ' handleUpdateForm');
+    if (member && member.status == 'New') {
+        memberList.value.push(member);
+    } else {member
+        const index = memberList.value.findIndex(p => p._id === member._id);
+        if (index !== -1) {
+            memberList.value[index] = (member) as MemberModel;
+        }
+    }
 }
 
 onMounted(async () => {

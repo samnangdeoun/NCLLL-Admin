@@ -98,10 +98,16 @@ const { toast } = useToast();
 const emit = defineEmits(['updateForm', 'closeForm'])
 // Define Props
 const props = defineProps({
-    cereerStatusList: {
+    careerStatusList: {
         type: Array,
-        required: true,
+        default: () => [],
+        required: true
     },
+    showForm: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 })
 
 const careerList = ref([]);
@@ -110,17 +116,21 @@ const cereerForm = ref(false);
 
 const onHandleSummitForm = () => {
     try {
-        careerList.value.push({
-            value: career.value.title,
-            detail: career.value.description,
-        })
-        toast({
-            description: t('create_career_success'),
-            variant: 'success',
-            title: t("success"),
-        });
-        career.value = { title: '', description: '' }
-        emit('careerChange', careerList.value)
+        console.log(Array.isArray(careerList.value), 'careerList.value')
+        console.log(career.value, 'career.value')
+        if (career.value.title !== '' && career.value.description !== '' && Array.isArray(careerList.value)) {
+            careerList.value.push({
+                value: career.value.title,
+                detail: career.value.description,
+            })
+            toast({
+                description: t('create_career_success'),
+                variant: 'success',
+                title: t("success"),
+            });
+            career.value = { title: '', description: '' }
+            emit('careerChange', careerList.value)
+        }
     } catch (e) {
         console.log(e)
     }
@@ -130,12 +140,18 @@ const removeItem = (index) => {
     careerList.value.splice(index, 1);
 }
 
-watch(props.cereerStatusList, (value) => {
-    console.log(value, 'value')
-    if (Object.keys(value).length > 0) {
-        careerList.value = value.careerStatusList;
-        
-    }
-}, { immediate: true });
+watch(
+    () => props.careerStatusList,
+    (newVal) => {
+        console.log(newVal, 'new careerStatusList');
+        if (props.showForm && Array.isArray(newVal) && newVal.length > 0) {
+            careerList.value = [...newVal]; // Ensure reactivity
+        } else {
+            careerList.value = [];
+        }
+    },
+    { immediate: true, deep: true }
+);
+
 
 </script>
