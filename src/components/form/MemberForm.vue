@@ -80,7 +80,8 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" :initPosition="member.position" @positionChange="handlePositionChange" />
+                      <PositionSelection :positionList="positionList" :initPosition="member.position"
+                        @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
                   <div class="grid grid-cols-3 gap-2">
@@ -102,15 +103,15 @@
                   <div class="flex flex-col items-start justify-center mb-3 w-full">
                     <Label class="text-left mb-1">{{ $t('career_status') }}</Label>
                     <keep-alive>
-                      <CareerStatus :cereerStatusList="member.en.careerStatus"
+                      <CareerStatus :showForm="showForm" :careerStatusList="member.en.careerStatus"
                         @careerChange="member.en.careerStatus = $event" />
                     </keep-alive>
                   </div>
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('experience') }}</Label>
                     <keep-alive>
-                      <Experience :experienceList="member.en.experience"
-                        @experienceChange="member.en.experience = $event" />
+                      <Experience :careerStatusList="member.en.careerStatus" :showForm="showForm"
+                        :experienceList="member.en.experience" @experienceChange="member.en.experience = $event" />
                     </keep-alive>
                   </div>
                 </div>
@@ -244,8 +245,11 @@ onMounted(async () => {
 })
 
 // Define Watch
-watch(props, () => {
-  if (props.member && props.member.id == "") {
+watch(
+  () => [props.member, props.showForm],
+  () => {
+  console.log(props, 'props.member');
+  if (props.member && props.member._id && props.member._id == "") {
     member.value = createMember(); 
     status.value = "New";
     previewImage.value = "";
@@ -253,7 +257,6 @@ watch(props, () => {
     status.value = "Update";
     member.value = createMember(props.member); 
   }
-
   showForm.value = props.showForm
-})
+}, { immediate: true, })
 </script>

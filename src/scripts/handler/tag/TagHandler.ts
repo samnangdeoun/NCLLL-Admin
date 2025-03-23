@@ -1,12 +1,11 @@
-import sponsorAPI from "../../../apis/sponsorUrl.ts";
-import type SponsorModel from "../../model/sponsor/SponsorModel.ts";
+import tagAPI from "../../../apis/tagUrl.ts";
+import type TagModel from "../../model/tag/TagModel.ts";
 import type ApiResponse from "../../mapping/BaseResponse.ts";
 import { getCookie } from "../../cookie/cookie.ts";
 
-
-export const createSponsorHandler = async (params: SponsorModel) => {
+export const createTagHandler = async (params: TagModel) => {
     try {
-        const response = await fetch(sponsorAPI.sponsorAPI().create_sponsor, {
+        const response = await fetch(tagAPI.tagAPI().create_tag, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,10 +29,10 @@ export const createSponsorHandler = async (params: SponsorModel) => {
     }
 };
 
-
-export const updateSponsorHandler = async (params: SponsorModel) => {
+export const updateTagHandler = async (params: TagModel) => {
     try {
-        const response = await fetch(sponsorAPI.sponsorAPI().update_sponsor, {
+        console.log(params, ' params');
+        const response = await fetch(tagAPI.tagAPI().update_tag, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -57,10 +56,9 @@ export const updateSponsorHandler = async (params: SponsorModel) => {
     }
 };
 
-export const removeSponsorHandler = async (sponsor: SponsorModel) => {
+export const removeTagHandler = async (banner: TagModel) => {
     try {
-        console.log(sponsor, ' -.> removeSponsorHandler');
-        const response = await fetch(sponsorAPI.sponsorAPI(sponsor._id).delete_sponsor, {
+        const response = await fetch(tagAPI.tagAPI(banner._id).delete_tag, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -83,9 +81,9 @@ export const removeSponsorHandler = async (sponsor: SponsorModel) => {
     }
 };
 
-export const retriveSponsorHandler = async () => {
+export const retriveTagHandler = async () => {
     try {
-        const response = await fetch(sponsorAPI.sponsorAPI().retrive_sponsor, {
+        const response = await fetch(tagAPI.tagAPI().retrive_tag, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

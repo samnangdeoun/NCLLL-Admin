@@ -3,9 +3,9 @@
     <Dialog v-model:open="showForm">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
-          <DialogTitle>{{ $t('banner') }}</DialogTitle>
+          <DialogTitle>{{ $t('sponsor') }}</DialogTitle>
           <DialogDescription>
-            {{ $t('banner_form_desc') }}
+            {{ $t('sponsor_form_desc') }}
           </DialogDescription>
         </DialogHeader>
 
@@ -14,16 +14,20 @@
             <div>
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
-                <Label for="name" class="text-left mb-1">{{ $t('title') }}</Label>
-                <Textarea rows="9" v-model="banner.title" class="col-span-3"  />
+                <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
+                <Input rows="9" v-model="sponsor.en.name" class="col-span-3" />
+              </div>
+              <!-- Description Field -->
+              <div class="flex flex-col items-start justify-center mb-4">
+                <Label for="name" class="text-left mb-1">{{ $t('descriptioin') }}</Label>
+                <Textarea rows="6" v-model="sponsor.en.description" class="col-span-3" />
               </div>
             </div>
-
             <div>
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('preview') }}</Label>
                 <div class="h-[8.2rem] w-full border rounded-md">
-                  <img v-if="banner.imageUrl" :src="banner.imageUrl" alt="banner Logo"
+                  <img v-if="previewImageEN" :src="previewImageEN" alt="banner Logo"
                     class="w-full h-full  object-cover bg-cover rounded-md">
                 </div>
               </div>
@@ -57,20 +61,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '.././ui/dialog'
-import { Button } from '.././ui/button'
-import { Input } from '.././ui/input'
-import { Textarea } from '.././ui/textarea'
-import { Label } from '.././ui/label'
-import { useToast } from '.././ui/toast/use-toast'
+} from '../ui/dialog/index.ts'
+import { Button } from '../ui/button/index.ts'
+import { Input } from '../ui/input/index.ts'
+import { Textarea } from '../ui/textarea/index.ts'
+import { Label } from '../ui/label/index.ts'
+import { useToast } from '../ui/toast/use-toast.ts'
 import { useI18n } from 'vue-i18n'
-import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
-import { createBanner } from '../../scripts/model/banner/BannerModel.ts'
-import { createBannerHandler, updateBannerHandler } from '../../scripts/handler/banner/BannerHandler.ts'
+import type SponsorModel from '../../scripts/model/sponsor/SponsorModel.ts'
+import { createSponsor } from '../../scripts/model/sponsor/SponsorModel.ts'
+import { createSponsorHandler, updateSponsorHandler } from '../../scripts/handler/sponsor/SponsorHandler.ts'
 import type { Emitter } from 'mitt';
 
 const props = defineProps({
-  banner: {
+  sponsor: {
     type: Object,
     required: true,
   },
@@ -86,8 +90,9 @@ const { t } = useI18n()
 const { toast } = useToast()
 
 // Define Variable
-const previewImage = ref(props.banner.imageUrl)
-const banner = ref(props.banner)
+const previewImageEN = ref(props.sponsor?.en?.imageUrl)
+const previewImageKH = ref(props.sponsor?.kh?.imageUrl)
+const sponsor = ref(props.sponsor)
 const showForm = ref(props.showForm)
 const status = ref("New")
 
@@ -99,20 +104,20 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    banner.value.imageUrl = reader.result
+    sponsor.value.en.imageUrl = reader.result
   }
   reader.readAsDataURL(file)
 }
 
 const onHandleSummitForm = async () => {
-  if(status.value == "New") onHandleCreateBanner()
+  if(status.value == "New") onHandleCreateSponsor()
   else onHandleUpdateBanner()
 }
 
 const onHandleUpdateBanner = async () => {
   try {
     emitter?.emit("stateLoading", true);
-    const { message, data, statusCode } = await updateBannerHandler(banner.value as BannerModel);
+    const { message, data, statusCode } = await updateSponsorHandler(sponsor.value as SponsorModel);
     console.log(message, data, statusCode);
     if (statusCode == 200 && data) {
       emit('updateForm', {
@@ -120,7 +125,7 @@ const onHandleUpdateBanner = async () => {
         status: status.value
       })
       toast({
-        description: t('update_banner_success'),
+        description: t('update_sponsor_success'),
         variant: 'success',
         title: t("success"),
       });
@@ -135,11 +140,12 @@ const onHandleUpdateBanner = async () => {
   }
 }
 
-const onHandleCreateBanner = async () => {
+const onHandleCreateSponsor = async () => {
   try {
     emitter?.emit("stateLoading", true);
-    banner.value.imageUrl = "https://picsum.photos/512/513"
-    const { message, data, statusCode } = await createBannerHandler(banner.value as BannerModel);
+    sponsor.value.en.imageUrl = "https://picsum.photos/512/513"
+    sponsor.value.kh = sponsor.value.en
+    const { message, data, statusCode } = await createSponsorHandler(sponsor.value as SponsorModel);
     console.log(message, data, statusCode);
     if (statusCode == 200 && data) {
       emit('updateForm', {
@@ -147,7 +153,7 @@ const onHandleCreateBanner = async () => {
         status: status.value
       })
       toast({
-        description: t('create_banner_success'),
+        description: t('create_sponsor_success'),
         variant: 'success',
         title: t("success"),
       });
@@ -164,15 +170,15 @@ const onHandleCreateBanner = async () => {
 
 // Define Watch
 watch(
-  () => [props.banner, props.showForm],
+  () => [props.sponsor, props.showForm],
   () => {
-    if (props.banner && props.banner._id && props.banner._id) {
-      banner.value = createBanner(props.banner);
+    if (props.sponsor && props.sponsor._id && props.sponsor._id) {
+      sponsor.value = createSponsor(props.sponsor);
       status.value = "Update";
     } else {
-      banner.value = createBanner();
+      sponsor.value = createSponsor();
       status.value = "New";
-      previewImage.value = "";
+      previewImageEN.value = "";
     }
     showForm.value = props.showForm
   }, { immediate: true, })

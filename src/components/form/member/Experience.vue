@@ -98,8 +98,12 @@ const { toast } = useToast();
 const emit = defineEmits(['updateForm', 'closeForm'])
 // Define Props
 const props = defineProps({
-    cereerStatusList: {
+    experienceList: {
         type: Array,
+        required: true,
+    },
+    showForm: {
+        type: Boolean,
         required: true,
     },
 })
@@ -110,17 +114,19 @@ const cereerForm = ref(false);
 
 const onHandleSummitForm = () => {
     try {
-        experienceList.value.push({
-            value: experience.value.title,
-            detail: experience.value.description,
-        })
-        toast({
-            description: t('create_experience_success'),
-            variant: 'success',
-            title: t("success"),
-        });
-        experience.value = { title: '', description: '' }
-        emit('experienceChange', experienceList.value)
+        if (experience.value.title !== '' && experience.value.description !== '' && Array.isArray(experienceList.value)) {
+            experienceList.value.push({
+                value: experience.value.title,
+                detail: experience.value.description,
+            })
+            toast({
+                description: t('create_experience_success'),
+                variant: 'success',
+                title: t("success"),
+            });
+            experience.value = { title: '', description: '' }
+            emit('experienceChange', experienceList.value)
+        }
     } catch (e) {
         console.log(e)
     }
@@ -130,11 +136,18 @@ const removeItem = (index) => {
     experienceList.value.splice(index, 1);
 }
 
-watch(props.experienceList, (value) => {
-    if (value && Object.keys(value).length > 0) {
-        experienceList.value = value.experienceList;
-
-    }
-}, { immediate: true });
-
+watch(
+    () => props.experienceList,
+    (newVal) => {
+        console.log(newVal, 'new experienceList');
+        console.log(props.showForm, 'props.showForm');
+        if (props.showForm && Array.isArray(newVal) && newVal.length > 0) {
+            experienceList.value = [...newVal]; 
+        }else
+        {
+            experienceList.value = [];
+        }
+    },
+    { immediate: true, deep: true }
+);
 </script>

@@ -23,15 +23,15 @@
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="(MemberModel, index) in memberList" :key="index">
+                    <TableRow v-for="(member, index) in memberList" :key="index">
                         <TableCell class="font-medium">
                             {{ index + 1 }}
                         </TableCell>
-                        <TableCell>{{ MemberModel.en.name }}</TableCell>
-                        <TableCell>{{ MemberModel.kh.name }}</TableCell>
-                        <TableCell>{{ MemberModel.position.en.title }} {{ MemberModel.position.kh.title }}</TableCell>
+                        <TableCell>{{ member.en.name }}</TableCell>
+                        <TableCell>{{ member.kh.name }}</TableCell>
+                        <TableCell>{{ member.position.en.title }} {{ member.position.kh.title }}</TableCell>
                         <TableCell class="text-right">
-                            <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(MemberModel)">
+                            <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(member)">
                                 {{ $t('update') }}
                             </button>
                         </TableCell>
@@ -100,19 +100,26 @@ const onLoadMember = async () => {
     }
 }
 
-
 const onCreateMember = () => {
     selectedMember.value = {} as MemberModel
     showMemberForm.value = true
 }
 
-const onUpdateMember = (MemberModel: MemberModel) => {
-    selectedMember.value = MemberModel as MemberModel
+const onUpdateMember = (member: MemberModel) => {
+    selectedMember.value = member as MemberModel
     showMemberForm.value = true
 }
 
-const handleUpdateForm = (MemberModel: any) => {
-    console.log(MemberModel, ' handleUpdateForm');
+const handleUpdateForm = (member: any) => {
+    console.log(member, ' handleUpdateForm');
+    if (member && member.status == 'New') {
+        memberList.value.push(member);
+    } else {member
+        const index = memberList.value.findIndex(p => p._id === member._id);
+        if (index !== -1) {
+            memberList.value[index] = (member) as MemberModel;
+        }
+    }
 }
 
 onMounted(async () => {

@@ -34,6 +34,12 @@ const routes = [
         meta: { title: "Overview", auth: true },
       },
       {
+        path: "/tag",
+        name: "Tag",
+        component: () => import("../views/tag/Tag.vue"),
+        meta: { title: "Tag", auth: true },
+      },
+      {
         path: "/news",
         name: "News",
         component: () => import("../views/news/News.vue"),
@@ -44,6 +50,12 @@ const routes = [
         name: "Member",
         component: () => import("../views/member/Member.vue"),
         meta: { title: "Member", auth: true },
+      },
+      {
+        path: "/sponsor",
+        name: "Sponsor",
+        component: () => import("../views/sponsor/Sponsor.vue"),
+        meta: { title: "Sponsor", auth: true },
       },
       {
         path: "/banner",
