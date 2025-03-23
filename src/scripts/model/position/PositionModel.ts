@@ -1,4 +1,4 @@
-export default interface Position {
+export default interface PositionModel {
     _id?: string;
     en: PositionLevel;
     kh: PositionLevel;

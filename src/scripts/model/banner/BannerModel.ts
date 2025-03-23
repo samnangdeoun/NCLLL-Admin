@@ -1,4 +1,4 @@
-export default interface Banner {
+export default interface BannerModel {
     _id?: string;
     title: string;
     imageUrl: string;

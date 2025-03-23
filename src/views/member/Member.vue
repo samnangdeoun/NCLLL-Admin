@@ -23,15 +23,15 @@
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="(member, index) in memberList" :key="index">
+                    <TableRow v-for="(MemberModel, index) in memberList" :key="index">
                         <TableCell class="font-medium">
                             {{ index + 1 }}
                         </TableCell>
-                        <TableCell>{{ member.en.name }}</TableCell>
-                        <TableCell>{{ member.kh.name }}</TableCell>
-                        <TableCell>{{ member.position.en.title }} {{ member.position.kh.title }}</TableCell>
+                        <TableCell>{{ MemberModel.en.name }}</TableCell>
+                        <TableCell>{{ MemberModel.kh.name }}</TableCell>
+                        <TableCell>{{ MemberModel.position.en.title }} {{ MemberModel.position.kh.title }}</TableCell>
                         <TableCell class="text-right">
-                            <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(member)">
+                            <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(MemberModel)">
                                 {{ $t('update') }}
                             </button>
                         </TableCell>
@@ -60,7 +60,7 @@ import {
     TableRow,
 } from '../../components/ui/table'
 
-import type Member from '../../scripts/model/member/MemberModel.ts'
+import type MemberModel from '../../scripts/model/member/MemberModel.ts'
 import { retriveMemberHandler } from '../../scripts/handler/member/MemberHandler.ts'
 
 import type { Emitter } from 'mitt';
@@ -77,9 +77,9 @@ const MemberForm = defineAsyncComponent({
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 
 // Define Varible
-const memberList = ref<Member[]>([] as Member[])
+const memberList = ref<MemberModel[]>([] as MemberModel[])
 const showMemberForm = ref<boolean>(false)
-const selectedMember = ref<Member>({} as Member)
+const selectedMember = ref<MemberModel>({} as MemberModel)
 
 
 // Define Function
@@ -102,17 +102,17 @@ const onLoadMember = async () => {
 
 
 const onCreateMember = () => {
-    selectedMember.value = {} as Member
+    selectedMember.value = {} as MemberModel
     showMemberForm.value = true
 }
 
-const onUpdateMember = (member: Member) => {
-    selectedMember.value = member as Member
+const onUpdateMember = (MemberModel: MemberModel) => {
+    selectedMember.value = MemberModel as MemberModel
     showMemberForm.value = true
 }
 
-const handleUpdateForm = (member: any) => {
-    console.log(member, ' handleUpdateForm');
+const handleUpdateForm = (MemberModel: any) => {
+    console.log(MemberModel, ' handleUpdateForm');
 }
 
 onMounted(async () => {

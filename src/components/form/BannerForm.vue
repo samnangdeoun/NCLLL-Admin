@@ -15,15 +15,15 @@
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('title') }}</Label>
-                <Input id="name" v-model="banner.title" class="col-span-3"  />
+                <Textarea rows="9" v-model="banner.title" class="col-span-3"  />
               </div>
             </div>
 
             <div>
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('preview') }}</Label>
-                <div class="h-[8.8rem] w-full border rounded-md">
-                  <img v-if="banner.image" :src="banner.imageUrl" alt="banner Logo"
+                <div class="h-[8.2rem] w-full border rounded-md">
+                  <img v-if="banner.imageUrl" :src="banner.imageUrl" alt="banner Logo"
                     class="w-full h-full  object-cover bg-cover rounded-md">
                 </div>
               </div>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, Text, watch } from 'vue'
 import {
   Dialog,
   DialogContent,
@@ -58,11 +58,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Label } from '@/components/ui/label'
+} from '.././ui/dialog'
+import { Button } from '.././ui/button'
+import { Input } from '.././ui/input'
+import { Textarea } from '.././ui/textarea'
+import { Label } from '.././ui/label'
 
 const props = defineProps({
   banner: {
@@ -89,7 +89,7 @@ const handleFileInput = (event) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    banner.value.image = reader.result
+    banner.value.imageUrl = reader.result
   }
   reader.readAsDataURL(file)
 }
@@ -110,7 +110,8 @@ const onHandleSummitForm = () => {
 watch(props, () => {
   banner.value = props.banner
   showForm.value = props.showForm
-  if (banner.value && banner.value.id == "") {
+  console.log(banner.value, ' banner')
+  if (banner.value && banner.value._id && banner.value._id !== "") {
     status.value = "New"
   } else {
     status.value = "Update"
