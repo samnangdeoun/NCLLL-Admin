@@ -34,6 +34,12 @@ const routes = [
         meta: { title: "Overview", auth: true },
       },
       {
+        path: "/tag",
+        name: "Tag",
+        component: () => import("../views/tag/Tag.vue"),
+        meta: { title: "Tag", auth: true },
+      },
+      {
         path: "/news",
         name: "News",
         component: () => import("../views/news/News.vue"),
