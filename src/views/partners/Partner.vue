@@ -23,10 +23,10 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast';
-import Partner from '../../scripts/model/partner/Partner.ts';
+import Partner from '../../scripts/model/partner/PartnerModel.ts';
 import partnerInfo from '../../fake-information/partners.json';
 
-const PartnerForm = defineAsyncComponent(() => import('../../components/form/Partner.vue'));
+const PartnerForm = defineAsyncComponent(() => import('../../components/form/PartnerForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
 const PartnerCard = defineAsyncComponent(() => import('../../components/partner/PartnerCard.vue'));
 

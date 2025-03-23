@@ -1,4 +1,4 @@
-export default interface Sponsor {
+export default interface SponsorModel {
     _id?: string;
     en: SponsorInfo;
     kh: SponsorInfo;

@@ -40,6 +40,18 @@ const routes = [
         meta: { title: "News", auth: true },
       },
       {
+        path: "/member",
+        name: "Member",
+        component: () => import("../views/member/Member.vue"),
+        meta: { title: "Member", auth: true },
+      },
+      {
+        path: "/banner",
+        name: "Banner",
+        component: () => import("../views/banner/Banner.vue"),
+        meta: { title: "Banner", auth: true },
+      },
+      {
         path: "/contact",	
         name: "Contact",
         component: () => import("../views/contact/Contact.vue"),

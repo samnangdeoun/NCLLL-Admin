@@ -7,5 +7,5 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 
-const PartnerForm = defineAsyncComponent(() => import('../../components/form/Partner.vue'))
+const PartnerForm = defineAsyncComponent(() => import('../../components/form/PartnerForm.vue'))
 </script>

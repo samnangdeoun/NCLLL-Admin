@@ -1,4 +1,4 @@
-export default class Partner {
+export default class PartnerModel {
   _id?: string;
   name: string;
   name_kh: string;

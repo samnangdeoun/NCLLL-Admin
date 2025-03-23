@@ -36,6 +36,12 @@ export const APP_MENU = {
         description: "",
       },
       {
+        title: "member",
+        path: "member",
+        icon: "",
+        description: "",
+      },
+      {
         title: "contact",
         path: "contact",
         icon: "",
