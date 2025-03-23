@@ -138,7 +138,7 @@
 
 <script setup lang="ts">
 import { ref, watch, defineAsyncComponent, onMounted, inject } from 'vue'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs/index.ts'
 import {
   Dialog,
   DialogContent,
@@ -147,16 +147,16 @@ import {
   DialogHeader,
   DialogTitle,
   // DialogTrigger,
-} from '../../components/ui/dialog'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { Label } from '../ui/label'
+} from '../ui/dialog/index.ts'
+import { Button } from '../ui/button/index.ts'
+import { Input } from '../ui/input/index.ts'
+import { Label } from '../ui/label/index.ts'
 
 import { validationRules } from '../../utils/validationRule.ts'
 import type { Emitter } from 'mitt';
-import type Position from '../../scripts/model/position/Position.ts'
-import { retrivePositionHandler } from '../../scripts/handler/position/Position.ts'
-import { createMember } from '../../scripts/model/member/Member.ts'
+import type Position from '../../scripts/model/position/PositionModel.ts'
+import { retrivePositionHandler } from '../../scripts/handler/position/PositionHandler.ts'
+import { createMember } from '../../scripts/model/member/MemberModel.ts'
 
 // Components
 const Experience = defineAsyncComponent(() => import('./member/Experience.vue'))

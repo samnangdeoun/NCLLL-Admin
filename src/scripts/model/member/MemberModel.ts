@@ -1,4 +1,4 @@
-import type Position from '../position/Position.ts';
+import type Position from '../position/PositionModel.ts';
 
 export const createMember = (data: Partial<Member> = {}): Member => ({
     en: {

@@ -1,5 +1,5 @@
 import sponsorAPI from "../../../apis/sponsorUrl.ts";
-import type Sponsor from "../../model/sponsor/Sponsor.ts";
+import type Sponsor from "../../model/sponsor/SponsorModel.ts";
 import type ApiResponse from "../../mapping/BaseResponse.ts";
 import { getCookie } from "../../cookie/cookie.ts";
 

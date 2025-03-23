@@ -23,7 +23,7 @@ import {
     SelectValue
 } from '../ui/select'
 import { ref, watch } from 'vue'
-import type Position from '../../scripts/model/position/Position.ts'
+import type Position from '../../scripts/model/position/PositionModel.ts'
 
 // Define Props
 const props = defineProps({

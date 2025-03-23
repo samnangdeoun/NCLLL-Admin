@@ -1,11 +1,11 @@
-import memberAPI from "../../../apis/memberUrl.ts";
-import type Member from "../../model/member/Member.ts";
+import positionAPI from "../../../apis/positionUrl.ts";
+import type Position from "../../model/position/PositionModel.ts";
 import type ApiResponse from "../../mapping/BaseResponse.ts";
 import { getCookie } from "../../cookie/cookie.ts";
 
-export const createMemberHandler = async (params: Member) => {
+export const createPositionHandler = async (params: Position) => {
     try {
-        const response = await fetch(memberAPI.memberAPI().create_member, {
+        const response = await fetch(positionAPI.positionAPI().create_position, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,9 +29,9 @@ export const createMemberHandler = async (params: Member) => {
     }
 };
 
-export const retriveMemberHandler = async () => {
+export const retrivePositionHandler = async () => {
     try {
-        const response = await fetch(memberAPI.memberAPI().retrive_member, {
+        const response = await fetch(positionAPI.positionAPI().retrive_position, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

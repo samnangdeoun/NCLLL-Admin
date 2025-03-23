@@ -60,14 +60,14 @@ import {
     TableRow,
 } from '../../components/ui/table'
 
-import type Member from '../../scripts/model/member/Member.ts'
-import { retriveMemberHandler } from '../../scripts/handler/member/Member.ts'
+import type Member from '../../scripts/model/member/MemberModel.ts'
+import { retriveMemberHandler } from '../../scripts/handler/member/MemberHandler.ts'
 
 import type { Emitter } from 'mitt';
 
 // Define Component
 const MemberForm = defineAsyncComponent({
-    loader: () => import('../../components/form/Member.vue'),
+    loader: () => import('../../components/form/MemberForm.vue'),
     loadingComponent: { template: '<div>Loading...</div>' },
     delay: 300,
     timeout: 3000

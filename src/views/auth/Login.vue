@@ -36,8 +36,8 @@
 <script setup lang="ts">
 // import Swal from 'sweetalert2'
 import { Icon } from "@iconify/vue";
-import type LoginModel from "../../scripts/model/auth/Auth.ts";
-import { userLoginHandler } from "../../scripts/handler/auth/Auth.ts";
+import type LoginModel from "../../scripts/model/auth/AuthModel.ts";
+import { userLoginHandler } from "../../scripts/handler/auth/AuthHandler.ts";
 import { useI18n } from "vue-i18n";
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";

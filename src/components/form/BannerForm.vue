@@ -3,9 +3,9 @@
     <Dialog v-model:open="showForm">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
-          <DialogTitle>{{ $t('partner') }}</DialogTitle>
+          <DialogTitle>{{ $t('banner') }}</DialogTitle>
           <DialogDescription>
-            {{ $t('partner_form_desc') }}
+            {{ $t('banner_form_desc') }}
           </DialogDescription>
         </DialogHeader>
 
@@ -14,14 +14,8 @@
             <div>
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
-                <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
-                <Input id="name" v-model="partner.name" class="col-span-3" placeholder="Partner Name" />
-              </div>
-              <!-- Description Field -->
-              <div class="flex flex-col items-start justify-center">
-                <Label for="description" class="text-left mb-1">{{ $t('description') }}</Label>
-                <Textarea id="description" rows="6" v-model="partner.description" class="col-span-3"
-                  placeholder="Enter description" />
+                <Label for="name" class="text-left mb-1">{{ $t('title') }}</Label>
+                <Input id="name" v-model="banner.title" class="col-span-3"  />
               </div>
             </div>
 
@@ -29,7 +23,7 @@
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('preview') }}</Label>
                 <div class="h-[8.8rem] w-full border rounded-md">
-                  <img v-if="partner.image" :src="partner.image" alt="Partner Logo"
+                  <img v-if="banner.image" :src="banner.imageUrl" alt="banner Logo"
                     class="w-full h-full  object-cover bg-cover rounded-md">
                 </div>
               </div>
@@ -68,10 +62,10 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 
 const props = defineProps({
-  partner: {
+  banner: {
     type: Object,
     required: true,
   },
@@ -83,7 +77,7 @@ const props = defineProps({
 
 console.log(props)
 
-const partner = ref(props.partner)
+const banner = ref(props.banner)
 const showForm = ref(props.showForm)
 const status = ref("New")
 
@@ -95,7 +89,7 @@ const handleFileInput = (event) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    partner.value.image = reader.result
+    banner.value.image = reader.result
   }
   reader.readAsDataURL(file)
 }
@@ -103,7 +97,7 @@ const handleFileInput = (event) => {
 const onHandleSummitForm = () => {
   try {
     emit('updateForm', {
-      ...partner.value,
+      ...banner.value,
       status: status.value
     })
     emit('closeForm')
@@ -114,9 +108,9 @@ const onHandleSummitForm = () => {
 
 // Define Watch
 watch(props, () => {
-  partner.value = props.partner
+  banner.value = props.banner
   showForm.value = props.showForm
-  if (partner.value && partner.value.id == "") {
+  if (banner.value && banner.value.id == "") {
     status.value = "New"
   } else {
     status.value = "Update"

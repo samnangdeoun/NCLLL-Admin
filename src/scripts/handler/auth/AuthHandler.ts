@@ -1,6 +1,6 @@
 import authAPI from "../../../apis/authUrl.ts";
 import { setCookie } from '../../cookie/cookie.ts';
-import type LoginModel from "../../model/auth/Auth.ts";
+import type LoginModel from "../../model/auth/AuthModel.ts";
 import type ApiResponse from "../../mapping/BaseResponse.ts";
 import type LoginResponse from "../../mapping/Auth.ts";
 
