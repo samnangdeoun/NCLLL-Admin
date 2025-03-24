@@ -52,6 +52,12 @@ const routes = [
         meta: { title: "Member", auth: true },
       },
       {
+        path: "/ministry",
+        name: "Ministry",
+        component: () => import("../views/ministry/Ministry.vue"),
+        meta: { title: "Ministry", auth: true },
+      },
+      {
         path: "/sponsor",
         name: "Sponsor",
         component: () => import("../views/sponsor/Sponsor.vue"),

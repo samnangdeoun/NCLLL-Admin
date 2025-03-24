@@ -1,25 +1,43 @@
 <template>
   <div>
     <Dialog v-model:open="showForm">
-      <DialogContent class="sm:max-w-[625px] bg-white ">
+      <DialogContent class="sm:max-w-[600px] bg-white ">
         <DialogHeader>
-          <DialogTitle>{{ $t('tag') }}</DialogTitle>
+          <DialogTitle>{{ $t('ministry') }}</DialogTitle>
           <DialogDescription>
-            {{ $t('tag_form_desc') }}
+            {{ $t('ministry_form_desc') }}
           </DialogDescription>
         </DialogHeader>
 
         <form @submit.prevent="onHandleSummitForm" class="space-y-4">
           <div class="grid grid-cols-2 gap-2 py-4">
+            <div>
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
-                <Input v-model="tag.en.name" class="col-span-3" />
+                <Textarea rows="2" v-model="ministry.en.name" class="col-span-3" />
               </div>
 
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name_kh') }}</Label>
-                <Input v-model="tag.kh.name" class="col-span-3" />
+                <Textarea rows="2" v-model="ministry.kh.name" class="col-span-3" />
               </div>
+            </div>
+
+            <div class="">
+              <!-- Preview -->
+              <div class="flex flex-col items-start justify-center mb-3 col-span-2">
+                <Label class="text-left mb-1">{{ $t('preview') }}</Label>
+                <div class="h-[6.5rem] w-full border rounded-md">
+                  <img v-if="previewImage" :src="previewImage" alt="Partner Logo"
+                    class="w-full h-full  object-cover bg-cover rounded-md">
+                </div>
+              </div>
+              <!-- Upload Image -->
+              <div class="flex justify-center items-end mb-3 col-span-1">
+                <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
+                  accept="image/jpeg,image/png,image/gif" />
+              </div>
+            </div>
           </div>
 
           <DialogFooter>
@@ -46,16 +64,17 @@ import {
 } from '../ui/dialog/index.ts'
 import { Button } from '../ui/button/index.ts'
 import { Input } from '../ui/input/index.ts'
+import { Textarea } from '../ui/textarea/index.ts'
 import { Label } from '../ui/label/index.ts'
 import { useToast } from '../ui/toast/use-toast.ts'
 import { useI18n } from 'vue-i18n'
-import type TagModel from '../../scripts/model/tag/TagModel.ts'
-import { createTag } from '../../scripts/model/tag/TagModel.ts'
-import { createTagHandler, updateTagHandler } from '../../scripts/handler/tag/TagHandler.ts'
+import type MinistryModel from '../../scripts/model/ministry/MinistryModel.ts'
+import { createMinistry } from '../../scripts/model/ministry/MinistryModel.ts'
+import { createMinistryHandler, updateMinistryHandler } from '../../scripts/handler/ministry/MinistryHandler.ts'
 import type { Emitter } from 'mitt';
 
 const props = defineProps({
-  tag: {
+  ministry: {
     type: Object,
     required: true,
   },
@@ -70,8 +89,10 @@ const { t } = useI18n()
 const { toast } = useToast()
 
 // Define Variable
-const tag = ref(props.tag)
-const showForm = ref(props.showForm)
+
+const ministry = ref<MinistryModel>(props.ministry as MinistryModel)
+const showForm = ref<boolean>(props.showForm)
+const previewImage = ref<string>('')
 const status = ref("New")
 
 // Define props and emits
@@ -83,10 +104,24 @@ const onHandleSummitForm = async () => {
   else onHandleUpdateTag()
 }
 
+const handleFileInput = (event: { target: { files: any[]; }; }) => {
+  const file = event.target.files[0]
+  const reader = new FileReader()
+  reader.onload = () => {
+    // member.value.image = reader.result
+    const result = reader.result as string
+    if (result) {
+      previewImage.value = result
+      ministry.value.imageUrl = "https://picsum.photos/512/513"
+    }
+  }
+  reader.readAsDataURL(file)
+}
+
 const onHandleUpdateTag = async () => {
   try {
     emitter?.emit("stateLoading", true);
-    const { message, data, statusCode } = await updateTagHandler(tag.value as TagModel);
+    const { message, data, statusCode } = await updateMinistryHandler(ministry.value as MinistryModel);
     console.log(message, data, statusCode);
     if (statusCode == 200 && data) {
       emit('updateForm', {
@@ -112,7 +147,7 @@ const onHandleUpdateTag = async () => {
 const onHandleCreateTag = async () => {
   try {
     emitter?.emit("stateLoading", true);
-    const { message, data, statusCode } = await createTagHandler(tag.value as TagModel);
+    const { message, data, statusCode } = await createMinistryHandler(ministry.value as MinistryModel);
     console.log(message, data, statusCode);
     if (statusCode == 200 && data) {
       emit('updateForm', {
@@ -137,13 +172,13 @@ const onHandleCreateTag = async () => {
 
 // Define Watch
 watch(
-  () => [props.tag, props.showForm],
+  () => [props.ministry, props.showForm],
   () => {
-    if (props.tag && props.tag._id && props.tag._id) {
-      tag.value = createTag(props.tag);
+    if (props.ministry && props.ministry._id && props.ministry._id) {
+      ministry.value = createMinistry(props.ministry);
       status.value = "Update";
     } else {
-      tag.value = createTag();
+      ministry.value = createMinistry();
       status.value = "New";
     }
     showForm.value = props.showForm
