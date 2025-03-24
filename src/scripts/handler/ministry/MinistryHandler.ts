@@ -1,11 +1,11 @@
-import tagAPI from "../../../apis/tagUrl.ts";
-import type TagModel from "../../model/tag/TagModel.ts";
+import ministryAPI from "../../../apis/ministryUrl.ts";
+import type MinistryModel from "../../model/ministry/MinistryModel.ts";
 import type ApiResponse from "../../mapping/BaseResponse.ts";
 import { getCookie } from "../../cookie/cookie.ts";
 
-export const createTagHandler = async (params: TagModel) => {
+export const createMinistryHandler = async (params: MinistryModel) => {
     try {
-        const response = await fetch(tagAPI.tagAPI().create_tag, {
+        const response = await fetch(ministryAPI.ministryAPI().create_ministry, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,10 +29,10 @@ export const createTagHandler = async (params: TagModel) => {
     }
 };
 
-export const updateTagHandler = async (params: TagModel) => {
+export const updateMinistryHandler = async (params: MinistryModel) => {
     try {
         console.log(params, ' params');
-        const response = await fetch(tagAPI.tagAPI().update_tag, {
+        const response = await fetch(ministryAPI.ministryAPI().update_ministry, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -56,9 +56,9 @@ export const updateTagHandler = async (params: TagModel) => {
     }
 };
 
-export const removeTagHandler = async (tag: TagModel) => {
+export const removeMinistryHandler = async (ministry: MinistryModel) => {
     try {
-        const response = await fetch(tagAPI.tagAPI(tag._id).delete_tag, {
+        const response = await fetch(ministryAPI.ministryAPI(ministry._id).delete_ministry, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -81,9 +81,9 @@ export const removeTagHandler = async (tag: TagModel) => {
     }
 };
 
-export const retriveTagHandler = async () => {
+export const retriveMinistryHandler = async () => {
     try {
-        const response = await fetch(tagAPI.tagAPI().retrive_tag, {
+        const response = await fetch(ministryAPI.ministryAPI().retrive_ministry, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
