@@ -54,4 +54,9 @@ export default {
     experience_desc: 'Experience Description',
     new: "New",
     select_position: "Select Position",
+    level: "Level",
+    select_level: "Select Level",
+    title_kh: "Title KH",
+    remove: "Remove",
+    position_form_desc: "Position form Description",
 };

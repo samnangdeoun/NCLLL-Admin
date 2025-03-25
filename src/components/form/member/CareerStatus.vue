@@ -66,12 +66,11 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     // DialogTrigger,
@@ -79,7 +78,6 @@ import {
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -88,14 +86,13 @@ import {
 import { Textarea } from '../../ui/textarea'
 import { ref, watch } from 'vue'
 import { Button } from '../../ui/button'
-import { Input } from '../../ui/input'
 import { Icon } from '@iconify/vue'
 import { useToast } from '../../ui/toast/use-toast'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();
 const { toast } = useToast();
-const emit = defineEmits(['updateForm', 'closeForm'])
+const emit = defineEmits(['updateForm', 'closeForm', 'careerChange'])
 // Define Props
 const props = defineProps({
     careerStatusList: {
@@ -110,7 +107,7 @@ const props = defineProps({
     }
 })
 
-const careerList = ref([]);
+const careerList = ref<any>([]);
 const career = ref({ title: '', description: '' })
 const cereerForm = ref(false);
 
@@ -134,7 +131,7 @@ const onHandleSummitForm = () => {
     }
 }
 
-const removeItem = (index) => {
+const removeItem = (index: number) => {
     careerList.value.splice(index, 1);
 }
 

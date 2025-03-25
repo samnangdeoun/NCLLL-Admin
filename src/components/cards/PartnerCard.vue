@@ -20,7 +20,7 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 // import 
 import { Icon } from '@iconify/vue'
 import { defineEmits } from 'vue'

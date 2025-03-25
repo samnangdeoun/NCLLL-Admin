@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('sponsor') }}</DialogTitle>
@@ -91,20 +91,20 @@ const { toast } = useToast()
 
 // Define Variable
 const previewImageEN = ref(props.sponsor?.en?.imageUrl)
-const previewImageKH = ref(props.sponsor?.kh?.imageUrl)
-const sponsor = ref(props.sponsor)
-const showForm = ref(props.showForm)
-const status = ref("New")
+// const previewImageKH = ref(props.sponsor?.kh?.imageUrl)
+const sponsor = ref<SponsorModel>(JSON.parse(JSON.stringify(props.sponsor)) as SponsorModel) 
+const showForm = ref<boolean>(props.showForm)
+const status = ref<string>("New")
 
 // Define props and emits
-const emit = defineEmits(['updateForm', "closeForm"])
+const emit = defineEmits(['update:open','updateForm', "closeForm"])
 
 // Define methods
 const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    sponsor.value.en.imageUrl = reader.result
+    sponsor.value.en.imageUrl = reader.result as string
   }
   reader.readAsDataURL(file)
 }
@@ -173,7 +173,7 @@ watch(
   () => [props.sponsor, props.showForm],
   () => {
     if (props.sponsor && props.sponsor._id && props.sponsor._id) {
-      sponsor.value = createSponsor(props.sponsor);
+      sponsor.value = createSponsor(JSON.parse(JSON.stringify(props.sponsor)) as SponsorModel ); // Deep copy
       status.value = "Update";
     } else {
       sponsor.value = createSponsor();

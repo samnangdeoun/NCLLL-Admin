@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('tag') }}</DialogTitle>
@@ -70,12 +70,12 @@ const { t } = useI18n()
 const { toast } = useToast()
 
 // Define Variable
-const tag = ref(props.tag)
-const showForm = ref(props.showForm)
-const status = ref("New")
+const tag = ref<TagModel>(JSON.parse(JSON.stringify(props.tag)) as TagModel) 
+const showForm = ref<boolean>(props.showForm)
+const status = ref<string>("New")
 
 // Define props and emits
-const emit = defineEmits(['updateForm', "closeForm"])
+const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 // Define methods
 const onHandleSummitForm = async () => {
@@ -140,7 +140,7 @@ watch(
   () => [props.tag, props.showForm],
   () => {
     if (props.tag && props.tag._id && props.tag._id) {
-      tag.value = createTag(props.tag);
+      tag.value = createTag(JSON.parse(JSON.stringify(props.tag))) as TagModel; 
       status.value = "Update";
     } else {
       tag.value = createTag();

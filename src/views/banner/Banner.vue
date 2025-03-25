@@ -15,7 +15,7 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <BannerForm :showForm="showBannerForm" @closeForm="showBannerForm = false" :banner="selectedBanner"
+        <BannerForm v-model:open="showBannerForm" :showForm="showBannerForm" @closeForm="showBannerForm = false" :banner="selectedBanner"
             @updateForm="handleUpdateForm" />
     </div>
 </template>

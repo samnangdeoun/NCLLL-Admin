@@ -10,7 +10,7 @@
             </Button>
         </PopoverTrigger>
         <PopoverContent class="w-auto p-0 bg-white">
-            <Calendar v-model="localValue"  initial-focus />
+            <Calendar v-model="localValue" initial-focus />
         </PopoverContent>
     </Popover>
 </template>
@@ -30,10 +30,9 @@ import {
 
 const df = new DateFormatter('en-US', { dateStyle: 'long' })
 
-const props = defineProps<{ modelValue: Date | null | undefined, initDate: Date | null }>()
+const props = defineProps<{ modelValue: Date | string, initDate: Date | string }>()
 const emit = defineEmits(['update:modelValue', 'onDateChange'])
 
-// Computed property to format the date for display
 const formattedDate = computed(() => {
     if (!props.modelValue) return ""
     const date = props.modelValue instanceof Date
@@ -42,7 +41,6 @@ const formattedDate = computed(() => {
     return date ? df.format(new Date(date.year, date.month - 1, date.day)) : ""
 })
 
-// Computed property for Calendar component binding
 const localValue = computed<DateValue | undefined>({
     get: () => {
         if (!props.modelValue) return undefined
@@ -65,3 +63,4 @@ const localValue = computed<DateValue | undefined>({
     }
 })
 </script>
+

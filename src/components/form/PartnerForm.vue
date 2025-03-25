@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('partner') }}</DialogTitle>
@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue'
 import {
   Dialog,
@@ -63,12 +63,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '.././ui/dialog'
 import { Button } from '.././ui/button'
 import { Input } from '.././ui/input'
 import { Label } from '.././ui/label'
 import { Textarea } from '.././ui/textarea'
+
+import type PartnerModel from '../../scripts/model/partner/PartnerModel.ts'
+import { createPartner } from '../../scripts/model/partner/PartnerModel.ts'
 
 const props = defineProps({
   partner: {
@@ -83,15 +85,15 @@ const props = defineProps({
 
 console.log(props)
 
-const partner = ref(props.partner)
-const showForm = ref(props.showForm)
-const status = ref("New")
+const partner = ref(JSON.parse(JSON.stringify(props.partner)))
+const showForm = ref<boolean>(props.showForm)
+const status = ref<string>("New")
 
 // Define props and emits
-const emit = defineEmits(['updateForm'])
+const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 // Define methods
-const handleFileInput = (event) => {
+const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
@@ -113,13 +115,17 @@ const onHandleSummitForm = () => {
 }
 
 // Define Watch
-watch(props, () => {
-  partner.value = props.partner
-  showForm.value = props.showForm
-  if (partner.value && partner.value.id == "") {
-    status.value = "New"
-  } else {
-    status.value = "Update"
-  }
-})
+watch(
+  () => [props.partner, props.showForm],
+  () => {
+    console.log(props.partner, ' watch')
+    if (props.partner && props.partner._id && props.partner._id) {
+      partner.value = createPartner(JSON.parse(JSON.stringify(props.partner)) as PartnerModel); 
+      status.value = "Update";
+    } else {
+      partner.value = createPartner();
+      status.value = "New";
+    }
+    showForm.value = props.showForm
+  }, { immediate: true, },)
 </script>

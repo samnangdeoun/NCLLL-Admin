@@ -1,5 +1,3 @@
-import type Position from '../position/PositionModel.ts';
-
 export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     en: {
         imageUrl: data.en?.imageUrl || '',

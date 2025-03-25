@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('banner') }}</DialogTitle>
@@ -15,7 +15,7 @@
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('title') }}</Label>
-                <Textarea rows="9" v-model="banner.title" class="col-span-3"  />
+                <Textarea rows="9" v-model="banner.title" class="col-span-3" />
               </div>
             </div>
 
@@ -86,20 +86,20 @@ const { t } = useI18n()
 const { toast } = useToast()
 
 // Define Variable
-const previewImage = ref(props.banner.imageUrl)
-const banner = ref(props.banner)
-const showForm = ref(props.showForm)
-const status = ref("New")
+const previewImage = ref<string>(props.banner.imageUrl)
+const banner = ref<BannerModel>(JSON.parse(JSON.stringify(props.banner)) as BannerModel)
+const showForm = ref<boolean>(props.showForm)
+const status = ref<string>("New")
 
 // Define props and emits
-const emit = defineEmits(['updateForm', "closeForm"])
+const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 // Define methods
 const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    banner.value.imageUrl = reader.result
+    banner.value.imageUrl = reader.result as string
   }
   reader.readAsDataURL(file)
 }
@@ -167,7 +167,7 @@ watch(
   () => [props.banner, props.showForm],
   () => {
     if (props.banner && props.banner._id && props.banner._id) {
-      banner.value = createBanner(props.banner);
+      banner.value = createBanner(JSON.parse(JSON.stringify(props.banner)) as BannerModel)
       status.value = "Update";
     } else {
       banner.value = createBanner();

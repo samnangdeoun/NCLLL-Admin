@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[625px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('position') }}</DialogTitle>
@@ -102,12 +102,12 @@ const { toast } = useToast()
 const router = useRouter()
 
 // Define Variable
-const position = ref(props.position)
-const showForm = ref(props.showForm)
-const status = ref("New")
+const position = ref<PositionModel>(JSON.parse(JSON.stringify(props.position))); // Deep copy
+const showForm = ref<boolean>(props.showForm);
+const status = ref<string>("New");
 
 // Define props and emits
-const emit = defineEmits(['updateForm', "closeForm"])
+const emit = defineEmits(['update:open','updateForm', "closeForm"])
 
 // Define methods
 
@@ -183,12 +183,12 @@ watch(
   () => [props.position, props.showForm],
   () => {
     if (props.position && props.position._id && props.position._id) {
-      position.value = createPosition(props.position);
+      position.value = createPosition(JSON.parse(JSON.stringify(props.position)) as PositionModel); // Deep copy
       status.value = "Update";
     } else {
       position.value = createPosition();
       status.value = "New";
     }
     showForm.value = props.showForm
-  }, { immediate: true, })
+  }, { immediate: true, },)
 </script>

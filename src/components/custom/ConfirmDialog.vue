@@ -1,24 +1,16 @@
 
 <template>
-  <Dialog
-    :open="isOpen"
-    @update:open="emit('update:open', $event)"
-  >
-    <DialogContent class="sm:max-w-[725px] bg-white p-5 shadow rounded-sm">
+  <Dialog :open="isOpen" @update:open="emit('update:open', $event)">
+    <DialogContent class="sm:max-w-[525px] min-h-[200px] bg-white p-5 shadow rounded-sm">
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
-        <DialogDescription>{{ description }}</DialogDescription>
+        <DialogDescription class="min-h-[100px] flex justify-center items-center text-wrap">{{ description }}</DialogDescription>
       </DialogHeader>
       <DialogFooter>
-        <Button
-          variant="outline"
-          @click="handleCancel"
-        >
+        <Button variant="outline" @click="handleCancel">
           {{ cancelText }}
         </Button>
-        <Button
-          @click="handleConfirm"
-        >
+        <Button @click="handleConfirm">
           {{ confirmText }}
         </Button>
       </DialogFooter>

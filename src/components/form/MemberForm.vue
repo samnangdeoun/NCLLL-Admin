@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[1024px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('member') }}</DialogTitle>
@@ -39,13 +39,14 @@
                       <!-- Nationality Field -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('nationality_kh') }}</Label>
-                        <Input v-model="member.kh.nationality" :rules="[validationRules.required]" required class="col-span-3 " />
+                        <Input v-model="member.kh.nationality" :rules="[validationRules.required]" required
+                          class="col-span-3 " />
                       </div>
                       <!-- Date of Birth -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker v-model="member.kh.birthDate" :initDate="member.kh.birthDate" @onDateChange="handleDateChange"
-                          class="col-span-3 w-full" />
+                        <DatePicker :initDate="member_birthDate"
+                          @onDateChange="handleDateChange" class="col-span-3 w-full" />
                       </div>
                     </div>
                   </div>
@@ -79,7 +80,7 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" :initPosition="member.position"
+                      <PositionSelection :positionList="positionList" :initPosition="member_id"
                         @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
@@ -139,13 +140,14 @@
                       <!-- Nationality Field -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('nationality') }}</Label>
-                        <Input v-model="member.en.nationality" :rules="[validationRules.required]" required class="col-span-3 " />
+                        <Input v-model="member.en.nationality" :rules="[validationRules.required]" required
+                          class="col-span-3 " />
                       </div>
                       <!-- Date of Birth -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker v-model="member.en.birthDate" :initDate="member.en.birthDate" required @onDateChange="handleDateChange"
-                          class="col-span-3 w-full" />
+                        <DatePicker  :initDate="member_birthDate" required
+                          @onDateChange="handleDateChange" class="col-span-3 w-full" />
                       </div>
                     </div>
                   </div>
@@ -169,7 +171,7 @@
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('country') }}</Label>
-                      <Input  v-model="member.en.placeOfBirth.country" class="col-span-3" />
+                      <Input v-model="member.en.placeOfBirth.country" class="col-span-3" />
                     </div>
                   </div>
                 </div>
@@ -179,7 +181,8 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" :initPosition="member.position === '' ? undefined : member.position"
+                      <PositionSelection :positionList="positionList"
+                        :initPosition="member.position === '' ? undefined : member.position"
                         @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
@@ -194,8 +197,8 @@
                     </div>
                     <!-- Upload Image -->
                     <div class="flex justify-center items-end mb-3 col-span-1">
-                      <Input type="file" required @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
-                        accept="image/jpeg,image/png,image/gif" />
+                      <Input type="file" required @onChange="handleFileInput" @input="handleFileInput"
+                        class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
                     </div>
                   </div>
 
@@ -231,7 +234,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineAsyncComponent, onMounted, inject } from 'vue'
+import { ref, watch, defineAsyncComponent, onMounted, inject, computed } from 'vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs/index.ts'
 import {
   Dialog,
@@ -256,8 +259,8 @@ import { useI18n } from 'vue-i18n'
 import type MemberModel from '../../scripts/model/member/MemberModel.ts'
 
 // Components
-const Experience = defineAsyncComponent(() => import('./member/Experience.vue'))
-const CareerStatus = defineAsyncComponent(() => import('./member/CareerStatus.vue'))
+const Experience = defineAsyncComponent(() => import('../form/member/Experience.vue'))
+const CareerStatus = defineAsyncComponent(() => import('../form/member/CareerStatus.vue'))
 const DatePicker = defineAsyncComponent(() => import('../custom/DatePicker.vue'))
 const PositionSelection = defineAsyncComponent(() => import('../selection/Position.vue'))
 
@@ -278,13 +281,22 @@ const props = defineProps({
 const { t } = useI18n();
 const previewImage = ref('')
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
-const member = ref(createMember(props.member))
-const showForm = ref(props.showForm)
-const status = ref("New")
+const member = ref(JSON.parse(JSON.stringify(props.member)) as MemberModel)
+const showForm = ref<boolean>(props.showForm)
+const status = ref<string>("New")
 const positionList = ref<Position[]>([] as Position[])
-console.log(member.value, 'member')
 // Define props and emits
-const emit = defineEmits(['updateForm', 'closeForm'])
+const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
+
+
+// Computed Properties
+const member_id = computed(() => {
+  return member.value._id
+})
+
+const member_birthDate = computed(() => {
+  return member.value.en.birthDate
+})
 
 // Define methods
 const handlePositionChange = (position: string) => {
@@ -399,7 +411,7 @@ onMounted(async () => {
 })
 
 watch(
-  () => member.value.en.birthDate, 
+  () => member?.value.en?.birthDate, 
   () => {
     if (member.value.en.birthDate) {
       member.value.kh.birthDate = member.value.en.birthDate
@@ -417,7 +429,7 @@ watch(
       previewImage.value = "";
     } else {
       status.value = "Update";
-      member.value = createMember(props.member);
+      member.value = createMember(JSON.parse(JSON.stringify(props.member)) as MemberModel)
     }
     showForm.value = props.showForm
   }, { immediate: true, deep: true })
