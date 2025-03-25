@@ -45,8 +45,8 @@
                       <!-- Date of Birth -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker :initDate="member_birthDate"
-                          @onDateChange="handleDateChange" class="col-span-3 w-full" />
+                        <DatePicker v-model="member.kh.birthDate" :initDate="member_birthDate" required
+                           class="col-span-3 w-full" />
                       </div>
                     </div>
                   </div>
@@ -80,7 +80,7 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" :initPosition="member_id"
+                      <PositionSelection :positionList="positionList" :initPosition="position_id"
                         @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
@@ -146,8 +146,8 @@
                       <!-- Date of Birth -->
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker  :initDate="member_birthDate" required
-                          @onDateChange="handleDateChange" class="col-span-3 w-full" />
+                        <DatePicker v-model="member.en.birthDate" :initDate="member_birthDate" required
+                          class="col-span-3 w-full" />
                       </div>
                     </div>
                   </div>
@@ -182,7 +182,7 @@
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
                       <PositionSelection :positionList="positionList"
-                        :initPosition="member.position === '' ? undefined : member.position"
+                        :initPosition="position_id"
                         @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
@@ -197,7 +197,7 @@
                     </div>
                     <!-- Upload Image -->
                     <div class="flex justify-center items-end mb-3 col-span-1">
-                      <Input type="file" required @onChange="handleFileInput" @input="handleFileInput"
+                      <Input type="file" @onChange="handleFileInput" @input="handleFileInput"
                         class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
                     </div>
                   </div>
@@ -290,8 +290,8 @@ const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 
 // Computed Properties
-const member_id = computed(() => {
-  return member.value._id
+const position_id = computed(() => {
+  return member.value.position._id || ''
 })
 
 const member_birthDate = computed(() => {
@@ -303,13 +303,6 @@ const handlePositionChange = (position: string) => {
   console.log(position, 'position -> her')
   if (position) {
     member.value.position = position
-  }
-}
-
-const handleDateChange = (value: string) => {
-  if (value) {
-    member.value.en.birthDate = new Date(value)
-    member.value.kh.birthDate = new Date(value)
   }
 }
 
@@ -410,6 +403,7 @@ onMounted(async () => {
   await onLoadPosition()
 })
 
+// Define Watch
 watch(
   () => member?.value.en?.birthDate, 
   () => {
@@ -418,8 +412,24 @@ watch(
     }
   }
 )
+watch(
+  () => member?.value.kh?.birthDate,
+  (newVal) => {
+    if (newVal) {
+      member.value.en.birthDate = newVal
+    }
+  }, { immediate: true, deep: true }
+)
 
-// Define Watch
+watch(
+  () => member?.value.en?.birthDate,
+  (newVal) => {
+    if (newVal) {
+      member.value.kh.birthDate = newVal
+    }
+  }, { immediate: true, deep: true }
+)
+
 watch(
   () => [props.member, props.showForm],
   () => {
@@ -430,6 +440,7 @@ watch(
     } else {
       status.value = "Update";
       member.value = createMember(JSON.parse(JSON.stringify(props.member)) as MemberModel)
+      previewImage.value = member.value.en.imageUrl;
     }
     showForm.value = props.showForm
   }, { immediate: true, deep: true })

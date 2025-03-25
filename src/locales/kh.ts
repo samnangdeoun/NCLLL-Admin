@@ -59,4 +59,6 @@ export default {
     title_kh: "Title KH",
     remove: "Remove",
     position_form_desc: "Position form Description",
+    nationality_kh: "Nationality KH",
+    
 };

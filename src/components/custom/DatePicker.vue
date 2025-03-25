@@ -3,7 +3,7 @@
         <PopoverTrigger as-child>
             <Button variant="outline" :class="cn(
                 'w-full justify-start text-left font-normal',
-                !modelValue && 'text-muted-foreground',
+                !modelValue && 'text-muted-foreground'
             )">
                 <CalendarIcon class="mr-2 h-4 w-4" />
                 {{ formattedDate }}
@@ -21,46 +21,69 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { cn } from '../../lib/utils'
 import { Button } from '../ui/button'
 import { CalendarIcon } from 'lucide-vue-next'
-import { defineProps, defineEmits, computed } from 'vue'
-import {
-    DateFormatter,
-    CalendarDate,
-    type DateValue,
-} from '@internationalized/date'
+import { computed, ref, watch } from 'vue'
+import { DateFormatter, parseDate, CalendarDate } from '@internationalized/date'
 
+// Date Formatter
 const df = new DateFormatter('en-US', { dateStyle: 'long' })
 
-const props = defineProps<{ modelValue: Date | string, initDate: Date | string }>()
-const emit = defineEmits(['update:modelValue', 'onDateChange'])
+interface Props {
+    modelValue?: Date | string | null
+    initDate?: Date | string | null
+}
 
-const formattedDate = computed(() => {
-    if (!props.modelValue) return ""
-    const date = props.modelValue instanceof Date
-        ? new CalendarDate(props.modelValue.getFullYear(), props.modelValue.getMonth() + 1, props.modelValue.getDate())
-        : undefined
-    return date ? df.format(new Date(date.year, date.month - 1, date.day)) : ""
+const props = withDefaults(defineProps<Props>(), {
+    modelValue: null,
+    initDate: null
 })
 
-const localValue = computed<DateValue | undefined>({
-    get: () => {
-        if (!props.modelValue) return undefined
-        if (props.modelValue instanceof Date) {
-            return new CalendarDate(
-                props.modelValue.getFullYear(),
-                props.modelValue.getMonth() + 1,
-                props.modelValue.getDate()
-            )
-        }
-        return undefined
-    },
-    set: (newVal) => {
-        if (newVal) {
-            emit('onDateChange', new Date(newVal.year, newVal.month - 1, newVal.day))
-            emit('update:modelValue', new Date(newVal.year, newVal.month - 1, newVal.day))
-        } else {
-            emit('update:modelValue', null)
-        }
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: Date | null): void
+    (e: 'onDateChange', value: Date | null): void
+}>()
+
+// Convert JavaScript Date or string to CalendarDate
+const parsedModelValue = computed((): CalendarDate | null => {
+    if (!props.modelValue) return null
+
+    const dateToConvert = props.modelValue instanceof Date
+        ? props.modelValue
+        : new Date(props.modelValue)
+
+    return new CalendarDate(
+        dateToConvert.getFullYear(),
+        dateToConvert.getMonth() + 1,
+        dateToConvert.getDate()
+    )
+})
+
+// Format date or return empty string
+const formattedDate = computed((): string => {
+    if (!parsedModelValue.value) return 'Select a date'
+
+    return df.format(new Date(
+        parsedModelValue.value.year,
+        parsedModelValue.value.month - 1,
+        parsedModelValue.value.day
+    ))
+})
+
+// Reactive local value for v-model
+const localValue = ref<CalendarDate | null>(parsedModelValue.value)
+
+// Watch for changes and emit events
+watch(localValue, (newVal) => {
+    if (newVal) {
+        const dateToEmit = new Date(
+            newVal.year,
+            newVal.month - 1,
+            newVal.day
+        )
+        emit('update:modelValue', dateToEmit)
+        emit('onDateChange', dateToEmit)
+    } else {
+        emit('update:modelValue', null)
+        emit('onDateChange', null)
     }
 })
 </script>
-
