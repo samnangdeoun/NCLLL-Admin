@@ -1,5 +1,3 @@
-import type Position from '../position/PositionModel.ts';
-
 export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     en: {
         imageUrl: data.en?.imageUrl || '',
@@ -48,10 +46,12 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
         experience: data.kh?.experience || [],
     },
     position: data.position || '',
-    _id: data._id,
+    id: data._id,
+
 });
 
 export default interface MemberModel {
+    id?: string;
     _id?: string;
     en: PersonalInfo;
     kh: PersonalInfo;

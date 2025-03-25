@@ -15,54 +15,54 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <PartnerForm :showForm="showPartnerForm" @closeForm="showPartnerForm = false" :partner="selectedPartner"
+        <PartnerForm v-model:open="showPartnerForm" :showForm="showPartnerForm" @closeForm="showPartnerForm = false" :partner="selectedPartner"
             @updateForm="handleUpdateForm" />
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast';
-import Partner from '../../scripts/model/partner/PartnerModel.ts';
+import type Partner from '../../scripts/model/partner/PartnerModel.ts';
 import partnerInfo from '../../fake-information/partners.json';
 
-const PartnerForm = defineAsyncComponent(() => import('../../components/form/PartnerForm.vue'));
+const PartnerForm = defineAsyncComponent(() => import('../.././components/form/PartnerForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
-const PartnerCard = defineAsyncComponent(() => import('../../components/partner/PartnerCard.vue'));
+const PartnerCard = defineAsyncComponent(() => import('../../components/cards/PartnerCard.vue'));
 
 const { toast } = useToast();
-const partners = ref(partnerInfo.partners);
-const showConfirmDialog = ref(false);
-const showPartnerForm = ref(false);
-const selectedPartner = ref(null);
+const partners = ref<Partner[]>(partnerInfo.partners as unknown as Partner[]);
+const showConfirmDialog = ref<boolean>(false);
+const showPartnerForm = ref<boolean>(false);
+const selectedPartner = ref<Partner>({} as Partner);
 
-const handleUpdatePartner = (partner) => {
+const handleUpdatePartner = (partner: any) => {
     if (partner?.id) {
-        selectedPartner.value = new Partner(partner);
+        selectedPartner.value = (partner) as Partner;
         showPartnerForm.value = true;
     }
 };
 
 const onCreatePartner = () => {
-    selectedPartner.value = new Partner({});
+    selectedPartner.value = {} as Partner;
     showPartnerForm.value = true;
 };
 
-const handleUpdateForm = (partner) => {
+const handleUpdateForm = (partner: any) => {
     console.log(partner, ' handleUpdateForm');
     if(partner && partner.status == 'New') {
         partners.value.push(partner);
     }else{
         const index = partners.value.findIndex(p => p.id === partner.id);
         if (index !== -1) {
-            partners.value[index] = new Partner(partner);
+            partners.value[index] = (partner) as Partner;
         }
     }
 };
 
-const handleRemovePartner = (partner) => {
+const handleRemovePartner = (partner: any) => {
     if (partner?.id) {
-        selectedPartner.value = new Partner(partner);
+        selectedPartner.value = (partner) as Partner;
         showConfirmDialog.value = true;
     }
 };

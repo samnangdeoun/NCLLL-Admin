@@ -14,7 +14,7 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <SponsorForm :showForm="showSponsorForm" @closeForm="showSponsorForm = false" :sponsor="selectedSponsor"
+        <SponsorForm v-model:open="showSponsorForm" :showForm="showSponsorForm" @closeForm="showSponsorForm = false" :sponsor="selectedSponsor"
             @updateForm="handleUpdateForm" />
     </div>
 </template>

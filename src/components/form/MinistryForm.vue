@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Dialog v-model:open="showForm">
+    <Dialog :open="showForm" @update:open="emit('update:open', $event)">
       <DialogContent class="sm:max-w-[600px] bg-white ">
         <DialogHeader>
           <DialogTitle>{{ $t('ministry') }}</DialogTitle>
@@ -90,13 +90,13 @@ const { toast } = useToast()
 
 // Define Variable
 
-const ministry = ref<MinistryModel>(props.ministry as MinistryModel)
+const ministry = ref<MinistryModel>(JSON.parse(JSON.stringify(props.ministry)) as MinistryModel)
 const showForm = ref<boolean>(props.showForm)
 const previewImage = ref<string>('')
 const status = ref("New")
 
 // Define props and emits
-const emit = defineEmits(['updateForm', "closeForm"])
+const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 // Define methods
 const onHandleSummitForm = async () => {
@@ -175,7 +175,7 @@ watch(
   () => [props.ministry, props.showForm],
   () => {
     if (props.ministry && props.ministry._id && props.ministry._id) {
-      ministry.value = createMinistry(props.ministry);
+      ministry.value = createMinistry(JSON.parse(JSON.stringify(props.ministry)) as MinistryModel);
       status.value = "Update";
     } else {
       ministry.value = createMinistry();

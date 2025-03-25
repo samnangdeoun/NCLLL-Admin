@@ -15,8 +15,8 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <PositionForm :showForm="showPositionForm" @closeForm="showPositionForm = false" :position="selectedPosition"
-            @updateForm="handleUpdateForm" />
+        <PositionForm v-model:open="showPositionForm" :showForm="showPositionForm"
+            @closeForm="showPositionForm = false" :position="selectedPosition" @updateForm="handleUpdateForm" />
     </div>
 </template>
 

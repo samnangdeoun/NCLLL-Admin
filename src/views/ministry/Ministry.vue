@@ -15,7 +15,7 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <MinistryForm :showForm="showMinistryForm" @closeForm="showMinistryForm = false" :ministry="selectedMinistry"
+        <MinistryForm v-model:open="showMinistryForm" :showForm="showMinistryForm" @closeForm="showMinistryForm = false" :ministry="selectedMinistry"
             @updateForm="handleUpdateForm" />
     </div>
 </template>
