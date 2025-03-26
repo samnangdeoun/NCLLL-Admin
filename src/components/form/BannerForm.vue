@@ -67,7 +67,7 @@ import { useI18n } from 'vue-i18n'
 import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
 import { createBanner } from '../../scripts/model/banner/BannerModel.ts'
 import { createBannerHandler, updateBannerHandler } from '../../scripts/handler/banner/BannerHandler.ts'
-import { uploadFileHandler } from '../../scripts/handler/FileUpdateHanlder.ts'
+import { uploadFileHandler } from '../../scripts/handler/FileUploadHanlder.ts'
 import type { Emitter } from 'mitt';
 
 const props = defineProps({

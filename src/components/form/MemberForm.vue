@@ -46,7 +46,7 @@
                       <div class="flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
                         <DatePicker v-model="member.kh.birthDate" :initDate="member_birthDate" required
-                           class="col-span-3 w-full" />
+                          class="col-span-3 w-full" />
                       </div>
                     </div>
                   </div>
@@ -181,8 +181,7 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList"
-                        :initPosition="position_id"
+                      <PositionSelection :positionList="positionList" :initPosition="position_id"
                         @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
@@ -197,8 +196,8 @@
                     </div>
                     <!-- Upload Image -->
                     <div class="flex justify-center items-end mb-3 col-span-1">
-                      <Input type="file" @onChange="handleFileInput" @input="handleFileInput"
-                        class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
+                      <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
+                        accept="image/jpeg,image/png,image/gif" />
                     </div>
                   </div>
 
@@ -254,6 +253,7 @@ import type Position from '../../scripts/model/position/PositionModel.ts'
 import { retrivePositionHandler, } from '../../scripts/handler/position/PositionHandler.ts'
 import { createMember } from '../../scripts/model/member/MemberModel.ts'
 import { createMemberHandler, updateMemberHandler } from '../../scripts/handler/member/MemberHandler.ts'
+import { uploadFileHandler } from '../../scripts/handler/FileUploadHanlder.ts'
 import { toast } from '../ui/toast/use-toast.ts'
 import { useI18n } from 'vue-i18n'
 import type MemberModel from '../../scripts/model/member/MemberModel.ts'
@@ -279,19 +279,22 @@ const props = defineProps({
 
 // Define Variable
 const { t } = useI18n();
-const previewImage = ref('')
+const previewImage = ref<string>('')
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 const member = ref(JSON.parse(JSON.stringify(props.member)) as MemberModel)
 const showForm = ref<boolean>(props.showForm)
 const status = ref<string>("New")
 const positionList = ref<Position[]>([] as Position[])
+const _file = ref<File | null>(null);
+const _fileChange = ref<boolean>(false)
+const _position = ref<any>('')
 // Define props and emits
 const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 
 // Computed Properties
 const position_id = computed(() => {
-  return member.value.position._id || ''
+  return (typeof member.value.position == 'object') ? member.value.position._id : member.value.position
 })
 
 const member_birthDate = computed(() => {
@@ -327,21 +330,37 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    // member.value.image = reader.result
-    const result = reader.result as string
-    if (result) {
-      previewImage.value = result
-      member.value.en.imageUrl = "https://picsum.photos/512/513"
-      member.value.kh.imageUrl = "https://picsum.photos/512/513"
-    }
+    previewImage.value = reader.result as string
+    _file.value = file as File
+    _fileChange.value = true
   }
   reader.readAsDataURL(file)
 }
 
 
 const onHandleSummitForm = async () => {
-  if (status.value == "New") onHandleCreateSponsor()
-  else onHandleUpdateMember()
+  try {
+    member.value.position = (typeof member?.value?.position === 'object' ? member?.value.position?._id : member?.value?.position);
+    if (_fileChange.value && _file.value) {
+      try {
+        const { data, statusCode } = await uploadFileHandler(_file.value);
+
+        if (statusCode === 200 && data?.url) {
+          member.value.en.imageUrl = data.url;
+          member.value.kh.imageUrl = data.url;
+        } else {
+          throw new Error('File upload failed');
+        }
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    }
+    const action = status.value === "New" ? onHandleCreateSponsor : onHandleUpdateMember;
+    await action();
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const onHandleUpdateMember = async () => {
@@ -352,6 +371,7 @@ const onHandleUpdateMember = async () => {
     if (statusCode == 200 && data) {
       emit('updateForm', {
         ...data,
+        position: _position.value,
         status: status.value
       })
       toast({
@@ -380,6 +400,7 @@ const onHandleCreateSponsor = async () => {
     if (statusCode == 200 && data) {
       emit('updateForm', {
         ...data,
+        position: _position.value,
         status: status.value
       })
       toast({
@@ -405,7 +426,7 @@ onMounted(async () => {
 
 // Define Watch
 watch(
-  () => member?.value.en?.birthDate, 
+  () => member?.value.en?.birthDate,
   () => {
     if (member.value.en.birthDate) {
       member.value.kh.birthDate = member.value.en.birthDate
@@ -437,10 +458,12 @@ watch(
       member.value = createMember();
       status.value = "New";
       previewImage.value = "";
+      _position.value = ''
     } else {
       status.value = "Update";
       member.value = createMember(JSON.parse(JSON.stringify(props.member)) as MemberModel)
-      previewImage.value = member.value.en.imageUrl;
+      previewImage.value = "https://" + (member.value.en.imageUrl || member.value.kh.imageUrl);
+      _position.value = member.value.position
     }
     showForm.value = props.showForm
   }, { immediate: true, deep: true })

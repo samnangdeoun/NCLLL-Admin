@@ -1,6 +1,6 @@
-import authAPI from "../.././apis/authUrl.ts";
-import type ApiResponse from ".././mapping/BaseResponse.ts";
-import { getCookie } from "./../cookie/cookie.ts";
+import authAPI from "../../apis/authUrl.ts";
+import type ApiResponse from "../mapping/BaseResponse.ts";
+import { getCookie } from "../cookie/cookie.ts";
 
 
 export const uploadFileHandler = async (file: File) => {
