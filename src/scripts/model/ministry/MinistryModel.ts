@@ -1,16 +1,14 @@
 export const createMinistry = (data: Partial<MinistryModel> = {}): MinistryModel => ({
     id: data._id || '',
-    imageUrl: data.imageUrl || '',
-    en: data.en || { name: '', lang: 'en' },
-    kh: data.kh || { name: '', lang: 'kh' },
+    en: data.en || { name: '', imageUrl: 'en' },
+    kh: data.kh || { name: '', imageUrl: 'kh' },
 });
 
 
 export default interface MinistryModel {
     id?: string;
     _id?: string;
-    imageUrl: string;
-    en: { name: string, lang: string };
-    kh: { name: string, lang: string };
+    en: { name: string, imageUrl: string};
+    kh: { name: string, imageUrl: string };
 }
 

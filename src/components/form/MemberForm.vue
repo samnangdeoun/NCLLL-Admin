@@ -356,7 +356,7 @@ const onHandleSummitForm = async () => {
         return;
       }
     }
-    const action = status.value === "New" ? onHandleCreateSponsor : onHandleUpdateMember;
+    const action = status.value === "New" ? onHandleCreateMember : onHandleUpdateMember;
     await action();
   } catch (e) {
     console.log(e)
@@ -390,11 +390,9 @@ const onHandleUpdateMember = async () => {
   }
 }
 
-const onHandleCreateSponsor = async () => {
+const onHandleCreateMember = async () => {
   try {
     emitter?.emit("stateLoading", true);
-    member.value.en.imageUrl = "https://picsum.photos/512/513"
-    member.value.kh = member.value.en
     const { message, data, statusCode } = await createMemberHandler(member.value as MemberModel);
     console.log(message, data, statusCode);
     if (statusCode == 200 && data) {
@@ -462,7 +460,7 @@ watch(
     } else {
       status.value = "Update";
       member.value = createMember(JSON.parse(JSON.stringify(props.member)) as MemberModel)
-      previewImage.value = "https://" + (member.value.en.imageUrl || member.value.kh.imageUrl);
+      previewImage.value = (member.value.en.imageUrl || member.value.kh.imageUrl);
       _position.value = member.value.position
     }
     showForm.value = props.showForm
