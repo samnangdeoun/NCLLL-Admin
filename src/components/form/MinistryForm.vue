@@ -201,6 +201,9 @@ watch(
       ministry.value = createMinistry(JSON.parse(JSON.stringify(props.ministry)) as MinistryModel);
       status.value = "Update";
       previewImage.value = (ministry.value.en.imageUrl || ministry.value.kh.imageUrl) as string;
+      if (previewImage.value && !previewImage.value.includes("https://")) {
+        previewImage.value = "https://" + previewImage.value;
+      }
     } else {
       ministry.value = createMinistry();
       status.value = "New";

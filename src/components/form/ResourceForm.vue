@@ -309,7 +309,10 @@ watch(
     } else {
       status.value = "Update";
       resource.value = createResource(JSON.parse(JSON.stringify(props.resource)) as ResourceModel)
-      previewImage.value = "https://" + (resource.value.cover);
+      previewImage.value = (resource.value.cover);
+      if (previewImage.value && !previewImage.value.includes("https://")) {
+        previewImage.value = "https://" + previewImage.value;
+      }
       _ministry.value = resource.value.source
     }
     showForm.value = props.showForm
