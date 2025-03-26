@@ -461,6 +461,9 @@ watch(
       status.value = "Update";
       member.value = createMember(JSON.parse(JSON.stringify(props.member)) as MemberModel)
       previewImage.value = (member.value.en.imageUrl || member.value.kh.imageUrl);
+      if (previewImage.value && !previewImage.value.includes("https://")) {
+        previewImage.value = "https://" + previewImage.value;
+      }
       _position.value = member.value.position
     }
     showForm.value = props.showForm
