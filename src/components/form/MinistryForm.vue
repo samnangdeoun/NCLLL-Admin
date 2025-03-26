@@ -70,6 +70,7 @@ import { useToast } from '../ui/toast/use-toast.ts'
 import { useI18n } from 'vue-i18n'
 import type MinistryModel from '../../scripts/model/ministry/MinistryModel.ts'
 import { createMinistry } from '../../scripts/model/ministry/MinistryModel.ts'
+import { uploadFileHandler } from '../../scripts/handler/FileUploadHanlder.ts'
 import { createMinistryHandler, updateMinistryHandler } from '../../scripts/handler/ministry/MinistryHandler.ts'
 import type { Emitter } from 'mitt';
 
@@ -93,6 +94,8 @@ const { toast } = useToast()
 const ministry = ref<MinistryModel>(JSON.parse(JSON.stringify(props.ministry)) as MinistryModel)
 const showForm = ref<boolean>(props.showForm)
 const previewImage = ref<string>('')
+const _file = ref<File | null>(null);
+const _fileChange = ref<boolean>(false);
 const status = ref("New")
 
 // Define props and emits
@@ -100,8 +103,27 @@ const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
 // Define methods
 const onHandleSummitForm = async () => {
-  if(status.value == "New") onHandleCreateTag()
-  else onHandleUpdateTag()
+  try {
+    if (_fileChange.value && _file.value) {
+      try {
+        const { data, statusCode } = await uploadFileHandler(_file.value);
+
+        if (statusCode === 200 && data?.url) {
+          ministry.value.en.imageUrl = data.url;
+          ministry.value.kh.imageUrl = data.url;
+        } else {
+          throw new Error('File upload failed');
+        }
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    }
+    const action = status.value === "New" ? onHandleCreateMinistry : onHandleUpdateMinistry;
+    await action();
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const handleFileInput = (event: { target: { files: any[]; }; }) => {
@@ -112,13 +134,14 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
     const result = reader.result as string
     if (result) {
       previewImage.value = result
-      ministry.value.imageUrl = "https://picsum.photos/512/513"
+      _fileChange.value = true
+      _file.value = file as File
     }
   }
   reader.readAsDataURL(file)
 }
 
-const onHandleUpdateTag = async () => {
+const onHandleUpdateMinistry = async () => {
   try {
     emitter?.emit("stateLoading", true);
     const { message, data, statusCode } = await updateMinistryHandler(ministry.value as MinistryModel);
@@ -144,7 +167,7 @@ const onHandleUpdateTag = async () => {
   }
 }
 
-const onHandleCreateTag = async () => {
+const onHandleCreateMinistry = async () => {
   try {
     emitter?.emit("stateLoading", true);
     const { message, data, statusCode } = await createMinistryHandler(ministry.value as MinistryModel);
@@ -177,9 +200,11 @@ watch(
     if (props.ministry && props.ministry._id && props.ministry._id) {
       ministry.value = createMinistry(JSON.parse(JSON.stringify(props.ministry)) as MinistryModel);
       status.value = "Update";
+      previewImage.value = (ministry.value.en.imageUrl || ministry.value.kh.imageUrl) as string;
     } else {
       ministry.value = createMinistry();
       status.value = "New";
+      previewImage.value = "";
     }
     showForm.value = props.showForm
   }, { immediate: true, })

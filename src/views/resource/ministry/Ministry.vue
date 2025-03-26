@@ -22,14 +22,14 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, ref, onMounted, inject } from 'vue';
-import { useToast } from '../../components/ui/toast/use-toast.ts';
-import type MinistryModel from '../../scripts/model/ministry/MinistryModel.ts';
+import { useToast } from '../../../components/ui/toast/use-toast.ts';
+import type MinistryModel from '../../../scripts/model/ministry/MinistryModel.ts';
 import type { Emitter } from 'mitt';
-import { retriveMinistryHandler, removeMinistryHandler } from '../../scripts/handler/ministry/MinistryHandler.ts';
+import { retriveMinistryHandler, removeMinistryHandler } from '../../../scripts/handler/ministry/MinistryHandler.ts';
 
-const MinistryForm = defineAsyncComponent(() => import('../../components/form/MinistryForm.vue'));
-const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
-const MinistryCard = defineAsyncComponent(() => import('../../components/cards/MinistryCard.vue'));
+const MinistryForm = defineAsyncComponent(() => import('../../../components/form/MinistryForm.vue'));
+const ConfirmDialog = defineAsyncComponent(() => import('../../../components/custom/ConfirmDialog.vue'));
+const MinistryCard = defineAsyncComponent(() => import('../../../components/cards/MinistryCard.vue'));
 
 const { toast } = useToast();
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');

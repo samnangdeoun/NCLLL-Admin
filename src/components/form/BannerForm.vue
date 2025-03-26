@@ -23,7 +23,7 @@
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('preview') }}</Label>
                 <div class="h-[8.2rem] w-full border rounded-md">
-                  <img v-if="banner.imageUrl" :src="banner.imageUrl" alt="banner Logo"
+                  <img v-if="previewImage" :src="previewImage" alt="banner Logo"
                     class="w-full h-full  object-cover bg-cover rounded-md">
                 </div>
               </div>
@@ -67,6 +67,7 @@ import { useI18n } from 'vue-i18n'
 import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
 import { createBanner } from '../../scripts/model/banner/BannerModel.ts'
 import { createBannerHandler, updateBannerHandler } from '../../scripts/handler/banner/BannerHandler.ts'
+import { uploadFileHandler } from '../../scripts/handler/FileUploadHanlder.ts'
 import type { Emitter } from 'mitt';
 
 const props = defineProps({
@@ -89,6 +90,8 @@ const { toast } = useToast()
 const previewImage = ref<string>(props.banner.imageUrl)
 const banner = ref<BannerModel>(JSON.parse(JSON.stringify(props.banner)) as BannerModel)
 const showForm = ref<boolean>(props.showForm)
+const _file = ref<File | null>(null)
+const _fileChanged = ref<boolean>(false)
 const status = ref<string>("New")
 
 // Define props and emits
@@ -99,14 +102,35 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
   const file = event.target.files[0]
   const reader = new FileReader()
   reader.onload = () => {
-    banner.value.imageUrl = reader.result as string
+    previewImage.value = reader.result as string
+    _fileChanged.value = true
+    _file.value = file
   }
+
   reader.readAsDataURL(file)
 }
 
 const onHandleSummitForm = async () => {
-  if(status.value == "New") onHandleCreateBanner()
-  else onHandleUpdateBanner()
+  try {
+    if (_fileChanged.value && _file.value) {
+      try {
+        const { data, statusCode } = await uploadFileHandler(_file.value);
+
+        if (statusCode === 200 && data?.url) {
+          banner.value.imageUrl = data.url;
+        } else {
+          throw new Error('File upload failed');
+        }
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    }
+    const action = status.value === "New" ? onHandleCreateBanner : onHandleUpdateBanner;
+    await action();
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const onHandleUpdateBanner = async () => {
@@ -138,7 +162,6 @@ const onHandleUpdateBanner = async () => {
 const onHandleCreateBanner = async () => {
   try {
     emitter?.emit("stateLoading", true);
-    banner.value.imageUrl = "https://picsum.photos/512/513"
     const { message, data, statusCode } = await createBannerHandler(banner.value as BannerModel);
     console.log(message, data, statusCode);
     if (statusCode == 200 && data) {
@@ -168,6 +191,7 @@ watch(
   () => {
     if (props.banner && props.banner._id && props.banner._id) {
       banner.value = createBanner(JSON.parse(JSON.stringify(props.banner)) as BannerModel)
+      previewImage.value = props.banner.imageUrl;
       status.value = "Update";
     } else {
       banner.value = createBanner();
