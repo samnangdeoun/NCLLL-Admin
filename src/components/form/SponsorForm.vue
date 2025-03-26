@@ -19,7 +19,7 @@
               </div>
               <!-- Description Field -->
               <div class="flex flex-col items-start justify-center mb-4">
-                <Label for="name" class="text-left mb-1">{{ $t('descriptioin') }}</Label>
+                <Label for="name" class="text-left mb-1">{{ $t('description') }}</Label>
                 <Textarea rows="6" v-model="sponsor.en.description" class="col-span-3" />
               </div>
             </div>
