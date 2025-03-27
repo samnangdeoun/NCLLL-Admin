@@ -14,12 +14,12 @@
             <div>
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
-                <Textarea rows="2" v-model="ministry.en.name" class="col-span-3" />
+                <Textarea rows="2" v-model="ministry.en.name" required class="col-span-3" />
               </div>
 
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name_kh') }}</Label>
-                <Textarea rows="2" v-model="ministry.kh.name" class="col-span-3" />
+                <Textarea rows="2" v-model="ministry.kh.name" required class="col-span-3" />
               </div>
             </div>
 
@@ -34,8 +34,8 @@
               </div>
               <!-- Upload Image -->
               <div class="flex justify-center items-end mb-3 col-span-1">
-                <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
-                  accept="image/jpeg,image/png,image/gif" />
+                <Input type="file" :required="!previewImage" @onChange="handleFileInput" @input="handleFileInput"
+                  class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
               </div>
             </div>
           </div>

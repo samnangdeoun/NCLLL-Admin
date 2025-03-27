@@ -13,12 +13,12 @@
           <div class="grid grid-cols-2 gap-2 py-4">
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
-                <Input v-model="tag.en.name" class="col-span-3" />
+                <Input v-model="tag.en.name" required :rules="[validationRules.required]" class="col-span-3" />
               </div>
 
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name_kh') }}</Label>
-                <Input v-model="tag.kh.name" class="col-span-3" />
+                <Input v-model="tag.kh.name" required :rules="[validationRules.required]" class="col-span-3" />
               </div>
           </div>
 
@@ -51,6 +51,7 @@ import { useToast } from '../ui/toast/use-toast.ts'
 import { useI18n } from 'vue-i18n'
 import type TagModel from '../../scripts/model/tag/TagModel.ts'
 import { createTag } from '../../scripts/model/tag/TagModel.ts'
+import { validationRules } from '@/utils/validationRule.ts'
 import { createTagHandler, updateTagHandler } from '../../scripts/handler/tag/TagHandler.ts'
 import type { Emitter } from 'mitt';
 

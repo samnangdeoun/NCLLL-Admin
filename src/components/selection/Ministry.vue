@@ -1,23 +1,17 @@
 <template>
-  <Select v-model="selectedMinistry" required class="w-full">
-    <SelectTrigger>
-      <SelectValue
-        :value="selectedMinistry"
-        :placeholder="$t('select_position')"
-      />
-    </SelectTrigger>
-    <SelectContent class="bg-white">
-      <SelectGroup>
-        <SelectItem
-          v-for="(ministry, index) in ministryList"
-          :key="index"
-          :value="ministry._id || ''"
-        >
-          {{ ministry.en.name }} - {{ ministry.kh.name }}
-        </SelectItem>
-      </SelectGroup>
-    </SelectContent>
-  </Select>
+    <Select v-model="selectedMinistry" required class="w-full" inert>
+      <SelectTrigger>
+        <SelectValue :value="selectedMinistry" required :rules="[validationRules.required]"
+          :placeholder="$t('select_position')" />
+      </SelectTrigger>
+      <SelectContent class="bg-white">
+        <SelectGroup>
+          <SelectItem v-for="(ministry, index) in ministryList" :key="index" :value="ministry._id || ''">
+            {{ ministry.en.name }} - {{ ministry.kh.name }}
+          </SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +24,7 @@ import {
   SelectValue,
 } from "../ui/select/index.ts";
 import { ref, watch } from "vue";
+import { validationRules } from '@/utils/validationRule.ts'
 import type MinistryModel from "../../scripts/model/ministry/MinistryModel.ts";
 
 // Define Props

@@ -1,23 +1,17 @@
 <template>
-  <Select v-model="selectedPosition" required class="w-full">
-    <SelectTrigger>
-      <SelectValue
-        :value="selectedPosition"
-        :placeholder="$t('select_position')"
-      />
-    </SelectTrigger>
-    <SelectContent class="bg-white">
-      <SelectGroup>
-        <SelectItem
-          v-for="(position, index) in positionList"
-          :key="index"
-          :value="position._id || ''"
-        >
-          {{ position.en.title }} - {{ position.kh.title }}
-        </SelectItem>
-      </SelectGroup>
-    </SelectContent>
-  </Select>
+    <Select v-model="selectedPosition" required class="w-full" inert>
+      <SelectTrigger>
+        <SelectValue :value="selectedPosition" required :rules="[validationRules.required]"
+          :placeholder="$t('select_position')" />
+      </SelectTrigger>
+      <SelectContent class="bg-white">
+        <SelectGroup>
+          <SelectItem v-for="(position, index) in positionList" :key="index" :value="position._id || ''">
+            {{ position.en.title }} - {{ position.kh.title }}
+          </SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +24,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { ref, watch } from "vue";
+import { validationRules } from '@/utils/validationRule.ts'
 import type Position from "../../scripts/model/position/PositionModel.ts";
 
 // Define Props
@@ -60,7 +55,6 @@ watch(selectedPosition, (value: string) => {
 watch(
   () => [props.initPosition, props.positionList],
   () => {
-    console.log(props.initPosition, " watch");
     if (props.initPosition) {
       selectedPosition.value = props.initPosition;
     }

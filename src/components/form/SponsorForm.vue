@@ -15,12 +15,12 @@
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
-                <Input rows="9" v-model="sponsor.en.name" class="col-span-3" />
+                <Input rows="9" v-model="sponsor.en.name" required  :rules="[validationRules.required]" class="col-span-3" />
               </div>
               <!-- Description Field -->
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('description') }}</Label>
-                <Textarea rows="6" v-model="sponsor.en.description" class="col-span-3" />
+                <Textarea rows="6" v-model="sponsor.en.description" required :rules="[validationRules.required]" class="col-span-3" />
               </div>
             </div>
             <div>
@@ -34,7 +34,7 @@
               <!-- Image URL Field -->
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('upload_image') }}</Label>
-                <Input id="image" type="file" @onChange="handleFileInput" @input="handleFileInput" class="col-span-3"
+                <Input id="image" type="file" :required="!previewImageEN" @onChange="handleFileInput" @input="handleFileInput" class="col-span-3"
                   accept="image/jpeg,image/png,image/gif" />
               </div>
             </div>
@@ -71,6 +71,7 @@ import { useI18n } from 'vue-i18n'
 import type SponsorModel from '../../scripts/model/sponsor/SponsorModel.ts'
 import { createSponsor } from '../../scripts/model/sponsor/SponsorModel.ts'
 import { createSponsorHandler, updateSponsorHandler } from '../../scripts/handler/sponsor/SponsorHandler.ts'
+import { validationRules } from '@/utils/validationRule.ts'
 import type { Emitter } from 'mitt';
 
 const props = defineProps({

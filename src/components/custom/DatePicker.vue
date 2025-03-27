@@ -22,10 +22,9 @@ import { cn } from '../../lib/utils'
 import { Button } from '../ui/button'
 import { CalendarIcon } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
-import { DateFormatter, parseDate, CalendarDate } from '@internationalized/date'
+import { CalendarDate } from '@internationalized/date'
 
 // Date Formatter
-const df = new DateFormatter('en-US', { dateStyle: 'long' })
 
 interface Props {
     modelValue?: Date | string | null
@@ -38,8 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: Date | null): void
-    (e: 'onDateChange', value: Date | null): void
+    (e: 'update:modelValue', value: string | null): void
+    (e: 'onDateChange', value: string | null): void
 }>()
 
 // Convert JavaScript Date or string to CalendarDate
@@ -61,11 +60,11 @@ const parsedModelValue = computed((): CalendarDate | null => {
 const formattedDate = computed((): string => {
     if (!parsedModelValue.value) return 'Select a date'
 
-    return df.format(new Date(
+    return (new Date(
         parsedModelValue.value.year,
         parsedModelValue.value.month - 1,
         parsedModelValue.value.day
-    ))
+    ).toISOString().slice(0, 10))
 })
 
 // Reactive local value for v-model
@@ -78,7 +77,7 @@ watch(localValue, (newVal) => {
             newVal.year,
             newVal.month - 1,
             newVal.day
-        )
+        ).toISOString().slice(0, 10)
         emit('update:modelValue', dateToEmit)
         emit('onDateChange', dateToEmit)
     } else {

@@ -15,7 +15,8 @@
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('title') }}</Label>
-                <Textarea rows="9" v-model="banner.title" class="col-span-3" />
+                <Textarea rows="9" required :rules="[validationRules.required]" v-model="banner.title"
+                  class="col-span-3" />
               </div>
             </div>
 
@@ -30,8 +31,8 @@
               <!-- Image URL Field -->
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('upload_image') }}</Label>
-                <Input id="image" type="file" @onChange="handleFileInput" @input="handleFileInput" class="col-span-3"
-                  accept="image/jpeg,image/png,image/gif" />
+                <Input id="image" :required="!previewImage" type="file" @onChange="handleFileInput"
+                  @input="handleFileInput" class="col-span-3" accept="image/jpeg,image/png,image/gif" />
               </div>
             </div>
           </div>
@@ -66,6 +67,7 @@ import { useToast } from '.././ui/toast/use-toast'
 import { useI18n } from 'vue-i18n'
 import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
 import { createBanner } from '../../scripts/model/banner/BannerModel.ts'
+import { validationRules } from '@/utils/validationRule'
 import { createBannerHandler, updateBannerHandler } from '../../scripts/handler/banner/BannerHandler.ts'
 import { uploadFileHandler } from '../../scripts/handler/FileUploadHanlder.ts'
 import type { Emitter } from 'mitt';

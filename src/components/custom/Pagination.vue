@@ -1,7 +1,7 @@
 <template>
     <Pagination class="flex justify-center items-center" v-slot="{ page }" :items-per-page="100" :total="100" :sibling-count="1" show-edges :default-page="1">
         <PaginationList v-slot="{ items }" class="flex items-center gap-1">
-            <PaginationFirst :disabled="page === 1" />
+            <PaginationFirst  />
             <PaginationPrev />
 
             <template v-for="(item, index) in items">

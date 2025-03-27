@@ -15,12 +15,12 @@
               <!-- Name Field -->
               <div class="flex flex-col items-start justify-center mb-4">
                 <Label for="name" class="text-left mb-1">{{ $t('name') }}</Label>
-                <Input id="name" v-model="partner.name" class="col-span-3" placeholder="Partner Name" />
+                <Input id="name" v-model="partner.name"  required class="col-span-3" placeholder="Partner Name" />
               </div>
               <!-- Description Field -->
               <div class="flex flex-col items-start justify-center">
                 <Label for="description" class="text-left mb-1">{{ $t('description') }}</Label>
-                <Textarea id="description" rows="6" v-model="partner.description" class="col-span-3"
+                <Textarea id="description" rows="6" required v-model="partner.description" class="col-span-3"
                   placeholder="Enter description" />
               </div>
             </div>
@@ -36,8 +36,8 @@
               <!-- Image URL Field -->
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label for="image" class="text-left mb-1">{{ $t('upload_image') }}</Label>
-                <Input id="image" type="file" @onChange="handleFileInput" @input="handleFileInput" class="col-span-3"
-                  accept="image/jpeg,image/png,image/gif" />
+                <Input id="image" type="file" :required="!partner.image" @onChange="handleFileInput"
+                  @input="handleFileInput" class="col-span-3" accept="image/jpeg,image/png,image/gif" />
               </div>
             </div>
           </div>

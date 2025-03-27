@@ -3,6 +3,7 @@
     <SelectTrigger>
       <SelectValue
         class="capitalize"
+        :rules="[validationRules.required]"
         :value="selectedResourceType"
         :placeholder="$t('select_type')"
       />
@@ -31,6 +32,7 @@ import {
   SelectValue,
 } from "../ui/select/index.ts";
 import { ref, watch } from "vue";
+import { validationRules } from '@/utils/validationRule.ts'
 import { ResourceType } from "../../scripts/enum/ResourceType.ts";
 
 // Define Props
@@ -50,7 +52,9 @@ const emit = defineEmits(["resourceTypeChange"]);
 
 // Watch for changes in selectedResourceType and emit event
 watch(selectedResourceType, (value: string) => {
-    if (value) emit("resourceTypeChange", value);
+    if (value) {
+      emit("resourceTypeChange", value);
+    }
 });
 
 // Watch for changes in initResourceType and update selectedResourceType accordingly

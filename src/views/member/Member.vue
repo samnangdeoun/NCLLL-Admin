@@ -6,9 +6,8 @@
             </button>
         </div>
 
-        <div class="overflow-x-auto scrollbar-hide">
+        <div class="w-full bg-white h-[75vh] overflow-auto">
             <Table class="w-full bg-white">
-                <TableCaption>A list of your recent invoices.</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead class="w-[100px]">
@@ -29,7 +28,10 @@
                         </TableCell>
                         <TableCell>{{ member.en.name }}</TableCell>
                         <TableCell>{{ member.kh.name }}</TableCell>
-                        <TableCell>{{ member.position.kh.title }} ({{ member.position.en.title }})</TableCell>
+                        <TableCell>
+                            {{ member.position?.kh?.title ? `${member.position?.kh.title}
+                            (${member.position?.en?.title})` : '' }}
+                        </TableCell>
                         <TableCell class=" flex justify-end gap-2">
                             <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(member)">
                                 {{ $t('update') }}
@@ -47,8 +49,8 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <MemberForm v-model:open="showMemberForm" :showForm="showMemberForm" @closeForm="showMemberForm = $event" :member="selectedMember"
-            @updateForm="handleUpdateForm" />
+        <MemberForm v-model:open="showMemberForm" :showForm="showMemberForm" @closeForm="showMemberForm = $event"
+            :member="selectedMember" @updateForm="handleUpdateForm" />
     </div>
 </template>
 <script setup lang="ts">
@@ -56,7 +58,6 @@ import { onMounted, ref, inject, defineAsyncComponent } from 'vue';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
