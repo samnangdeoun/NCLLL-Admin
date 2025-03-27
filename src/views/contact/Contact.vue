@@ -1,8 +1,6 @@
-<!-- TiptapExample.vue -->
+
 <template>
     <div class="tiptap-example">
-      <h2>TipTap Rich Text Editor</h2>
-      
       <div class="editor-container">
         <TiptapEditor
           v-model="editorContent"
@@ -62,29 +60,7 @@
   const editorContent = ref({
     type: 'doc',
     content: [
-      {
-        type: 'heading',
-        attrs: { level: 1 },
-        content: [{ type: 'text', text: 'TipTap Editor Example' }]
-      },
-      {
-        type: 'paragraph',
-        content: [
-          { type: 'text', text: 'This is a fully-featured rich text editor using ' },
-          { type: 'text', marks: [{ type: 'bold' }], text: 'TipTap' },
-          { type: 'text', text: ' for Vue 3.' }
-        ]
-      },
-      {
-        type: 'paragraph',
-        content: [
-          { type: 'text', text: 'Try out all the features like ' },
-          { type: 'text', marks: [{ type: 'italic' }], text: 'formatting' },
-          { type: 'text', text: ', ' },
-          { type: 'text', marks: [{ type: 'highlight', attrs: { color: '#ffcc00' } }], text: 'highlighting' },
-          { type: 'text', text: ', links, tables, and more!' }
-        ]
-      }
+     
     ]
   });
   
@@ -113,15 +89,7 @@
     editorContent.value = {
       type: 'doc',
       content: [
-        {
-          type: 'heading',
-          attrs: { level: 1 },
-          content: [{ type: 'text', text: 'TipTap Editor Example' }]
-        },
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'Content has been reset!' }]
-        }
+        
       ]
     };
   };
@@ -129,7 +97,6 @@
   
   <style scoped>
   .tiptap-example {
-    max-width: 900px;
     margin: 0 auto;
     padding: 20px;
   }
