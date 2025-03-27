@@ -23,12 +23,12 @@
                   <div class="flex flex-col items-start justify-center mb-4">
                     <Label class="text-left mb-1">{{ $t('resource_type') }}</Label>
                     <ResourceTypeSelection :initResourceType="resourceType"
-                      @resourceLangChange="resource.lang = $event" />
+                      @resourceTypeChange="handleResourceTypeChange" />
                   </div>
                   <div class="flex flex-col items-start justify-center mb-4">
                     <Label class="text-left mb-1">{{ $t('resource_language') }}</Label>
                     <ResourceLangSelection :initResourceLang="resourceLang"
-                      @resourceTypeChange="resource.type = $event" />
+                      @resourceLangChange="handleResourceLangChange" />
                   </div>
                 </div>
                 <!-- Position -->
@@ -36,20 +36,19 @@
                   <Label class="text-left mb-1">{{ $t('ministry') }}</Label>
                   <keep-alive>
                     <MinistrySelection :ministryList="ministryList" :initMinistry="resource_id"
-                      @positionChange="handleMinistryChange" />
+                      @ministryChange="handleMinistryChange" />
                   </keep-alive>
                 </div>
+
                 <div class="flex flex-col justify-center items-start mb-3 col-span-1">
-                  <Label class="text-left mb-1">{{ $t('file_resoure_upload') }}</Label>
-                  <Input type="file" @onChange="handleFileResourceInput" @input="handleFileResourceInput"
-                    class=" col-span-3" accept="application/pdf" />
+                  <Label class="text-left mb-1">{{ $t('file_resource_upload') }}</Label>
+                  <Input type="file" :required="!resource.file" @onChange="handleFileResourceInput"
+                    @input="handleFileResourceInput" class=" col-span-3" accept="application/pdf" />
+                  <div v-if="resource.file" class="flex flex-col justify-center items-start mt-3 col-span-1">
+                    <Label class="text-left mb-1 text-green-600">{{ $t('resource_file_existed') }}</Label>
+                  </div>
                 </div>
-                <!-- Upload Image -->
-                <div class="flex flex-col justify-center items-start float-right mb-3 col-span-1 w-1/2">
-                  <Label class="text-left mb-1">{{ $t('upload_cover') }}</Label>
-                  <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
-                    accept="image/jpeg,image/png,image/gif" />
-                </div>
+
               </div>
             </div>
 
@@ -57,12 +56,17 @@
               <!-- Preview -->
               <div class="flex flex-col items-start justify-center mb-3">
                 <Label class="text-left mb-1">{{ $t('preview') }}</Label>
-                <div class="h-[39vh] w-full border rounded-md">
+                <div class="h-[30vh] w-full border rounded-md">
                   <img v-if="previewImage" :src="previewImage" alt="Partner Logo"
                     class="w-full h-full  object-cover bg-cover rounded-md">
                 </div>
               </div>
-
+              <!-- Upload Image -->
+              <div class="flex flex-col justify-center items-start float-right mb-3 col-span-1 w-full">
+                <Label class="text-left mb-1">{{ $t('upload_cover') }}</Label>
+                <Input type="file" :required="!previewImage" @onChange="handleFileInput" @input="handleFileInput"
+                  class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
+              </div>
             </div>
           </div>
 
@@ -155,9 +159,20 @@ const resourceLang = computed(() => {
 
 // Define methods
 const handleMinistryChange = (ministry: string) => {
-  console.log(ministry, 'ministry -> her')
   if (ministry) {
     resource.value.source = ministry
+  }
+}
+
+const handleResourceLangChange = (lang: string) => {
+  if (lang) {
+    resource.value.lang = lang
+  }
+}
+
+const handleResourceTypeChange = (type: string) => {
+  if (type) {
+    resource.value.type = type
   }
 }
 
@@ -204,7 +219,6 @@ const onHandleSummitForm = async () => {
   try {
     resource.value.source = (typeof resource?.value?.source === 'object' ? resource?.value.source?._id : resource?.value?.source);
     const filePromises = [];
-
     if (_fileChange.value && _file.value) {
       filePromises.push(uploadFileHandler(_file.value).then(({ data, statusCode }) => {
         if (statusCode === 200 && data?.url) {

@@ -1,7 +1,7 @@
 <template>
   <Select v-model="selectedResourceLang" required class="w-full">
     <SelectTrigger>
-      <SelectValue class="uppercase" :value="selectedResourceLang" :placeholder="$t('select_language')" />
+      <SelectValue class="capitalize" :rules="[validationRules.required]" required :value="selectedResourceLang" :placeholder="$t('select_language')" />
     </SelectTrigger>
     <SelectContent class="bg-white">
       <SelectGroup>
@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "../ui/select/index.ts";
 import { ref, watch } from "vue";
+import { validationRules } from '@/utils/validationRule.ts'
 import { ResourceLanguage } from "../../scripts/enum/ResourceType.ts";
 
 // Define Props

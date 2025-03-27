@@ -7,15 +7,14 @@
         </div>
 
         <div class="overflow-x-auto scrollbar-hide">
-            <Table class="w-full bg-white">
-                <TableCaption>A list of your recent invoices.</TableCaption>
-                <TableHeader>
+            <Table class="w-full bg-white h-[70vh]">
+                <TableHeader class="" fixed>
                     <TableRow>
-                        <TableHead class="w-[100px]">
+                        <TableHead class="w-[50px]">
                             {{ $t('no') }}
                         </TableHead>
                         <TableHead>{{ $t('cover') }}</TableHead>
-                        <TableHead class="w-[25%]">{{ $t('title') }}</TableHead>
+                        <TableHead class="w-[20%]">{{ $t('title') }}</TableHead>
                         <TableHead class="w-[25%]">{{ $t('source') }}</TableHead>
                         <TableHead class="w-[20%]">{{ $t('publish_date') }}</TableHead>
                         <TableHead class="text-right">
@@ -29,7 +28,7 @@
                             {{ index + 1 }}
                         </TableCell>
                         <TableCell>
-                            <div class="flex justify-center items-center border rounded-md w-[6rem] h-[8rem]">
+                            <div class="flex justify-center items-center border rounded-md w-[4rem] h-[6rem]">
                                 <img v-if="resource.cover" :src="resource.cover"
                                     class="w-full h-full object-cover rounded-md" />
                             </div>
@@ -64,7 +63,6 @@ import { onMounted, ref, inject, defineAsyncComponent } from 'vue';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -179,11 +177,7 @@ const handleUpdateForm = (resource: any) => {
 }
 
 onMounted(async () => {
-    try {
-        await onLoadResource()
-    } catch (err) {
-        console.error(err)
-    }
+    await onLoadResource()
 })
 
 </script>

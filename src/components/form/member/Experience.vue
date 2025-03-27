@@ -4,10 +4,11 @@
             <!-- Preview -->
             <form @submit.prevent="onHandleSummitForm" class="flex justify-center items-center gap-2">
                 <div class="flex items-start justify-center mb-3 ">
-                    <Textarea rows="3" v-model="experience.title" required  />
+                    <Textarea rows="3" v-model="experience.title" :required="experienceList && experienceList.length === 0" />
                 </div>
                 <div class="flex items-start justify-center mb-3 w-full">
-                    <Textarea rows="3" v-model="experience.description" required  />
+                    <Textarea rows="3" v-model="experience.description"
+                        :required="experienceList && experienceList.length === 0" />
                 </div>
                 <!-- Upload Image -->
                 <div class="flex flex-col justify-center items-end mb-3">
@@ -89,6 +90,7 @@ import { Button } from '../../ui/button'
 import { Icon } from '@iconify/vue'
 import { useToast } from '../../ui/toast/use-toast'
 import { useI18n } from 'vue-i18n'
+import { validationRules } from '@/utils/validationRule'
 
 const { t } = useI18n();
 const { toast } = useToast();

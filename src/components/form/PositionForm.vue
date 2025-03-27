@@ -29,7 +29,7 @@
                 <Label for="name" class="text-left mb-1">{{ $t('level') }}</Label>
                 <Select v-model="position.en.level" required class="w-full ">
                   <SelectTrigger>
-                    <SelectValue :value="position.en.level" :placeholder="$t('select_position')" />
+                    <SelectValue :value="position.en.level" required :placeholder="$t('select_position')" />
                   </SelectTrigger>
                   <SelectContent class="bg-white max-h-[200px]">
                     <SelectGroup>

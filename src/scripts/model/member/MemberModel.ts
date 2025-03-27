@@ -1,7 +1,7 @@
 export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     en: {
         imageUrl: data.en?.imageUrl || '',
-        birthDate: data.kh?.birthDate ?? null,
+        birthDate: data.kh?.birthDate ?? '',
         email: data.kh?.email || '',
         nationality: data.en?.nationality || '',
         name: data.en?.name || '',
@@ -24,7 +24,7 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     },
     kh: {
         imageUrl: data.kh?.imageUrl || '',
-        birthDate: data.kh?.birthDate ?? null,
+        birthDate: data.kh?.birthDate ?? '',
         email: data.en?.email || '',
         nationality: data.kh?.nationality || '',
         name: data.kh?.name || '',
@@ -60,7 +60,7 @@ export default interface MemberModel {
 
 export interface PersonalInfo {
     imageUrl: string;
-    birthDate: Date | null;
+    birthDate: string;
     email: string;
     nationality: string;
     name: string;

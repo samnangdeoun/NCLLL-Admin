@@ -8,7 +8,7 @@
             {{ $t('member_form_desc') }}
           </DialogDescription>
         </DialogHeader>
-        <form @submit.prevent="onHandleSummitForm" class="space-y-4">
+        <form @submit.prevent="onHandleSummitForm" class="space-y-4" ref="memberForm">
           <Tabs default-value="KHMER" class="w-full">
             <TabsList>
               <TabsTrigger value="KHMER">
@@ -43,10 +43,13 @@
                           class="col-span-3 " />
                       </div>
                       <!-- Date of Birth -->
-                      <div class="flex flex-col items-start justify-center mb-4">
+                      <div class="relative flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker v-model="member.kh.birthDate" :initDate="member_birthDate" required
-                          class="col-span-3 w-full" />
+                        <DatePicker v-model="member.kh.birthDate" :rules="[validationRules.required]"
+                          :initDate="member_birthDate" required class="col-span-3 w-full" />
+                        <span v-if="!member.en.birthDate" class="absolute left-1 -bottom-5 text-xs text-red-500">
+                          {{ $t('select_birth_date') }}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -54,23 +57,28 @@
                   <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('house_number') }}</Label>
-                      <Input v-model="member.kh.placeOfBirth.houseNumber" class="col-span-3" />
+                      <Input v-model="member.kh.placeOfBirth.houseNumber" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('street') }}</Label>
-                      <Input v-model="member.kh.placeOfBirth.street" class="col-span-3" />
+                      <Input v-model="member.kh.placeOfBirth.street" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col col-span-2 items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('district') }}</Label>
-                      <Input v-model="member.kh.placeOfBirth.district" class="col-span-3" />
+                      <Input v-model="member.kh.placeOfBirth.district" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('city') }}</Label>
-                      <Input v-model="member.kh.placeOfBirth.city" class="col-span-3" />
+                      <Input v-model="member.kh.placeOfBirth.city" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('country') }}</Label>
-                      <Input v-model="member.kh.placeOfBirth.country" class="col-span-3" />
+                      <Input v-model="member.kh.placeOfBirth.country" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                   </div>
                 </div>
@@ -80,8 +88,8 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" :initPosition="position_id"
-                        @positionChange="handlePositionChange" />
+                      <PositionSelection :required="(position_id && position_id != '')" :positionList="positionList"
+                        :initPosition="position_id" @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
                   <div class="grid grid-cols-3 gap-2">
@@ -95,22 +103,24 @@
                     </div>
                     <!-- Upload Image -->
                     <div class="flex justify-center items-end mb-3 col-span-1">
-                      <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
-                        accept="image/jpeg,image/png,image/gif" />
+                      <Input type="file" :required="!previewImage" @onChange="handleFileInput" @input="handleFileInput"
+                        class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
                     </div>
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-3 w-full">
                     <Label class="text-left mb-1">{{ $t('career_status') }}</Label>
                     <keep-alive>
-                      <CareerStatus :showForm="showForm" :careerStatusList="member.kh.careerStatus"
-                        @careerChange="member.kh.careerStatus = $event" />
+                      <CareerStatus position_id
+                        :required="(member.kh.careerStatus && member.kh.careerStatus.length == 0)" :showForm="showForm"
+                        :careerStatusList="member.kh.careerStatus" @careerChange="member.kh.careerStatus = $event" />
                     </keep-alive>
                   </div>
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('experience') }}</Label>
                     <keep-alive>
-                      <Experience :careerStatusList="member.en.careerStatus" :showForm="showForm"
+                      <Experience :required="(member.kh.experience && member.en.experience.length == 0)"
+                        :careerStatusList="member.kh.careerStatus" :showForm="showForm"
                         :experienceList="member.kh.experience" @experienceChange="member.kh.experience = $event" />
                     </keep-alive>
                   </div>
@@ -144,10 +154,13 @@
                           class="col-span-3 " />
                       </div>
                       <!-- Date of Birth -->
-                      <div class="flex flex-col items-start justify-center mb-4">
+                      <div class="relative flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker v-model="member.en.birthDate" :initDate="member_birthDate" required
-                          class="col-span-3 w-full" />
+                        <DatePicker v-model="member.en.birthDate" :rules="[validationRules.required]"
+                          :initDate="member_birthDate" required class="col-span-3 w-full" />
+                        <span v-if="!member.en.birthDate" class="absolute left-1 -bottom-5 text-xs text-red-500">
+                          {{ $t('select_birth_date') }}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -155,23 +168,28 @@
                   <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('house_number') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.houseNumber" class="col-span-3" />
+                      <Input v-model="member.en.placeOfBirth.houseNumber" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('street') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.street" class="col-span-3" />
+                      <Input v-model="member.en.placeOfBirth.street" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col col-span-2 items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('district') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.district" class="col-span-3" />
+                      <Input v-model="member.en.placeOfBirth.district" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center ">
                       <Label class="text-left mb-1">{{ $t('city') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.city" class="col-span-3" />
+                      <Input v-model="member.en.placeOfBirth.city" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                     <div class="flex flex-col items-start justify-center">
                       <Label class="text-left mb-1">{{ $t('country') }}</Label>
-                      <Input v-model="member.en.placeOfBirth.country" class="col-span-3" />
+                      <Input v-model="member.en.placeOfBirth.country" required :rules="[validationRules.required]"
+                        class="col-span-3" />
                     </div>
                   </div>
                 </div>
@@ -181,8 +199,8 @@
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('position') }}</Label>
                     <keep-alive>
-                      <PositionSelection :positionList="positionList" :initPosition="position_id"
-                        @positionChange="handlePositionChange" />
+                      <PositionSelection :positionList="positionList" :required="(position_id && position_id != '')"
+                        :initPosition="position_id" @positionChange="handlePositionChange" />
                     </keep-alive>
                   </div>
                   <div class="grid grid-cols-3 gap-2">
@@ -196,22 +214,24 @@
                     </div>
                     <!-- Upload Image -->
                     <div class="flex justify-center items-end mb-3 col-span-1">
-                      <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class=" col-span-3"
-                        accept="image/jpeg,image/png,image/gif" />
+                      <Input type="file" :required="!previewImage" @onChange="handleFileInput" @input="handleFileInput"
+                        class=" col-span-3" accept="image/jpeg,image/png,image/gif" />
                     </div>
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-3 w-full">
                     <Label class="text-left mb-1">{{ $t('career_status') }}</Label>
                     <keep-alive>
-                      <CareerStatus :showForm="showForm" :careerStatusList="member.en.careerStatus"
+                      <CareerStatus :required="(member.en.careerStatus && member.en.careerStatus.length == 0)"
+                        :showForm="showForm" :careerStatusList="member.en.careerStatus"
                         @careerChange="member.en.careerStatus = $event" />
                     </keep-alive>
                   </div>
                   <div class="flex flex-col items-start justify-center mb-3">
                     <Label class="text-left mb-1">{{ $t('experience') }}</Label>
                     <keep-alive>
-                      <Experience :careerStatusList="member.en.careerStatus" :showForm="showForm"
+                      <Experience :required="(member.en.experience && member.en.experience.length == 0)"
+                        :careerStatusList="member.en.experience" :showForm="showForm"
                         :experienceList="member.en.experience" @experienceChange="member.en.experience = $event" />
                     </keep-alive>
                   </div>
@@ -337,10 +357,82 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
   reader.readAsDataURL(file)
 }
 
+const validationMemberForm = async () => {
+  if (!member.value.en.birthDate.trim() || !member.value.kh.birthDate.trim()) {
+    toast({
+      title: "Warning",
+      description: "BirthDate is required",
+      variant: "destructive",
+    });
+    return false;
+  }
 
-const onHandleSummitForm = async () => {
+  if (!member.value.en.name.trim()) {
+    toast({
+      title: "Warning",
+      description: "English Name is required",
+      variant: "destructive",
+    });
+    return false
+  }
+
+  if (!member.value.en.experience || !member.value.en.experience.length) {
+    toast({
+      title: "Warning",
+      description: "English Experience is required",
+      variant: "destructive",
+    });
+    return false
+  }
+
+  if (!member.value.en.careerStatus || !member.value.en.careerStatus.length) {
+    toast({
+      title: "Warning",
+      description: "English Career Status is required",
+      variant: "destructive",
+    });
+    return false
+  }
+
+  if (!member.value.kh.experience || !member.value.kh.experience.length) {
+    toast({
+      title: "Warning",
+      description: "Khmer Experience is required",
+      variant: "destructive",
+    });
+    return false
+  }
+  if (!member.value.kh.name.trim()) {
+    toast({
+      title: "Warning",
+      description: "Khmer Name is required",
+      variant: "destructive",
+    });
+    return false
+  }
+
+  if (!member.value.kh.careerStatus || !member.value.kh.careerStatus.length) {
+    toast({
+      title: "Warning",
+      description: "Khmer Career Status is required",
+      variant: "destructive",
+    });
+    return false
+  }
+
+  
+
+  return true
+}
+
+
+const onHandleSummitForm = async (e: Event) => {
   try {
+    e.preventDefault();
     member.value.position = (typeof member?.value?.position === 'object' ? member?.value.position?._id : member?.value?.position);
+    if (!await validationMemberForm()) {
+      return
+    }
     if (_fileChange.value && _file.value) {
       try {
         const { data, statusCode } = await uploadFileHandler(_file.value);

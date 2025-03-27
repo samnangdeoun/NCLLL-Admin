@@ -5,7 +5,7 @@ export const createResource = (data: Partial<ResourceModel> = {}): ResourceModel
     cover: data.cover || '',
     file: data.file || '',
     type: data.type || '',
-    publishedAt: data.publishedAt || new Date(),
+    publishedAt: data.publishedAt || new Date().toISOString().slice(0, 10),
     source: data.source || '',
 });
 
@@ -17,7 +17,7 @@ export default interface ResourceModel {
     cover: string,
     file: string,
     type: string,
-    publishedAt: Date,
+    publishedAt: string,
     created_at?: Date,
     updated_at? : Date,
     source: string
