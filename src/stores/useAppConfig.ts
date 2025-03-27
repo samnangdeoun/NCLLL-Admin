@@ -19,7 +19,7 @@ export const useAppStore = defineStore('useAppConfig', {
         sidebarExpand: true,
         wrapperWidth: SIDEBAR_EXPAND_WIDTH,
         wrapperLeftOffset: SIDEBAR_EXPAND_WIDTH,
-        navWidth: `calc(100% - ${SIDEBAR_EXPAND_WIDTH}px)`,
+        navWidth: `calc(100% - ${SIDEBAR_EXPAND_WIDTH + 5}px)`,
         navHeight: NAV_HEIGHT,
     }),
     getters: {
@@ -43,7 +43,7 @@ export const useAppStore = defineStore('useAppConfig', {
                     this.wrapperLeftOffset = SIDEBAR_COLLAPSED_WIDTH;
                     this.navHeight = NAV_HEIGHT_COLLAPSED;
                 }
-                this.navWidth = `calc(100% - ${this.wrapperWidth}px)`;
+                this.navWidth = `calc(100% - ${this.wrapperWidth + 5}px)`;
             } else {
                 this.navWidth = '100%';
                 this.sidebarExpand = false;

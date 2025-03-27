@@ -1,6 +1,5 @@
 <template>
-  <nav
-    class="bg-gray-50 flex items-center justify-between px-4 fixed z-30 top-0 bg-background/80 backdrop-blur-lg border-border"
+  <nav class="flex items-center w-full justify-between rounded-es-3xl px-4 fixed z-40 top-0 bg-background/80 backdrop-blur-lg shadow-md"
     :style="{ width: store.navWidth, height: `${store.navHeight}px`, opacity: store.sidebarExpanded ? 1 : 0 }">
     <div class="flex">
       <h1 class="text-lg font-semibold">{{ route.meta.title }}</h1>

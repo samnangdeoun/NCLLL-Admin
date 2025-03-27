@@ -24,14 +24,13 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast';
 import type Partner from '../../scripts/model/partner/PartnerModel.ts';
-import partnerInfo from '../../fake-information/partners.json';
 
 const PartnerForm = defineAsyncComponent(() => import('../.././components/form/PartnerForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
 const PartnerCard = defineAsyncComponent(() => import('../../components/cards/PartnerCard.vue'));
 
 const { toast } = useToast();
-const partners = ref<Partner[]>(partnerInfo.partners as unknown as Partner[]);
+const partners = ref<Partner[]>([]);
 const showConfirmDialog = ref<boolean>(false);
 const showPartnerForm = ref<boolean>(false);
 const selectedPartner = ref<Partner>({} as Partner);

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-50 bg-background/80 rounded-ee-3xl transition-all duration-400 h-screen overflow-hidden fixed z-50"
+    class="bg-background/80 rounded-ee-3xl rounded-se-3xl transition-all duration-400 h-screen overflow-hidden fixed z-20 shadow-md"
     :style="{ width: `${store.wrapperWidth}px` }"
   >
     <div class="relative h-full flex flex-col justify-between ">
@@ -27,7 +27,7 @@
             <transition name="fade" class="absolute">
               <button
                 variant="outline"
-                class="-right-4 top-1/2 -translate-y-1/2 bg-green-600 rounded-full p-[6px] w-8 h-8 transition-all duration-200 bg-mainPrimary text-white flex justify-center items-center"
+                class="right-2 top-1/2 -translate-y-1/2 bg-green-600 rounded-full p-[6px] w-8 h-8 transition-all duration-200 bg-mainPrimary text-white flex justify-center items-center"
                 :class="
                   store.sidebarExpanded
                     ? ''
