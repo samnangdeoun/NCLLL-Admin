@@ -1,32 +1,25 @@
 <template>
-    <div class="h-full w-full overflow-auto">
+    <div class="h-full w-full overflow-auto relative">
         <div class="flex justify-end items-center rounded-md pb-2">
             <button class="bg-green-600 rounded-md px-5 py-2" @click="onCreateResource">
                 {{ $t('new') }}
             </button>
         </div>
-
-        <div class="overflow-x-auto scrollbar-hide">
-            <Table class="w-full bg-white h-[70vh]">
-                <TableHeader class="" fixed>
-                    <TableRow>
-                        <TableHead class="w-[50px]">
-                            {{ $t('no') }}
-                        </TableHead>
-                        <TableHead>{{ $t('cover') }}</TableHead>
-                        <TableHead class="w-[20%]">{{ $t('title') }}</TableHead>
-                        <TableHead class="w-[25%]">{{ $t('source') }}</TableHead>
-                        <TableHead class="w-[20%]">{{ $t('publish_date') }}</TableHead>
-                        <TableHead class="text-right">
-                            {{ $t('action') }}
-                        </TableHead>
+        <div class="w-full bg-white h-[75vh] overflow-auto">
+            <Table class="w-full bg-white">
+                <TableHeader>
+                    <TableRow class="w-full bg-white">
+                        <TableHead class="w-[4vw]">{{ $t('no') }}</TableHead>
+                        <TableHead class="w-[5vw]">{{ $t('cover') }}</TableHead>
+                        <TableHead class="w-[20vw]">{{ $t('title') }}</TableHead>
+                        <TableHead class="w-[20vw]">{{ $t('source') }}</TableHead>
+                        <TableHead class="w-[16vw]">{{ $t('publish_date') }}</TableHead>
+                        <TableHead class="text-right w-[15vw]">{{ $t('action') }}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="(resource, index) in resourceList" :key="index">
-                        <TableCell class="font-medium">
-                            {{ index + 1 }}
-                        </TableCell>
+                        <TableCell class="font-medium mx-2">{{ index + 1 }}</TableCell>
                         <TableCell>
                             <div class="flex justify-center items-center border rounded-md w-[4rem] h-[6rem]">
                                 <img v-if="resource.cover" :src="resource.cover"
@@ -36,7 +29,7 @@
                         <TableCell>{{ resource.title }}</TableCell>
                         <TableCell>{{ resource.source.kh.name }} ({{ resource.source.en.name }})</TableCell>
                         <TableCell>{{ conversionUTCDate(resource.publishedAt) }}</TableCell>
-                        <TableCell class=" flex justify-end gap-2">
+                        <TableCell class="flex justify-end gap-2">
                             <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateResource(resource)">
                                 {{ $t('update') }}
                             </button>
@@ -47,8 +40,14 @@
                     </TableRow>
                 </TableBody>
             </Table>
+
+        </div>
+        <!-- Pagination Positioned Inside the Table Container -->
+        <div
+            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full bg-white py-2 shadow-md flex justify-center">
             <CustomPagination></CustomPagination>
         </div>
+
 
         <ConfirmDialog v-model:open="showConfirmDialog" title="Delete Item"
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"

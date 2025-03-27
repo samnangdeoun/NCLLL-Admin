@@ -66,4 +66,10 @@ export default {
     career_status_title: "Career Status Title",
     career_status_description: "Career Status Description",
     select_birth_date: "Select Birth Date",
+    cover: "Cover",
+    source: "Source",
+    publish_date: "Publish Date",
+    select_type: "Select Type",
+    select_language: "Select Language",
+    update_member_success: "Update Member Success",
 };
