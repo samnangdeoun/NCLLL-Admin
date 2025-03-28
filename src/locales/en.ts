@@ -74,4 +74,5 @@ export default {
     update_member_success: "Update Member Success",
     select_member: "Select Member",
     parent: "Parent",
+    create_member_success: "Create Member Success",
 };
