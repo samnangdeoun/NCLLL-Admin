@@ -58,7 +58,7 @@ export const updateResourceHandler = async (params: ResourceModel) => {
 
 export const removeResourceHandler = async (resource: ResourceModel) => {
     try {
-        const response = await fetch(resourceAPI.resourceAPI(resource._id).delete_resource, {
+        const response = await fetch(resourceAPI.resourceAPI({ id: resource._id }).delete_resource, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -81,9 +81,9 @@ export const removeResourceHandler = async (resource: ResourceModel) => {
     }
 };
 
-export const retriveResourceHandler = async () => {
+export const retriveResourceHandler = async ({ limit = 5, page = 1, type = ''}) => {
     try {
-        const response = await fetch(resourceAPI.resourceAPI("", 100, 1, "").retrive_resource, {
+        const response = await fetch(resourceAPI.resourceAPI({ limit, page, type }).retrive_resource, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

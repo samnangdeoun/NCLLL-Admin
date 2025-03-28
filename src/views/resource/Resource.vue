@@ -45,9 +45,10 @@
         <!-- Pagination Positioned Inside the Table Container -->
         <div
             class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full bg-white py-2 shadow-md flex justify-center">
-            <CustomPagination></CustomPagination>
+            <CustomPagination v-model:meta="paginate"
+                @pageChange="onPaginateChange">
+            </CustomPagination>
         </div>
-
 
         <ConfirmDialog v-model:open="showConfirmDialog" title="Delete Item"
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
@@ -98,13 +99,24 @@ const resourceList = ref<ResourceModel[]>([] as ResourceModel[])
 const showResourceForm = ref<boolean>(false)
 const selectedResource = ref<ResourceModel>({} as ResourceModel)
 const paginate = ref<any>({})
+const currentPage = ref<number>(1)
 
 
 // Define Function
+const onPaginateChange = async (page: number) => {
+    if(!isNaN(page)){
+        currentPage.value = page
+        await onLoadResource()
+    }
+}
+
 const onLoadResource = async () => {
     try {
         emitter?.emit("stateLoading", true);
-        const { message, data, statusCode } = await retriveResourceHandler()
+        const { message, data, statusCode } = await retriveResourceHandler({
+            limit: 5,
+            page: currentPage.value
+        })
         console.log(message, data, statusCode);
         if (statusCode == 200) {
             paginate.value = data.meta;
@@ -144,6 +156,7 @@ const handleConfirm = async () => {
         }, 1000);
     }
 };
+
 
 const handleCancel = () => {
     toast({ title: 'Item Not Deleted', description: 'The item has not been deleted.', variant: 'warning' });
