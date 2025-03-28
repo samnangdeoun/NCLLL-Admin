@@ -72,4 +72,6 @@ export default {
     select_type: "Select Type",
     select_language: "Select Language",
     update_member_success: "Update Member Success",
+    select_member: "Select Member",
+    parent: "Parent",
 };
