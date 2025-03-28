@@ -45,6 +45,7 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
         careerStatus: data.kh?.careerStatus || [],
         experience: data.kh?.experience || [],
     },
+    parent: data?.parent || '',
     position: data.position || '',
     id: data._id,
 
@@ -55,6 +56,7 @@ export default interface MemberModel {
     _id?: string;
     en: PersonalInfo;
     kh: PersonalInfo;
+    parent: string;
     position: string;
 }
 

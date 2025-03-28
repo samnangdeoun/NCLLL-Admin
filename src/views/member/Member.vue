@@ -49,8 +49,8 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <MemberForm v-model:open="showMemberForm" :showForm="showMemberForm" @closeForm="showMemberForm = $event"
-            :member="selectedMember" @updateForm="handleUpdateForm" />
+        <MemberForm v-model:open="showMemberForm" :memberList="memberList" :showForm="showMemberForm"
+            @closeForm="showMemberForm = $event" :member="selectedMember" @updateForm="handleUpdateForm" />
     </div>
 </template>
 <script setup lang="ts">

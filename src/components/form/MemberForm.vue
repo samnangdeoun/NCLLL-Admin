@@ -84,13 +84,24 @@
                 </div>
 
                 <div>
-                  <!-- Position -->
-                  <div class="flex flex-col items-start justify-center mb-3">
-                    <Label class="text-left mb-1">{{ $t('position') }}</Label>
-                    <keep-alive>
-                      <PositionSelection :required="(position_id && position_id != '')" :positionList="positionList"
-                        :initPosition="position_id" @positionChange="handlePositionChange" />
-                    </keep-alive>
+                  <div class="grid grid-cols-2 gap-2">
+                    <!-- Position -->
+                    <div class="flex flex-col items-start justify-center mb-3">
+                      <Label class="text-left mb-1">{{ $t('position') }}</Label>
+                      <keep-alive>
+                        <PositionSelection :required="(position_id && position_id != '')" :positionList="positionList"
+                          :initPosition="position_id" @positionChange="handlePositionChange" />
+                      </keep-alive>
+                    </div>
+                    <!-- Position -->
+                    <div class="flex flex-col items-start justify-center mb-3">
+                      <Label class="text-left mb-1">{{ $t('parent') }}</Label>
+                      <keep-alive>
+                        <MemberSelection :memberList="memberList"
+                          :required="(member_parent_id && member_parent_id != '')" :initMember="member_parent_id"
+                          @memberChange="handleMemberChange" />
+                      </keep-alive>
+                    </div>
                   </div>
                   <div class="grid grid-cols-3 gap-2">
                     <!-- Preview -->
@@ -195,13 +206,24 @@
                 </div>
 
                 <div>
-                  <!-- Position -->
-                  <div class="flex flex-col items-start justify-center mb-3">
-                    <Label class="text-left mb-1">{{ $t('position') }}</Label>
-                    <keep-alive>
-                      <PositionSelection :positionList="positionList" :required="(position_id && position_id != '')"
-                        :initPosition="position_id" @positionChange="handlePositionChange" />
-                    </keep-alive>
+                  <div class="grid grid-cols-2 gap-2">
+                    <!-- Position -->
+                    <div class="flex flex-col items-start justify-center mb-3">
+                      <Label class="text-left mb-1">{{ $t('position') }}</Label>
+                      <keep-alive>
+                        <PositionSelection :positionList="positionList" :required="(position_id && position_id != '')"
+                          :initPosition="position_id" @positionChange="handlePositionChange" />
+                      </keep-alive>
+                    </div>
+                    <!-- Position -->
+                    <div class="flex flex-col items-start justify-center mb-3">
+                      <Label class="text-left mb-1">{{ $t('parent') }}</Label>
+                      <keep-alive>
+                        <MemberSelection :memberList="memberList"
+                          :required="(member_parent_id && member_parent_id != '')" :initMember="member_parent_id"
+                          @memberChange="handleMemberChange" />
+                      </keep-alive>
+                    </div>
                   </div>
                   <div class="grid grid-cols-3 gap-2">
                     <!-- Preview -->
@@ -283,10 +305,15 @@ const Experience = defineAsyncComponent(() => import('../form/member/Experience.
 const CareerStatus = defineAsyncComponent(() => import('../form/member/CareerStatus.vue'))
 const DatePicker = defineAsyncComponent(() => import('../custom/DatePicker.vue'))
 const PositionSelection = defineAsyncComponent(() => import('../selection/Position.vue'))
+const MemberSelection = defineAsyncComponent(() => import('../selection/Member.vue'))
 
 
 // Define Props
 const props = defineProps({
+  memberList: {
+    type: Array as () => MemberModel[],
+    required: true
+  },
   member: {
     type: Object,
     required: true,
@@ -308,6 +335,8 @@ const positionList = ref<Position[]>([] as Position[])
 const _file = ref<File | null>(null);
 const _fileChange = ref<boolean>(false)
 const _position = ref<any>('')
+
+//Temp
 // Define props and emits
 const emit = defineEmits(['update:open', 'updateForm', "closeForm"])
 
@@ -321,11 +350,23 @@ const member_birthDate = computed(() => {
   return member.value.en.birthDate
 })
 
+const member_parent_id = computed(() => {
+  // return (typeof member.value?.parent == 'object') ? member.value.parent._id : member.value.parent
+  return "67e042b13b642de5375c7894"
+})
+
 // Define methods
 const handlePositionChange = (position: string) => {
   console.log(position, 'position -> her')
   if (position) {
     member.value.position = position
+  }
+}
+
+const handleMemberChange = (memberChange: string) => {
+  console.log(memberChange, 'memberChange -> her')
+  if (memberChange) {
+    member.value.parent = memberChange
   }
 }
 
@@ -402,6 +443,7 @@ const validationMemberForm = async () => {
     });
     return false
   }
+
   if (!member.value.kh.name.trim()) {
     toast({
       title: "Warning",
@@ -528,15 +570,6 @@ watch(
   (newVal) => {
     if (newVal) {
       member.value.en.birthDate = newVal
-    }
-  }, { immediate: true, deep: true }
-)
-
-watch(
-  () => member?.value.en?.birthDate,
-  (newVal) => {
-    if (newVal) {
-      member.value.kh.birthDate = newVal
     }
   }, { immediate: true, deep: true }
 )
