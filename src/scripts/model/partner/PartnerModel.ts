@@ -1,16 +1,22 @@
 export const createPartner = (data: Partial<PartnerModel> = {}): PartnerModel => ({
-  _id: data._id || '',
-  name: data.name || '',
-  name_kh: data.name_kh || '',
-  description: data.description || '',
-  image: data.image || '',
+  id: data._id || '',
+  en: data.en || {} as ParnterInfo,
+  kh: data.kh || {} as ParnterInfo,
+  url: data.url || '',
+  logo: data.logo || '',
 })
 
 export default interface PartnerModel {
   id?: string;
   _id?: string;
+  en: ParnterInfo;
+  kh: ParnterInfo;
+  url: string;
+  logo: string;
+}
+
+export interface ParnterInfo {
   name: string;
-  name_kh: string;
   description: string;
-  image: string;
+  lang: string;
 }
