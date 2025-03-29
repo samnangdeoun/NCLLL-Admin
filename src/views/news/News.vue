@@ -102,12 +102,13 @@ const onLoadNews = async () => {
         emitter?.emit("stateLoading", true);
         const { message, data, statusCode } = await retriveBlogHandler(
             {
-                limit: 5,
+                limit: 9,
                 page: currentPage.value
             }
         )
         console.log(message, data, statusCode);
         if (statusCode == 200) {
+            paginate.value = data.meta
             newsList.value = data.results
         }
     } catch (error) {
