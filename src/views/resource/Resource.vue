@@ -125,9 +125,7 @@ const onLoadResource = async () => {
     } catch (error) {
         console.error(error);
     } finally {
-        setTimeout(() => {
             emitter?.emit("stateLoading", false);
-        }, 1000);
     }
 }
 

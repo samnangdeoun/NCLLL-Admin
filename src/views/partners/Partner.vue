@@ -6,7 +6,7 @@
             </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-x-auto scrollbar-hide">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-2 overflow-x-auto scrollbar-hide">
             <PartnerCard v-for="partner in partners" :key="partner.id" :partner="partner"
                 @updatePartner="handleUpdatePartner" @removePartner="handleRemovePartner" />
         </div>
@@ -21,19 +21,43 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, inject, onMounted } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast';
-import type Partner from '../../scripts/model/partner/PartnerModel.ts';
+import type Partner from '@/scripts/model/partner/PartnerModel.ts';
+
+import { retrivePartnerHandler, removePartnerHandler } from '@/scripts/handler/partner/PartnerHandler.ts'
+import type { Emitter } from 'mitt';
 
 const PartnerForm = defineAsyncComponent(() => import('../.././components/form/PartnerForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
 const PartnerCard = defineAsyncComponent(() => import('../../components/cards/PartnerCard.vue'));
 
+
+// Define Event
+const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 const { toast } = useToast();
 const partners = ref<Partner[]>([]);
 const showConfirmDialog = ref<boolean>(false);
 const showPartnerForm = ref<boolean>(false);
 const selectedPartner = ref<Partner>({} as Partner);
+
+
+
+// Define Function
+const onLoadPartners = async () => {
+    try {
+        emitter?.emit("stateLoading", true);
+        const { message, data, statusCode } = await retrivePartnerHandler()
+        console.log(message, data, statusCode);
+        if (statusCode == 200) {
+            partners.value = data.results
+        }
+    } catch (error) {
+        console.error(error);
+    } finally {
+            emitter?.emit("stateLoading", false);
+    }
+}
 
 const handleUpdatePartner = (partner: any) => {
     if (partner?.id) {
@@ -74,4 +98,9 @@ const handleConfirm = () => {
 const handleCancel = () => {
     toast({ title: 'Item Not Deleted', description: 'The item has not been deleted.', variant: 'warning' });
 };
+
+
+onMounted(async () => {
+    await onLoadPartners();
+});
 </script>

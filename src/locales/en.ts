@@ -74,4 +74,9 @@ export default {
     update_member_success: "Update Member Success",
     select_member: "Select Member",
     parent: "Parent",
+    create_member_success: "Create Member Success",
+    khmer_content: "Khmer Content",
+    english_content: "English Content",
+    category: "Category",
+    file: "File",
 };

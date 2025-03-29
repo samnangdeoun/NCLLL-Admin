@@ -5,7 +5,7 @@ const routes = [
   {
     path: "/",
     name: "Dashboard",
-    component: () => import("../layouts/Dashboard.vue"),
+    component: () => import("@/layouts/Dashboard.vue"),
     redirect: "/event",
     meta: { title: "Dashboard" },
     children: [
@@ -34,10 +34,10 @@ const routes = [
         meta: { title: "Overview", auth: true },
       },
       {
-        path: "/tag",
-        name: "Tag",
-        component: () => import("../views/tag/Tag.vue"),
-        meta: { title: "Tag", auth: true },
+        path: "/options",
+        name: "Options",
+        component: () => import("../views/options/Options.vue"),
+        meta: { title: "Options", auth: true },
       },
       {
         path: "/news",
@@ -52,36 +52,30 @@ const routes = [
         meta: { title: "Member", auth: true },
       },
       {
+        path: "/news",
+        name: "News",
+        component: () => import("@/views/news/News.vue"),
+        meta: { title: "News", auth: true },
+      },
+      {
         path: "/ministry",
         name: "Ministry",
-        component: () => import("../views/resource/ministry/Ministry.vue"),
+        component: () => import("@/views/resource/ministry/Ministry.vue"),
         meta: { title: "Ministry", auth: true },
-      },
-      {
-        path: "/sponsor",
-        name: "Sponsor",
-        component: () => import("../views/sponsor/Sponsor.vue"),
-        meta: { title: "Sponsor", auth: true },
-      },
-      {
-        path: "/position",
-        name: "Position",
-        component: () => import("../views/member/position/Position.vue"),
-        meta: { title: "Position", auth: true },
       },
       {
         path: "/banner",
         name: "Banner",
-        component: () => import("../views/banner/Banner.vue"),
+        component: () => import("@/views/banner/Banner.vue"),
         meta: { title: "Banner", auth: true },
       },
-      {
-        path: "/contact",	
-        name: "Contact",
-        component: () => import("../views/contact/Contact.vue"),
-        meta: { title: "Contact", auth: true },
-      },
     ]
+  },
+  {
+    path: "/content",	
+    name: "Content",
+    component: () => import("@/views/content/Content.vue"),
+    meta: { title: "Content", auth: true },
   },
   {
     path: "/login",

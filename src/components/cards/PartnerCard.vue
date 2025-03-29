@@ -1,8 +1,9 @@
 <template>
-    <div class="w-full max-w-sm p-4 rounded-xl shadow-lg bg-white flex flex-col items-center">
-        <h1 class="text-center font-bold text-sm">{{ partner.name }}</h1>
-        <div class="mt-3 w-full max-w-[40rem] max-h-[15rem]">
-            <img :src="partner.image" alt="" class="w-full h-full object-cover rounded-lg">
+    <div class="w-full max-w-sm p-4 rounded-xl h-auto shadow-lg bg-white flex flex-col items-center">
+        <h1 class="text-center font-bold text-sm">{{ partner.kh.name }}</h1>
+        <h1 class="text-center font-bold text-sm">{{ partner.en.name }}</h1>
+        <div class="flex justify-center items-center mt-3 w-full h-full max-w-[20rem] max-h-[15rem] aspect-square">
+            <img v-if="partner.logo" :src="partner.logo" alt="" class="w-[full] h-[15rem] object-cover rounded-lg">
         </div>
         <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-3 w-full">
             <button @click="emit('updatePartner', partner)"
@@ -37,4 +38,6 @@ const props = defineProps({
 
 // Define Variable
 const { partner } = props
+
+console.log(partner, ' partner');
 </script>

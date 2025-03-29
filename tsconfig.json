@@ -5,7 +5,9 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "files": [],
   "references": [

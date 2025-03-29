@@ -15,7 +15,7 @@
             description="Are you sure you want to delete this item? This action cannot be undone." confirm-text="Delete"
             cancel-text="Cancel" @confirm="handleConfirm" @cancel="handleCancel" />
 
-        <TagForm :showForm="showTagForm" @closeForm="showTagForm = false" :tag="selectedTag"
+        <TagForm v-model:open="showTagForm" :showForm="showTagForm" @closeForm="showTagForm = false" :tag="selectedTag"
             @updateForm="handleUpdateForm" />
     </div>
 </template>
@@ -84,9 +84,7 @@ const onLoadTags = async () => {
     } catch (error) {
         console.error(error);
     } finally {
-        setTimeout(() => {
             emitter?.emit("stateLoading", false);
-        }, 1000);
     }
 };
 
@@ -102,9 +100,7 @@ const handleConfirm = async () => {
     }catch(error){
         console.error(error);
     }finally{
-        setTimeout(() => {
             emitter?.emit("stateLoading", false);
-        }, 1000);
     }
 };
 

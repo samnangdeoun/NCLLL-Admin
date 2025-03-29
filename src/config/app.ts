@@ -6,11 +6,11 @@ export const APP_MENU = {
   main: {
     name: "Menu",
     routes: [
-      {
-        title: "overview",
-        icon: "",
-        path: "overview",
-      },
+      // {
+      //   title: "overview",
+      //   icon: "",
+      //   path: "overview",
+      // },
       {
         title: "partner",
         icon: "",
@@ -24,8 +24,14 @@ export const APP_MENU = {
         description: "",
       },
       {
-        title: "event",
-        path: "event",
+        title: "ministry",
+        path: "ministry",
+        icon: "",
+        description: "",
+      },
+      {
+        title: "banner",
+        path: "banner",
         icon: "",
         description: "",
       },
@@ -42,11 +48,11 @@ export const APP_MENU = {
         description: "",
       },
       {
-        title: "contact",
-        path: "contact",
+        title: "options",
+        path: "options",
         icon: "",
         description: "",
-      }
+      },
     ],
   },
 };
