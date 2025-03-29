@@ -8,6 +8,12 @@ export enum ResourceType {
     Legal = "legal",
 }
 
+export enum ContentCategory {
+    News = "news",
+    Event = "event",
+    Project = "project",
+}
+
 export enum ResourceTypeView {
     News = "news",
     Event = "event",

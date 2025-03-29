@@ -24,18 +24,6 @@ export const APP_MENU = {
         description: "",
       },
       {
-        title: "tag",
-        path: "tag",
-        icon: "",
-        description: "",
-      },
-      {
-        title: "position",
-        path: "position",
-        icon: "",
-        description: "",
-      },
-      {
         title: "ministry",
         path: "ministry",
         icon: "",
@@ -48,17 +36,23 @@ export const APP_MENU = {
         description: "",
       },
       {
+        title: "news",
+        path: "news",
+        icon: "",
+        description: "",
+      },
+      {
         title: "member",
         path: "member",
         icon: "",
         description: "",
       },
       {
-        title: "contact",
-        path: "contact",
+        title: "options",
+        path: "options",
         icon: "",
         description: "",
-      }
+      },
     ],
   },
 };
