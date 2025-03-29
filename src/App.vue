@@ -1,7 +1,9 @@
 <template>
   <div>
     <div>
-      <RouterView />
+      <RouterView v-slot="{ Component }">
+          <component :is="Component" />
+      </RouterView>
     </div>
     <Loading :visible="visible" />
     <Toaster :duration="2500" />
@@ -31,7 +33,7 @@ if (emitter) {
 
 // Define the async component
 const Loading = defineAsyncComponent({
-  loader: () => import('./components/Loading.vue'),
+  loader: () => import('@/components/Loading.vue'),
   delay: 200,
   timeout: 3000,
 });
