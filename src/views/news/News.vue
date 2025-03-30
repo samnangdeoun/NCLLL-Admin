@@ -21,7 +21,7 @@
                 <TableBody>
                     <TableRow v-for="(news, index) in newsList" :key="index">
                         <TableCell class="font-medium">
-                            {{ index + 1 }}
+                            {{ paginate.current_page > 1 ? (paginate.current_page - 1) * (paginate.items_per_page) + index + 1 : index + 1 }}
                         </TableCell>
                         <TableCell>
                             {{ news?.en?.title }}
@@ -71,9 +71,10 @@ import {
 } from '../../components/ui/table'
 import { useRouter } from 'vue-router';
 import type BlogModel from '../../scripts/model/blog/BlogModel.ts'
-import { retriveBlogHandler, removeBlogHandler } from '../../scripts/handler/blog/BlogHandler.ts'
+import { retriveBlogHandler, removeSoftBlogHandler } from '../../scripts/handler/blog/BlogHandler.ts'
 import type { Emitter } from 'mitt';
 import { toast } from '../../components/ui/toast/use-toast.ts';
+import type PaginationModel from '@/scripts/model/pagination/PaginationModel.ts';
 
 // Define Component
 const CustomPagination = defineAsyncComponent({
@@ -89,7 +90,7 @@ const router = useRouter();
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 
 // Define Varible
-const paginate = ref<any>({})
+const paginate = ref<PaginationModel>({} as PaginationModel)
 const currentPage = ref<number>(1)
 const showConfirmDialog = ref(false);
 const newsList = ref<BlogModel[]>([] as BlogModel[])
@@ -108,13 +109,13 @@ const onLoadNews = async () => {
         )
         console.log(message, data, statusCode);
         if (statusCode == 200) {
-            paginate.value = data.meta
+            paginate.value = data.meta as PaginationModel;
             newsList.value = data.results
         }
     } catch (error) {
         console.error(error);
     } finally {
-            emitter?.emit("stateLoading", false);
+        emitter?.emit("stateLoading", false);
     }
 }
 
@@ -137,7 +138,7 @@ const handleConfirm = async () => {
     try {
         emitter?.emit("stateLoading", true);
         console.log(selectedNews.value, '-> valuue');
-        const { statusCode } = await removeBlogHandler(selectedNews.value as BlogModel);
+        const { statusCode } = await removeSoftBlogHandler(selectedNews.value as BlogModel);
         console.log(statusCode);
         if (statusCode == 200) {
             newsList.value = newsList.value.filter(p => p._id !== selectedNews?.value?._id);
@@ -146,7 +147,7 @@ const handleConfirm = async () => {
     } catch (error) {
         console.error(error);
     } finally {
-            emitter?.emit("stateLoading", false);
+        emitter?.emit("stateLoading", false);
     }
 };
 
@@ -175,22 +176,6 @@ const onUpdateNews = (news: BlogModel) => {
         },
     })
 }
-
-// const handleUpdateForm = (news: any) => {
-//     try {
-//         if (news && news.status == 'New') {
-//             newsList.value.push(news as BlogModel);
-//         } else {
-//             news
-//             const index = newsList.value.findIndex(p => p._id === news._id);
-//             if (index !== -1) {
-//                 newsList.value[index] = (news) as BlogModel;
-//             }
-//         }
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
 
 onMounted(async () => {
     await onLoadNews()

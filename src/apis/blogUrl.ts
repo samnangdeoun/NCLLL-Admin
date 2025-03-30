@@ -4,6 +4,7 @@ const blogAPI = ({ id, limit, page, type }: { id?: string; limit?: number; page?
     return {
         create_blog               :       BASE_URL + "/blog",
         retrive_blog_one          :       BASE_URL + "/blog/" + id,
+        soft_delete_blog          :       BASE_URL + "/blog/soft/" + id,
         retrive_blog              :       BASE_URL + "/blog?limit=" + limit + "&page=" + page + "&type=" + type,
         delete_blog               :       BASE_URL + "/blog/" + id,
         update_blog               :       BASE_URL + "/blog"

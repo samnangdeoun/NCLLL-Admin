@@ -21,19 +21,26 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, onMounted, inject } from 'vue';
+import { defineAsyncComponent, ref, inject, watch } from 'vue';
 import { useToast } from '../../components/ui/toast/use-toast.ts';
 import type TagModel from '../../scripts/model/tag/TagModel.ts';
 import type { Emitter } from 'mitt';
-import { retriveTagHandler, removeTagHandler } from '../../scripts/handler/tag/TagHandler.ts';
+import { removeTagHandler } from '../../scripts/handler/tag/TagHandler.ts';
 
 const TagForm = defineAsyncComponent(() => import('../../components/form/TagForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../components/custom/ConfirmDialog.vue'));
 const TagCard = defineAsyncComponent(() => import('../../components/cards/TagCard.vue'));
 
+const props = defineProps({
+    tagList: {
+        type: Array as () => TagModel[],
+        required: true,
+    },
+});
+
 const { toast } = useToast();
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
-const tags = ref<TagModel[]>([]);
+const tags = ref<TagModel[]>(props.tagList as TagModel[]);
 const showConfirmDialog = ref(false);
 const showTagForm = ref(false);
 const selectedTag = ref<TagModel>({} as TagModel);
@@ -51,7 +58,6 @@ const onCreateTag = () => {
 };
 
 const handleUpdateForm = (tag: any) => {
-    console.log(tag, ' handleUpdateForm');
     if (tag && tag.status == 'New') {
         tags.value.push(tag);
     } else {
@@ -65,26 +71,9 @@ const handleUpdateForm = (tag: any) => {
 };
 
 const handleRemoveTag = (tag: TagModel) => {
-    console.log(tag, 'handleRemoveTag');
     if (tag?._id) {
         selectedTag.value = tag;
         showConfirmDialog.value = true;
-    }
-};
-
-const onLoadTags = async () => {
-    // Define Function
-    try {
-        emitter?.emit("stateLoading", true);
-        const { message, data, statusCode } = await retriveTagHandler()
-        console.log(message, data, statusCode);
-        if (statusCode == 200) {
-            tags.value = data
-        }
-    } catch (error) {
-        console.error(error);
-    } finally {
-            emitter?.emit("stateLoading", false);
     }
 };
 
@@ -108,7 +97,12 @@ const handleCancel = () => {
     toast({ title: 'Item Not Deleted', description: 'The item has not been deleted.', variant: 'warning' });
 };
 
-onMounted(async () => {
-    await onLoadTags();
-});
+watch(
+    () => props.tagList,
+    () => {
+        console.log(props.tagList, 'props.tagsList');
+        tags.value = props.tagList as TagModel[];
+    },
+    { immediate: true }
+);
 </script>

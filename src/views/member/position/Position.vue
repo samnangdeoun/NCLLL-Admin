@@ -21,19 +21,25 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, onMounted, inject } from 'vue';
+import { defineAsyncComponent, ref, inject } from 'vue';
 import { useToast } from '../../../components/ui/toast/use-toast';
 import type PositionModel from '../../../scripts/model/position/PositionModel.ts';
 import type { Emitter } from 'mitt';
-import { retrivePositionHandler, removePositionHandler } from '../../../scripts/handler/position/PositionHandler.ts';
+import { removePositionHandler } from '../../../scripts/handler/position/PositionHandler.ts';
 
 const PositionForm = defineAsyncComponent(() => import('../../../components/form/PositionForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../../components/custom/ConfirmDialog.vue'));
 const PositionCard = defineAsyncComponent(() => import('../../../components/cards/PositionCard.vue'));
 
+const props = defineProps({
+    positionList: {
+        type: Array<PositionModel>,
+        required: true
+    }
+})
 const { toast } = useToast();
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
-const positions = ref<PositionModel[]>([]);
+const positions = ref<PositionModel[]>(props.positionList as PositionModel[]);
 const showConfirmDialog = ref(false);
 const showPositionForm = ref(false);
 const selectedPosition = ref<PositionModel>({} as PositionModel);
@@ -69,21 +75,7 @@ const handleRemovePosition = (position: PositionModel) => {
     }
 };
 
-const onLoadPosition = async () => {
-    // Define Function
-    try {
-        emitter?.emit("stateLoading", true);
-        const { message, data, statusCode } = await retrivePositionHandler()
-        console.log(message, data, statusCode);
-        if (statusCode == 200) {
-            positions.value = data
-        }
-    } catch (error) {
-        console.error(error);
-    } finally {
-            emitter?.emit("stateLoading", false);
-    }
-};
+
 
 const handleConfirm = async () => {
     try {
@@ -105,8 +97,4 @@ const handleConfirm = async () => {
 const handleCancel = () => {
     toast({ title: 'Item Not Deleted', description: 'The item has not been deleted.', variant: 'warning' });
 };
-
-onMounted(async () => {
-    await onLoadPosition();
-});
 </script>

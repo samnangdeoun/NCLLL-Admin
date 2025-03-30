@@ -5,8 +5,8 @@
     <img hight="160" width="160" class="absolute" src="../assets/images/NCLLL_Logo.png" />
   </div>
 </template>
-<script setup>
-const props = defineProps({
+<script setup lang="ts">
+defineProps({
   visible: {
     type: Boolean,
     required: true

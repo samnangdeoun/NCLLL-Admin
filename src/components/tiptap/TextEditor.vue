@@ -207,9 +207,9 @@
     <!-- Image Modal -->
     <div v-if="showImageModal" class="modal">
       <div class="modal-content">
-        <h3>Insert Image</h3>
+        <!-- <h3>Insert Image</h3> -->
 
-        <div class="input-group">
+        <!-- <div class="input-group">
           <label>Image URL:</label>
           <input type="text" v-model="imageUrl" placeholder="https://example.com/image.jpg" class="modal-input" />
         </div>
@@ -217,17 +217,17 @@
         <div class="input-group">
           <label>Alt Text:</label>
           <input type="text" v-model="imageAlt" placeholder="Image description" class="modal-input" />
-        </div>
+        </div> -->
 
+        
+        <div class="image-preview">
+          <img v-if="imageUrl" :src="imageUrl" :alt="imageAlt || 'Preview'" />
+        </div>
+        
         <div class="input-group">
-          <label>Upload Image:</label>
+          <label>{{ $t('upload_image') }}</label>
           <input type="file" @change="handleImageUpload" accept="image/*" class="file-input" />
         </div>
-
-        <div class="image-preview" v-if="imageUrl">
-          <img :src="imageUrl" :alt="imageAlt || 'Preview'" />
-        </div>
-
         <div class="modal-buttons">
           <button @click="cancelImage">Cancel</button>
           <button @click="insertImage" :disabled="!imageUrl">Insert</button>
@@ -248,7 +248,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, nextTick, inject } from 'vue';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -267,6 +267,10 @@ import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import CharacterCount from '@tiptap/extension-character-count';
+import { uploadFileHandler } from '@/scripts/handler/FileUploadHanlder';
+import type { Emitter } from 'mitt';
+
+const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 
 // Define props
 const props = defineProps({
@@ -444,7 +448,6 @@ const handleImageUpload = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
     imageFile.value = input.files[0];
-
     // Read file as data URL
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -457,19 +460,32 @@ const handleImageUpload = (event: Event) => {
 };
 
 // Insert image
-const insertImage = () => {
-  if (!editor.value || !imageUrl.value) return;
+const insertImage = async () => {
+  try {
+    if (!editor.value || !imageUrl.value || !imageFile.value) return;
 
-  editor.value
-    .chain()
-    .focus()
-    .setImage({
-      src: imageUrl.value,
-      alt: imageAlt.value
-    })
-    .run();
+    emitter?.emit('stateLoading', true);
+    const { data, statusCode } = await uploadFileHandler(imageFile.value as File);
 
-  cancelImage();
+    if (statusCode === 200 && data?.url) {
+      editor.value
+        .chain()
+        .focus()
+        .setImage({
+          src: data?.url,
+          alt: data?.url,
+          title: "",
+        })
+        .run();
+    } else {
+      throw new Error('File upload failed');
+    }
+    cancelImage();
+  } catch (error) {
+    console.log(error);
+  }finally{
+    emitter?.emit('stateLoading', false);
+  }
 };
 
 // Cancel image insertion
@@ -719,6 +735,7 @@ select {
   padding: 8px;
   border-radius: 4px;
   text-align: center;
+  height: 200px;
 }
 
 .image-preview img {

@@ -204,7 +204,7 @@ import type TagModel from '@/scripts/model/tag/TagModel';
 import type MinistryModel from '@/scripts/model/ministry/MinistryModel';
 import { validationRules } from '@/utils/validationRule.ts'
 import type { Emitter } from 'mitt';
-import { useToast } from '@/components/ui/toast';
+import { useToast } from '@/components/ui/toast/use-toast';
 import { useRoute, useRouter } from 'vue-router';
 import { retriveTagHandler } from '@/scripts/handler/tag/TagHandler';
 import { retriveOneBlogHandler, updateBlogHandler, createBlogHandler } from '@/scripts/handler/blog/BlogHandler';
@@ -217,7 +217,7 @@ const SelectTags = defineAsyncComponent(() => import('@/components/selection/Tag
 const SelectMinistry = defineAsyncComponent(() => import('@/components/selection/Ministry.vue'));
 
 // Editor content
-const toast = useToast();
+const {toast} = useToast();
 const router = useRouter();
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 const blog = ref<BlogModel>({} as BlogModel);
@@ -350,7 +350,7 @@ const onHandleCreateBlog = async () => {
       })
       setTimeout(() => {
         router.push({ name: source.value });
-      }, 1000);
+      }, 300);
     }
   } catch (error) {
     console.log(error);
@@ -371,7 +371,7 @@ const onHandleUpdateBlog = async () => {
       })
       setTimeout(() => {
         router.push({ name: source.value });
-      }, 1000);
+      }, 300);
     }
   } catch (error) {
     console.log(error);
@@ -381,7 +381,6 @@ const onHandleUpdateBlog = async () => {
 };
 
 const onSaveContent = async () => {
-  console.log(blog.value, "  -> contetn");
   try {
     emitter?.emit("stateLoading", true);
     if (_fileChange.value && _file.value) {
@@ -390,8 +389,7 @@ const onSaveContent = async () => {
 
         if (statusCode === 200 && data?.url) {
           blog.value.cover = data.url;
-          blog.value.kh.document = { ...blog.value.kh.document, content: editorContentKH.value };
-          blog.value.en.document = { ...blog.value.en.document, content: editorContentEN.value };
+          
         } else {
           throw new Error('File upload failed');
         }
@@ -400,6 +398,8 @@ const onSaveContent = async () => {
         return;
       }
     }
+    blog.value.kh.document = { ...blog.value.kh.document, content: editorContentKH.value };
+    blog.value.en.document = { ...blog.value.en.document, content: editorContentEN.value };
     const action = status.value === "New" ? onHandleCreateBlog : onHandleUpdateBlog;
     await action();
   } catch (error) {
@@ -434,7 +434,7 @@ watch(
   () => route.query,
   async (value) => {
     status.value = value.status === 'new' ? 'New' : 'Update';
-    source.value = value.source;
+    source.value = value.source as string;
     blog.value = createBlog({} as BlogModel);
 
     if (status.value === 'New') {
