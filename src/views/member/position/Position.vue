@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, onMounted, inject } from 'vue';
+import { defineAsyncComponent, ref, inject } from 'vue';
 import { useToast } from '../../../components/ui/toast/use-toast';
 import type PositionModel from '../../../scripts/model/position/PositionModel.ts';
 import type { Emitter } from 'mitt';
-import { retrivePositionHandler, removePositionHandler } from '../../../scripts/handler/position/PositionHandler.ts';
+import { removePositionHandler } from '../../../scripts/handler/position/PositionHandler.ts';
 
 const PositionForm = defineAsyncComponent(() => import('../../../components/form/PositionForm.vue'));
 const ConfirmDialog = defineAsyncComponent(() => import('../../../components/custom/ConfirmDialog.vue'));

@@ -19,7 +19,12 @@
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="(resource, index) in resourceList" :key="index">
-                        <TableCell class="font-medium mx-2">{{ index + 1 }}</TableCell>
+                        <TableCell class="font-medium mx-2">
+                            <TableCell class="font-medium">
+                                {{ paginate.current_page > 1 ? (paginate.current_page - 1) * (paginate.items_per_page) +
+                                index + 1 : index + 1 }}
+                            </TableCell>
+                        </TableCell>
                         <TableCell>
                             <div class="flex justify-center items-center border rounded-md w-[4rem] h-[6rem]">
                                 <img v-if="resource.cover" :src="resource.cover"
@@ -45,8 +50,7 @@
         <!-- Pagination Positioned Inside the Table Container -->
         <div
             class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full bg-white py-2 shadow-md flex justify-center">
-            <CustomPagination v-model:meta="paginate"
-                @pageChange="onPaginateChange">
+            <CustomPagination v-model:meta="paginate" @pageChange="onPaginateChange">
             </CustomPagination>
         </div>
 
@@ -74,6 +78,7 @@ import type ResourceModel from '../../scripts/model/resource/ResourceModel.ts'
 import { retriveResourceHandler, removeResourceHandler } from '../../scripts/handler/resource/ResourceHandler.ts'
 import type { Emitter } from 'mitt';
 import { toast } from '../../components/ui/toast/use-toast.ts';
+import type PaginationModel from '@/scripts/model/pagination/PaginationModel.ts';
 
 // Define Component
 const ResourceForm = defineAsyncComponent({
@@ -98,7 +103,7 @@ const showConfirmDialog = ref(false);
 const resourceList = ref<ResourceModel[]>([] as ResourceModel[])
 const showResourceForm = ref<boolean>(false)
 const selectedResource = ref<ResourceModel>({} as ResourceModel)
-const paginate = ref<any>({})
+const paginate = ref<PaginationModel>({} as PaginationModel)
 const currentPage = ref<number>(1)
 
 
@@ -119,7 +124,7 @@ const onLoadResource = async () => {
         })
         console.log(message, data, statusCode);
         if (statusCode == 200) {
-            paginate.value = data.meta;
+            paginate.value = data.meta as PaginationModel;
             resourceList.value = data.results
         }
     } catch (error) {
