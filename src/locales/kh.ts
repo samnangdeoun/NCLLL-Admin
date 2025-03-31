@@ -102,4 +102,5 @@ export default {
     english_content: "English Content",
     category: "Category",
     file: "File",
+    website_url: "Website URL",
 };

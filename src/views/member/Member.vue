@@ -147,7 +147,6 @@ const handleUpdateForm = (member: any) => {
        if (member && member.status == 'New') {
            memberList.value.push(member as MemberModel);
        } else {
-           member
            const index = memberList.value.findIndex(p => p._id === member._id);
            if (index !== -1) {
                memberList.value[index] = (member) as MemberModel;
