@@ -10,7 +10,7 @@
         marginLeft: `${store.wrapperLeftOffset}px`,
       }">
         <!-- Header Navigation -->
-        <div class="flex justify-end">
+        <div class="flex justify-end w-full">
           <DashboardNavbar />
         </div>
         <div class="p-4 overflow-y-auto overflow-x-hidden transition-all duration-300" :style="{

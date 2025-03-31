@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-background/80 rounded-ee-3xl rounded-se-3xl transition-all duration-400 h-screen overflow-hidden fixed z-20 shadow-md"
+    class="bg-background/80 rounded-ee-3xl rounded-se-3xl transition-all duration-400 h-screen overflow-hidden fixed z-20 shadow"
     :style="{ width: `${store.wrapperWidth}px` }"
   >
     <div class="relative h-full flex flex-col justify-between ">
@@ -55,7 +55,7 @@
               <li
                 v-for="(tab, index) in menu.routes"
                 :key="index"
-                class="pl-[3rem] py-[0.4rem] font-bold"
+                class="capitalize cursor-pointer pl-[3rem] py-[0.4rem] font-bold"
                 @click="handleNavigate(tab.path)"
                 :class="{
                   'text-green-600 bg-gray-200': activeTab === tab.title,
