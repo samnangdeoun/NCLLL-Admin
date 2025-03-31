@@ -51,15 +51,12 @@ const onCreateBanner = () => {
 };
 
 const handleUpdateForm = (banner: any) => {
-    console.log(banner, ' handleUpdateForm');
     if (banner && banner.status == 'New') {
         banners.value.push(banner);
     } else {
         const index = banners.value.findIndex(p => p._id == banner._id);
         if (index !== -1) {
-            console.log((banner) as BannerModel, 'banner');
             banners.value[index] = (banner) as BannerModel;
-            console.log(banners.value, 'banners.value');
         }
     }
 };

@@ -1,7 +1,15 @@
 export const createPartner = (data: Partial<PartnerModel> = {}): PartnerModel => ({
   id: data._id || '',
-  en: data.en || {} as ParnterInfo,
-  kh: data.kh || {} as ParnterInfo,
+  en: data.en || {
+    name: '',
+    description: '',
+    lang: 'en',
+  } as ParnterInfo,
+  kh: data.kh || {
+    name: '',
+    description: '',
+    lang: 'kh',
+  } as ParnterInfo,
   url: data.url || '',
   logo: data.logo || '',
 })
