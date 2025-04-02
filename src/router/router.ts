@@ -6,7 +6,7 @@ const routes = [
     path: "/",
     name: "Dashboard",
     component: () => import("@/layouts/Dashboard.vue"),
-    redirect: "/event",
+    redirect: "/partner",
     meta: { title: "Dashboard" },
     children: [
       {
