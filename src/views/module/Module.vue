@@ -173,8 +173,8 @@ const onLoadModules = async () => {
         const { message, data, statusCode } = await retriveModuleHandler(
             {
                 mainCategory: mainCategoryType.value,
-                subCategory: subCategoryType.value,
-                limit: 5,
+                subCategory: subCategoryType.value == 'All' ? '' : subCategoryType.value,
+                limit: 4,
                 page: currentPage.value
             }
         )
