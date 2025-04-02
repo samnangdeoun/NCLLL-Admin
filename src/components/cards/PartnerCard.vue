@@ -1,9 +1,8 @@
 <template>
-    <div class="w-full max-w-sm p-4 rounded-xl h-auto shadow-lg bg-white flex flex-col items-center">
+    <div class="w-full max-w-sm p-4 rounded-xl shadow-lg bg-white flex flex-col items-center">
         <h1 class="text-center font-bold text-sm">{{ partner.kh.name }}</h1>
-        <h1 class="text-center font-bold text-sm">{{ partner.en.name }}</h1>
-        <div class="flex justify-center items-center mt-3 w-full h-full max-w-[20rem] max-h-[15rem] aspect-square">
-            <img v-if="partner.logo" :src="partner.logo" alt="" class="w-[full] h-[15rem] object-cover rounded-lg">
+        <div class="mt-3 w-full max-w-[40rem] max-h-[10rem] h-[10rem]">
+            <img v-if="partner.logo" :src="partner.logo" alt="" class="w-full h-full object-cover rounded-lg">
         </div>
         <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-3 w-full">
             <button @click="emit('updatePartner', partner)"
@@ -24,20 +23,25 @@
 <script setup lang="ts">
 // import 
 import { Icon } from '@iconify/vue'
-import { defineEmits } from 'vue'
+import { defineEmits, watch, ref } from 'vue'
+import type PartnerModel from '../../scripts/model/partner/PartnerModel.ts'
 
 // Define Emits
 const emit = defineEmits(['updatePartner', 'removePartner'])
 
 
 // Define Props
-const props = defineProps({
-    partner: { type: Object, required: true },
-})
+const props = defineProps<{
+    partner: PartnerModel,
+}>()
 
 
 // Define Variable
-const { partner } = props
+const partner = ref<PartnerModel>(props.partner)
 
-console.log(partner, ' partner');
+watch(
+    () => [props.partner],
+    () => {
+        partner.value = props.partner 
+    }, { immediate: true, deep: true },)
 </script>

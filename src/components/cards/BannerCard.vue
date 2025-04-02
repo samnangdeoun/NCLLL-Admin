@@ -23,8 +23,7 @@
 <script setup lang="ts">
 // import 
 import { Icon } from '@iconify/vue'
-import { defineEmits, watch } from 'vue'
-import { ref } from 'vue'
+import { defineEmits, watch, ref } from 'vue'
 import type BannerModel from '../../scripts/model/banner/BannerModel.ts'
 
 // Define Emits

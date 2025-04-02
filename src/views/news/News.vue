@@ -139,10 +139,12 @@ const handleConfirm = async () => {
         emitter?.emit("stateLoading", true);
         console.log(selectedNews.value, '-> valuue');
         const { statusCode } = await removeSoftBlogHandler(selectedNews.value as BlogModel);
-        console.log(statusCode);
         if (statusCode == 200) {
             newsList.value = newsList.value.filter(p => p._id !== selectedNews?.value?._id);
             toast({ title: 'Item Deleted', description: 'The item has been deleted.', variant: 'success' });
+        }else{
+            toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
         }
     } catch (error) {
         console.error(error);
