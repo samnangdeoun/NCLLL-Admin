@@ -40,10 +40,16 @@ const routes = [
         meta: { title: "Options", auth: true },
       },
       {
-        path: "/news",
-        name: "News",
+        path: "/modules",
+        name: "Modules",
+        component: () => import("../views/module/Module.vue"),
+        meta: { title: "Modules", auth: true },
+      },
+      {
+        path: "/contents",
+        name: "Contents",
         component: () => import("../views/news/News.vue"),
-        meta: { title: "News", auth: true },
+        meta: { title: "Contents", auth: true },
       },
       {
         path: "/member",
@@ -70,6 +76,12 @@ const routes = [
         meta: { title: "Banner", auth: true },
       },
     ]
+  },
+  {
+    path: "/module_content",
+    name: "ModuleContent",
+    component: () => import("@/views/module/module_content/Content.vue"),
+    meta: { title: "Module Content", auth: true },
   },
   {
     path: "/content",	

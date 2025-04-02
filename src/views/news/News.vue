@@ -161,8 +161,9 @@ const onCreateBlog = () => {
     router.push({
         name: 'Content',
         query: {
+            source: "News",
             status: 'new',
-            id: ""
+            id: "",
         },
     })
 }
