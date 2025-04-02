@@ -36,8 +36,14 @@ export const APP_MENU = {
         description: "",
       },
       {
-        title: "news",
-        path: "news",
+        title: "modules",
+        path: "modules",
+        icon: "",
+        description: "",
+      },
+      {
+        title: "contents",
+        path: "contents",
         icon: "",
         description: "",
       },

@@ -103,4 +103,10 @@ export default {
     category: "Category",
     file: "File",
     website_url: "Website URL",
+    main_category: "Main Category",
+    sub_category: "Sub Category",
+    select_main_category: "Select Main Category",
+    select_sub_category: "Select Sub Category",
+    select_engagement_category: "Select Engagement Category",
+    select_engagement_sub_category: "Select Engagement Sub Category",
 };
