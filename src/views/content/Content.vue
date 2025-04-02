@@ -1,22 +1,23 @@
-  <template>
-    <div class="p-4 h-full">
-      <div class="fixed top-5 right-4">
-        <button @click="$router.back()" class="flex p-1 bg-green-500 text-white rounded-lg">
-          <Icon icon="radix-icons:arrow-left" class="h-6 w-6  " />
-        </button>
-      </div>
+<template>
+  <div class="p-4 h-full">
+    <div class="fixed top-5 right-4">
+      <button @click="$router.back()" class="flex p-1 bg-green-500 text-white rounded-lg">
+        <Icon icon="radix-icons:arrow-left" class="h-6 w-6" />
+      </button>
+    </div>
+    <form @submit.prevent="onSaveContent">
       <Tabs default-value="Khmer">
-        <TabsList class="grid w-full grid-cols-3 ">
+        <TabsList class="grid w-full grid-cols-3">
           <TabsTrigger value="Khmer">
-            {{ $t('khmer_content') }}
+            {{ $t("khmer_content") }}
           </TabsTrigger>
           <TabsTrigger value="english">
-            {{ $t('english_content') }}
+            {{ $t("english_content") }}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="Khmer">
           <Card class="p-2">
-            <div class="tiptap-example ">
+            <div class="tiptap-example">
               <div class="flex h-[76.5vh] justify-between items-start">
                 <div class="editor-container h-full w-2/3 overflow-y-scroll scroll-smooth">
                   <TiptapEditor v-model="editorContentKH" :editable="isEditable" @editor-update="handleEditorUpdate"
@@ -26,48 +27,48 @@
                 <!-- Margin Top Base from Editor -->
                 <div class="w-1/3 mt-[80px] overflow-y-scroll p-2">
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('title_kh') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("title_kh") }}</Label>
                     <Input required v-model="blog.kh.title" :rules="[validationRules.required]" class="col-span-3" />
                   </div>
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('description_kh') }}</Label>
+                    <Label class="text-left mb-1">{{
+                      $t("description_kh")
+                    }}</Label>
                     <Textarea required v-model="blog.kh.description" :rules="[validationRules.required]"
                       class="col-span-3" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('category') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("category") }}</Label>
                     <SelectContentCategory :initContentCategory="blog.category"
                       @contentCategoryChange="handleChangeContentCategory" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('source') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("source") }}</Label>
                     <SelectMinistry :ministryList="ministryList" :initMinistry="blog.source"
                       @ministryChange="handleMinistryChange" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('tag') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("tag") }}</Label>
                     <SelectTags :tagList="tagList" :initTag="blog.tags" @tagsChange="handleChangeTags" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('cover') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("cover") }}</Label>
                     <div class="h-[7rem] w-full border rounded-md">
                       <img v-if="previewImage" :src="previewImage" alt="Partner Logo"
-                        class="w-full h-full  object-cover bg-cover rounded-md">
+                        class="w-full h-full object-cover bg-cover rounded-md" />
                     </div>
                   </div>
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('file') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("file") }}</Label>
                     <Input type="file" @onChange="handleFileInput" @input="handleFileInput" class="col-span-3"
                       accept="image/*" />
                   </div>
                 </div>
               </div>
-
-
 
               <!-- <div v-if="showOutput" class="output">
                 <h3>Editor Output</h3>
@@ -104,41 +105,43 @@
                 <!-- Margin Top Base from Editor -->
                 <div class="w-1/3 mt-[80px] overflow-y-scroll p-2">
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('title') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("title") }}</Label>
                     <Input required v-model="blog.en.title" :rules="[validationRules.required]" class="col-span-3" />
                   </div>
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('description') }}</Label>
+                    <Label class="text-left mb-1">{{
+                      $t("description")
+                    }}</Label>
                     <Textarea required v-model="blog.en.description" :rules="[validationRules.required]"
                       class="col-span-3" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('category') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("category") }}</Label>
                     <SelectContentCategory :initContentCategory="blog.category"
                       @contentCategoryChange="handleChangeContentCategory" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('source') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("source") }}</Label>
                     <SelectMinistry :ministryList="ministryList" :initMinistry="blog.source"
                       @ministryChange="handleMinistryChange" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('tag') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("tag") }}</Label>
                     <SelectTags :tagList="tagList" :initTag="blog.tags" @tagsChange="handleChangeTags" />
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('cover') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("cover") }}</Label>
                     <div class="h-[7rem] w-full border rounded-md">
                       <img v-if="previewImage" :src="previewImage" alt="Partner Logo"
-                        class="w-full h-full  object-cover bg-cover rounded-md">
+                        class="w-full h-full object-cover bg-cover rounded-md" />
                     </div>
                   </div>
                   <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t('file') }}</Label>
+                    <Label class="text-left mb-1">{{ $t("file") }}</Label>
                     <Input type="file" :required="!previewImage" @onChange="handleFileInput" @input="handleFileInput"
                       class="col-span-3" accept="image/*" />
                   </div>
@@ -161,8 +164,12 @@
 
                 <div class="output-content">
                   <pre v-if="activeTab === 'html'">{{ editorOutput.html }}</pre>
-                  <pre v-else-if="activeTab === 'json'">{{ JSON.stringify(editorOutput.json, null, 2) }}</pre>
-                  <pre v-else-if="activeTab === 'text'">{{ editorOutput.text }}</pre>
+                  <pre v-else-if="activeTab === 'json'">{{
+                    JSON.stringify(editorOutput.json, null, 2)
+                  }}</pre>
+                  <pre v-else-if="activeTab === 'text'">{{
+                    editorOutput.text
+                  }}</pre>
                 </div>
               </div>
             </div>
@@ -178,82 +185,88 @@
                   {{ showOutput ? 'Hide' : 'Show' }} Output
                 </button> -->
         <button @click="$router.back()" class="flex p-1 bg-red-500 text-white rounded-lg">
-          <Icon icon="radix-icons:check" class="h-6 w-6 " />
-          {{ $t('cancel') }}
+          <Icon icon="radix-icons:check" class="h-6 w-6" />
+          {{ $t("cancel") }}
         </button>
-        <button @click="onSaveContent" class="flex p-1 bg-green-500 text-white rounded-lg">
-          <Icon icon="radix-icons:check" class="h-6 w-6 " />
-          {{ $t('save') }}
+        <button type="submit" class="flex p-1 bg-green-500 text-white rounded-lg">
+          <Icon icon="radix-icons:check" class="h-6 w-6" />
+          {{ $t("save") }}
         </button>
       </div>
-    </div>
-  </template>
+    </form>
+  </div>
+</template>
 
 <script setup lang="ts">
-import { ref, watch, defineAsyncComponent, onMounted, inject } from 'vue';
-import { Icon } from '@iconify/vue'
-import { Card } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger, } from '@/components/ui/tabs'
-import TiptapEditor from '@/components/tiptap/TextEditor.vue';
-import { createBlog } from '@/scripts/model/blog/BlogModel';
-import type BlogModel from '@/scripts/model/blog/BlogModel';
-import type TagModel from '@/scripts/model/tag/TagModel';
-import type MinistryModel from '@/scripts/model/ministry/MinistryModel';
-import { validationRules } from '@/utils/validationRule.ts'
-import type { Emitter } from 'mitt';
-import { useToast } from '@/components/ui/toast/use-toast';
-import { useRoute, useRouter } from 'vue-router';
-import { retriveTagHandler } from '@/scripts/handler/tag/TagHandler';
-import { retriveOneBlogHandler, updateBlogHandler, createBlogHandler } from '@/scripts/handler/blog/BlogHandler';
-import { retriveMinistryHandler } from '@/scripts/handler/ministry/MinistryHandler';
-import { uploadFileHandler } from '@/scripts/handler/FileUploadHanlder.ts';
+import { ref, watch, defineAsyncComponent, onMounted, inject } from "vue";
+import { Icon } from "@iconify/vue";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TiptapEditor from "@/components/tiptap/TextEditor.vue";
+import { createBlog } from "@/scripts/model/blog/BlogModel";
+import type BlogModel from "@/scripts/model/blog/BlogModel";
+import type TagModel from "@/scripts/model/tag/TagModel";
+import type MinistryModel from "@/scripts/model/ministry/MinistryModel";
+import { validationRules } from "@/utils/validationRule.ts";
+import type { Emitter } from "mitt";
+import { useToast } from "@/components/ui/toast/use-toast";
+import { useRoute, useRouter } from "vue-router";
+import { retriveTagHandler } from "@/scripts/handler/tag/TagHandler";
+import {
+  retriveOneBlogHandler,
+  updateBlogHandler,
+  createBlogHandler,
+} from "@/scripts/handler/blog/BlogHandler";
+import { retriveMinistryHandler } from "@/scripts/handler/ministry/MinistryHandler";
+import { uploadFileHandler } from "@/scripts/handler/FileUploadHanlder.ts";
 
-
-const SelectContentCategory = defineAsyncComponent(() => import('@/components/selection/ContentCategory.vue'));
-const SelectTags = defineAsyncComponent(() => import('@/components/selection/Tags.vue'));
-const SelectMinistry = defineAsyncComponent(() => import('@/components/selection/Ministry.vue'));
+const SelectContentCategory = defineAsyncComponent(
+  () => import("@/components/selection/ContentCategory.vue")
+);
+const SelectTags = defineAsyncComponent(
+  () => import("@/components/selection/Tags.vue")
+);
+const SelectMinistry = defineAsyncComponent(
+  () => import("@/components/selection/Ministry.vue")
+);
 
 // Editor content
-const {toast} = useToast();
+const { toast } = useToast();
 const router = useRouter();
-const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
+const emitter = inject<Emitter<{ [event: string]: unknown }>>("emitter");
 const blog = ref<BlogModel>({} as BlogModel);
 const editorContentKH = ref({
-  type: 'doc',
-  content: [
-
-  ]
+  type: "doc",
+  content: [],
 });
 const editorContentEN = ref({
-  type: 'doc',
-  content: [
-
-  ]
+  type: "doc",
+  content: [],
 });
 
 // Navigation
 const route = useRoute();
 
 // Control variables
-const previewImage = ref<string>('');
+const previewImage = ref<string>("");
 const _file = ref<File | null>(null);
 const _fileChange = ref<boolean>(false);
 const tagList = ref<TagModel[]>([] as TagModel[]);
 const ministryList = ref<MinistryModel[]>([] as MinistryModel[]);
 const isEditable = ref<boolean>(true);
 const showOutput = ref<boolean>(false);
-const activeTab = ref<string>('html');
-const status = ref<string>('');
-const source = ref<string>('');
+const activeTab = ref<string>("html");
+const status = ref<string>("");
+const source = ref<string>("");
 
 // Editor output
 const editorOutput = ref({
-  html: '',
-  text: '',
-  json: {}
+  html: "",
+  text: "",
+  json: {},
 });
 
 // Methods
@@ -262,37 +275,37 @@ const handleEditorUpdate = (output: any) => {
 };
 
 const handleEditorReady = (editor: any) => {
-  console.log('Editor is ready!', editor);
+  console.log("Editor is ready!", editor);
 };
 
-const handleFileInput = (event: { target: { files: any[]; }; }) => {
-  const file = event.target.files[0]
-  const reader = new FileReader()
+const handleFileInput = (event: { target: { files: any[] } }) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
   reader.onload = () => {
-    previewImage.value = reader.result as string
-    _file.value = file as File
-    _fileChange.value = true
-  }
-  reader.readAsDataURL(file)
-}
+    previewImage.value = reader.result as string;
+    _file.value = file as File;
+    _fileChange.value = true;
+  };
+  reader.readAsDataURL(file);
+};
 
 const handleMinistryChange = (ministry: string) => {
   if (ministry) {
-    blog.value.source = ministry
+    blog.value.source = ministry;
   }
-}
+};
 
 const handleChangeContentCategory = (value: string) => {
   if (value) {
-    blog.value.category = value
+    blog.value.category = value;
   }
-}
+};
 
 const handleChangeTags = (value: string[]) => {
   if (value) {
-    blog.value.tags = value
+    blog.value.tags = value;
   }
-}
+};
 
 const onLoadContent = async (id: string) => {
   try {
@@ -320,7 +333,7 @@ const onLoadTags = async () => {
     }
   } catch (error) {
     console.log(error);
-  }finally {
+  } finally {
     emitter?.emit("stateLoading", false);
   }
 };
@@ -345,16 +358,19 @@ const onHandleCreateBlog = async () => {
     const { statusCode } = await createBlogHandler(blog.value);
     if (statusCode === 200) {
       toast({
-        title: 'Success',
-        description: 'Create Blog Success',
-        variant: 'success'
-      })
+        title: "Success",
+        description: "Create Blog Success",
+        variant: "success",
+      });
       setTimeout(() => {
         router.push({ name: source.value });
       }, 300);
-    }else{
-      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
-
+    } else {
+      toast({
+        title: "Something went wrong",
+        description: "The item has not been deleted.",
+        variant: "warning",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -369,16 +385,19 @@ const onHandleUpdateBlog = async () => {
     const { statusCode } = await updateBlogHandler(blog.value);
     if (statusCode === 200) {
       toast({
-        title: 'Success',
-        description: 'Create Blog Success',
-        variant: 'success'
-      })
+        title: "Success",
+        description: "Create Blog Success",
+        variant: "success",
+      });
       setTimeout(() => {
         router.push({ name: source.value });
       }, 300);
-    }else{
-      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
-
+    } else {
+      toast({
+        title: "Something went wrong",
+        description: "The item has not been deleted.",
+        variant: "warning",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -396,18 +415,24 @@ const onSaveContent = async () => {
 
         if (statusCode === 200 && data?.url) {
           blog.value.cover = data.url;
-          
         } else {
-          throw new Error('File upload failed');
+          throw new Error("File upload failed");
         }
       } catch (error) {
         console.error(error);
         return;
       }
     }
-    blog.value.kh.document = { ...blog.value.kh.document, content: editorContentKH.value };
-    blog.value.en.document = { ...blog.value.en.document, content: editorContentEN.value };
-    const action = status.value === "New" ? onHandleCreateBlog : onHandleUpdateBlog;
+    blog.value.kh.document = {
+      ...blog.value.kh.document,
+      content: editorContentKH.value,
+    };
+    blog.value.en.document = {
+      ...blog.value.en.document,
+      content: editorContentEN.value,
+    };
+    const action =
+      status.value === "New" ? onHandleCreateBlog : onHandleUpdateBlog;
     await action();
   } catch (error) {
     console.log(error);
@@ -418,21 +443,16 @@ const onSaveContent = async () => {
 
 const resetContent = () => {
   editorContentKH.value = {
-    type: 'doc',
-    content: [
-
-    ]
+    type: "doc",
+    content: [],
   };
   editorContentEN.value = {
-    type: 'doc',
-    content: [
-
-    ]
+    type: "doc",
+    content: [],
   };
 };
 
 onMounted(async () => {
-  
   await onLoadTags();
   await onLoadMinistry();
 });
@@ -440,18 +460,19 @@ onMounted(async () => {
 watch(
   () => route.query,
   async (value) => {
-    status.value = value.status === 'new' ? 'New' : 'Update';
+    status.value = value.status === "new" ? "New" : "Update";
     source.value = value.source as string;
     blog.value = createBlog({} as BlogModel);
 
-    if (status.value === 'New') {
+    if (status.value === "New") {
       resetContent();
-    } else if (status.value === 'Update' && value.id) {
+    } else if (status.value === "Update" && value.id) {
       await onLoadContent(value.id as string);
     }
-  }, {
-  immediate: true,
-}
+  },
+  {
+    immediate: true,
+  }
 );
 </script>
 
@@ -530,7 +551,7 @@ h2 {
 pre {
   margin: 0;
   white-space: pre-wrap;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 14px;
 }
 </style>
