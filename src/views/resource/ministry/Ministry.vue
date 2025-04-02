@@ -98,6 +98,9 @@ const handleConfirm = async () => {
         if (statusCode == 200) {
             ministries.value = ministries.value.filter(p => p._id !== selectedMinistry?.value?._id);
             toast({ title: 'Item Deleted', description: 'The item has been deleted.', variant: 'success' });
+        }else{
+            toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
         }
     }catch(error){
         console.error(error);

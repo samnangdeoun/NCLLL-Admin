@@ -351,6 +351,9 @@ const onHandleCreateBlog = async () => {
       setTimeout(() => {
         router.push({ name: source.value });
       }, 300);
+    }else{
+      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
     }
   } catch (error) {
     console.log(error);
@@ -372,6 +375,9 @@ const onHandleUpdateBlog = async () => {
       setTimeout(() => {
         router.push({ name: source.value });
       }, 300);
+    }else{
+      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
     }
   } catch (error) {
     console.log(error);

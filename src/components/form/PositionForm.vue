@@ -99,7 +99,6 @@ const props = defineProps({
 const emitter = inject<Emitter<{ [event: string]: unknown }>>('emitter');
 const { t } = useI18n()
 const { toast } = useToast()
-const router = useRouter()
 
 // Define Variable
 const position = ref<PositionModel>(JSON.parse(JSON.stringify(props.position))); // Deep copy
@@ -132,6 +131,9 @@ const onHandleUpdatePosition = async () => {
         title: t("success"),
       });
       emit('closeForm')
+    }else{
+      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
     }
   } catch (e) {
     console.log(e)
@@ -159,15 +161,9 @@ const onHandleCreatePosition = async () => {
         title: t("success"),
       });
       emit('closeForm')
-    }else if(statusCode == 401){
-      toast({
-        description: t('unauthorized'),
-        variant: 'warning',
-        title: t("warning"),
-      });
-      setTimeout(() => {
-        router.push({ name: 'Login' })
-      }, 1000);
+    }else {
+      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
     }
   } catch (e) {
     console.log(e)

@@ -269,6 +269,9 @@ const onHandleUpdateResource = async () => {
         title: t("success"),
       });
       emit('closeForm')
+    }else{
+      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
     }
   } catch (e) {
     console.log(e)
@@ -296,6 +299,10 @@ const onHandleCreateResource = async () => {
         title: t("success"),
       });
       emit('closeForm')
+    }else
+    {
+      toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
+
     }
   } catch (e) {
     console.log(e)

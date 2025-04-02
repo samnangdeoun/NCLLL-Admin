@@ -18,7 +18,7 @@ const routes = [
       {
         path: "/partner",
         name: "Partner",
-        component: () => import("../views/partners/Partner.vue"),
+        component: () => import("../views/partner/Partner.vue"),
         meta: { title: "Partner", auth: true },
       },
       {
