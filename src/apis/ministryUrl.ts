@@ -10,4 +10,4 @@ const ministryAPI = (_id?: string) => {
 }
 
 
-export default { ministryAPI }
+export default { ministryAPI }  
