@@ -1,17 +1,17 @@
 <template>
-    <Select v-model="selectedMember" required class="w-full" inert>
-      <SelectTrigger>
-        <SelectValue :value="selectedMember" required :rules="[validationRules.required]"
-          :placeholder="$t('select_member')" />
-      </SelectTrigger>
-      <SelectContent class="bg-white">
-        <SelectGroup>
-          <SelectItem v-for="(member, index) in memberList" :key="index" :value="member._id || ''">
-            {{ member.en.name }} - {{ member.kh.name }}
-          </SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+  <Select v-model="selectedMember"  class="w-full" inert>
+    <SelectTrigger>
+      <SelectValue :value="selectedMember" 
+        :placeholder="$t('select_member')" />
+    </SelectTrigger>
+    <SelectContent class="bg-white">
+      <SelectGroup>
+        <SelectItem v-for="(member, index) in memberList" :key="index" :value="member._id || ''">
+          {{ member.en.name }} - {{ member.kh.name }}
+        </SelectItem>
+      </SelectGroup>
+    </SelectContent>
+  </Select>
 </template>
 
 <script setup lang="ts">
