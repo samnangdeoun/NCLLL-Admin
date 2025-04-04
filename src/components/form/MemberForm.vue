@@ -97,8 +97,7 @@
                     <div class="flex flex-col items-start justify-center mb-3">
                       <Label class="text-left mb-1">{{ $t('parent') }}</Label>
                       <keep-alive>
-                        <MemberSelection :memberList="memberList"
-                          :required="(member_parent_id && member_parent_id != '')" :initMember="member_parent_id"
+                        <MemberSelection :memberList="memberList" :initMember="member_parent_id"
                           @memberChange="handleMemberChange" />
                       </keep-alive>
                     </div>
@@ -219,8 +218,7 @@
                     <div class="flex flex-col items-start justify-center mb-3">
                       <Label class="text-left mb-1">{{ $t('parent') }}</Label>
                       <keep-alive>
-                        <MemberSelection :memberList="memberList"
-                          :required="(member_parent_id && member_parent_id != '')" :initMember="member_parent_id"
+                        <MemberSelection :memberList="memberList" :initMember="member_parent_id"
                           @memberChange="handleMemberChange" />
                       </keep-alive>
                     </div>
@@ -462,7 +460,7 @@ const validationMemberForm = async () => {
     return false
   }
 
-  
+
 
   return true
 }
@@ -514,7 +512,7 @@ const onHandleUpdateMember = async () => {
         title: t("success"),
       });
       emit('closeForm')
-    }else{
+    } else {
       toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
 
     }
@@ -544,7 +542,7 @@ const onHandleCreateMember = async () => {
         title: t("success"),
       });
       emit('closeForm')
-    }else{
+    } else {
       toast({ title: 'Something went wrong', description: 'The item has not been deleted.', variant: 'warning' });
 
     }

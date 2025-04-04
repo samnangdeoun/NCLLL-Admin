@@ -1,7 +1,7 @@
 <template>
     <div class="w-full max-w-sm p-4 rounded-xl shadow-lg bg-white flex flex-col items-center">
         <h1 class="text-center font-bold text-sm">{{ partner.kh.name }}</h1>
-        <div class="mt-3 w-full max-w-[40rem] max-h-[10rem] h-[10rem]">
+        <div class="mt-3 max-w-[40rem] max-h-[10rem] h-[10rem] w-[10rem]">
             <img v-if="partner.logo" :src="partner.logo" alt="" class="w-full h-full object-cover rounded-lg">
         </div>
         <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-3 w-full">
