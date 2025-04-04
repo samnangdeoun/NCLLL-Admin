@@ -74,7 +74,6 @@ const onLoadPartners = async () => {
         emitter?.emit("stateLoading", true);
         const { data, statusCode } = await retrivePartnerHandler()
         if (statusCode == 200) {
-            console.log(data, " -> Parnter Lisit");
             partnerList.value = data.results;
         }
     } catch (error) {
@@ -88,7 +87,6 @@ const handleConfirm = async () => {
     try {
         emitter?.emit("stateLoading", true);
         const { statusCode } = await removePartnerHandler(selectedPartner.value as PartnerModel);
-        console.log(statusCode);
         if (statusCode == 200) {
             partnerList.value = partnerList.value.filter(p => p._id !== selectedPartner?.value?._id);
             toast({ title: 'Item Deleted', description: 'The item has been deleted.', variant: 'success' });

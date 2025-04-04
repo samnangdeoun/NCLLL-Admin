@@ -48,7 +48,6 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     parent: data?.parent || '',
     position: data.position || '',
     id: data._id,
-
 });
 
 export default interface MemberModel {

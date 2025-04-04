@@ -1,6 +1,5 @@
 export const createPosition = (data: Partial<PositionModel> = {}): PositionModel => ({
     id: data._id || '',
-    _id: data._id || '',
     en: data.en || {} as PositionLevel,
     kh: data.kh || {} as PositionLevel
 })
