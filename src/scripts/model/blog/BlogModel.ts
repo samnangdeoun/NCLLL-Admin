@@ -1,5 +1,5 @@
 export const createBlog = (data: Partial<BlogModel> = {}): BlogModel => ({
-    id: data._id,
+    id: data._id || undefined,
     en: data?.en || {
         title: '',
         description: '',

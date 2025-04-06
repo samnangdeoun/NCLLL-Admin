@@ -1,12 +1,11 @@
 <template>
-  <Select v-model="selectedMember"  class="w-full" inert>
+  <Select v-model="selectedMember" :required="members && members.length > 0" class="w-full" inert>
     <SelectTrigger>
-      <SelectValue :value="selectedMember" 
-        :placeholder="$t('select_member')" />
+      <SelectValue :value="selectedMember" :placeholder="$t('select_member')" />
     </SelectTrigger>
     <SelectContent class="bg-white">
       <SelectGroup>
-        <SelectItem v-for="(member, index) in memberList" :key="index" :value="member._id || ''">
+        <SelectItem v-for="(member, index) in members" :key="index" :value="member._id || ''">
           {{ member.en.name }} - {{ member.kh.name }}
         </SelectItem>
       </SelectGroup>
@@ -23,8 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select/index.ts";
-import { ref, watch } from "vue";
-import { validationRules } from '@/utils/validationRule.ts'
+import { computed, ref, watch } from "vue";
 import type MemberModel from "@/scripts/model/member/MemberModel.ts";
 
 // Define Props
@@ -37,6 +35,10 @@ const props = defineProps({
     type: String,
     required: false,
   },
+  currentMember: {
+    type: String,
+    required: false
+  }
 });
 
 // Define Variables
@@ -50,9 +52,14 @@ watch(selectedMember, (value: string) => {
 });
 
 // Watch for changes in initMember and update selectedMember accordingly
+
+const members = computed(() => {
+  return props.memberList.filter((member) =>
+    (member._id as string) !== props.currentMember);
+})
 // Define Watch
 watch(
-  () => [props.initMember, props.memberList],
+  () => [props.initMember, props.memberList, props.currentMember],
   () => {
     if (props.initMember) {
       selectedMember.value = props.initMember;

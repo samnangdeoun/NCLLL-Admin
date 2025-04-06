@@ -33,7 +33,7 @@
                   <div class="flex flex-col items-start justify-center mb-2">
                     <Label class="text-left mb-1">{{
                       $t("description_kh")
-                    }}</Label>
+                      }}</Label>
                     <Textarea required v-model="blog.kh.description" :rules="[validationRules.required]"
                       class="col-span-3" />
                   </div>
@@ -50,9 +50,15 @@
                       @ministryChange="handleMinistryChange" />
                   </div>
 
-                  <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t("tag") }}</Label>
-                    <SelectTags :tagList="tagList" :initTag="blog.tags" @tagsChange="handleChangeTags" />
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col items-start justify-center mb-2">
+                      <Label class="text-left mb-1">{{ $t("tag") }}</Label>
+                      <SelectTags :tagList="tagList" :initTag="blog.tags" @tagsChange="handleChangeTags" />
+                    </div>
+                    <div class="flex flex-col items-start justify-center mb-2">
+                      <Label class="text-left mb-1">{{ $t("tag") }}</Label>
+                      <SelectStatus :initResourceLang="blog.status" @resourceLangChange="handleChangeStatus" />
+                    </div>
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
@@ -111,7 +117,7 @@
                   <div class="flex flex-col items-start justify-center mb-2">
                     <Label class="text-left mb-1">{{
                       $t("description")
-                    }}</Label>
+                      }}</Label>
                     <Textarea required v-model="blog.en.description" :rules="[validationRules.required]"
                       class="col-span-3" />
                   </div>
@@ -128,9 +134,15 @@
                       @ministryChange="handleMinistryChange" />
                   </div>
 
-                  <div class="flex flex-col items-start justify-center mb-2">
-                    <Label class="text-left mb-1">{{ $t("tag") }}</Label>
-                    <SelectTags :tagList="tagList" :initTag="blog.tags" @tagsChange="handleChangeTags" />
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col items-start justify-center mb-2">
+                      <Label class="text-left mb-1">{{ $t("tag") }}</Label>
+                      <SelectTags :tagList="tagList" :initTag="blog.tags" @tagsChange="handleChangeTags" />
+                    </div>
+                    <div class="flex flex-col items-start justify-center mb-2">
+                      <Label class="text-left mb-1">{{ $t("tag") }}</Label>
+                      <SelectStatus :initResourceLang="blog.status" @resourceLangChange="handleChangeStatus" />
+                    </div>
                   </div>
 
                   <div class="flex flex-col items-start justify-center mb-2">
@@ -184,7 +196,7 @@
                 <button @click="showOutput = !showOutput">
                   {{ showOutput ? 'Hide' : 'Show' }} Output
                 </button> -->
-        <button @click="$router.back()" class="flex p-1 bg-red-500 text-white rounded-lg">
+        <button @click="$router.back()" type="button" class="flex p-1 bg-red-500 text-white rounded-lg">
           <Icon icon="radix-icons:check" class="h-6 w-6" />
           {{ $t("cancel") }}
         </button>
@@ -229,6 +241,9 @@ const SelectContentCategory = defineAsyncComponent(
 const SelectTags = defineAsyncComponent(
   () => import("@/components/selection/Tags.vue")
 );
+const SelectStatus = defineAsyncComponent(
+  () => import("@/components/selection/ReleaseStatus.vue")
+)
 const SelectMinistry = defineAsyncComponent(
   () => import("@/components/selection/Ministry.vue")
 );
@@ -294,6 +309,12 @@ const handleMinistryChange = (ministry: string) => {
     blog.value.source = ministry;
   }
 };
+
+const handleChangeStatus = (value: string) => {
+  if (value) {  
+    blog.value.status = value;
+  }
+}
 
 const handleChangeContentCategory = (value: string) => {
   if (value) {

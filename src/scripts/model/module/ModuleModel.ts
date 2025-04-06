@@ -1,5 +1,5 @@
 export const createModule = (data: Partial<ModuleModel> = {}): ModuleModel => ({
-    id: data._id,
+    id: data._id || undefined,
     en: data?.en || {
         title: '',
         description: '',

@@ -19,6 +19,11 @@ export enum ContentCategory {
     Project = "project",
 }
 
+export enum ReleaseStatus {
+    Published = "published",
+    Draft = "draft",
+}
+
 export enum EngagementCategory {
     All = "All",
     Voluntary = "Voluntary",

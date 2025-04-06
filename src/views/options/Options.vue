@@ -43,7 +43,7 @@ const onLoadPosition = async () => {
         const { message, data, statusCode } = await retrivePositionHandler()
         console.log(message, data, statusCode);
         if (statusCode == 200) {
-            positions.value = data
+            positions.value = data;
         }
     } catch (error) {
         console.error(error);

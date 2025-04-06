@@ -1,7 +1,7 @@
 <template>
-  <Select v-model="selectedTag" required class="w-full" inert multiple>
+  <Select v-model="selectedTag" class="w-full" inert multiple>
     <SelectTrigger>
-      <SelectValue :value="selectedTag" required :rules="[validationRules.required]"
+      <SelectValue :value="selectedTag" 
         :placeholder="$t('select_tag')" />
     </SelectTrigger>
     <SelectContent class="bg-white">
@@ -24,7 +24,6 @@ import {
   SelectValue,
 } from "../ui/select/index.ts";
 import { ref, watch } from "vue";
-import { validationRules } from '@/utils/validationRule.ts'
 import type TagModel from "@/scripts/model/tag/TagModel.ts";
 
 // Define Props

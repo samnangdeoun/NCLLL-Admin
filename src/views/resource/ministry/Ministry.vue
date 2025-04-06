@@ -6,7 +6,7 @@
             </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-x-auto scrollbar-hide">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 overflow-x-auto scrollbar-hide">
             <MinistryCard v-for="(ministry, index) in ministries" :key="index" :ministry="ministry" @updateMinistry="handleUpdateMinistry"
                 @removeMinistry="handleRemoveMinistry" />
         </div>

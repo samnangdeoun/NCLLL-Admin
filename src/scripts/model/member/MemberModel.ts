@@ -6,11 +6,11 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
         nationality: data.en?.nationality || '',
         name: data.en?.name || '',
         currentAddress: {
-            "houseNumber": "123",
-            "street": "Main Street",
-            "district": "Downtown",
-            "city": "New York",
-            "country": "USA"
+            "houseNumber": "",
+            "street": "",
+            "district": "",
+            "city": "",
+            "country": ""
         },
         placeOfBirth: {
             houseNumber: data.en?.placeOfBirth?.houseNumber || '',
@@ -29,11 +29,11 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
         nationality: data.kh?.nationality || '',
         name: data.kh?.name || '',
         currentAddress: {
-            "houseNumber": "123",
-            "street": "Main Street",
-            "district": "Downtown",
-            "city": "New York",
-            "country": "USA"
+            "houseNumber": "",
+            "street": "",
+            "district": "",
+            "city": "",
+            "country": ""
         },
         placeOfBirth: {
             houseNumber: data.kh?.placeOfBirth?.houseNumber || '',
@@ -47,8 +47,7 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     },
     parent: data?.parent || '',
     position: data.position || '',
-    id: data._id,
-
+    id: data._id || undefined,
 });
 
 export default interface MemberModel {
