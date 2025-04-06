@@ -98,7 +98,7 @@
                       <Label class="text-left mb-1">{{ $t('parent') }}</Label>
                       <keep-alive>
                         <MemberSelection :memberList="memberList" :initMember="member_parent_id"
-                          @memberChange="handleMemberChange" />
+                          :currentMember="current_member_id" @memberChange="handleMemberChange" />
                       </keep-alive>
                     </div>
                   </div>
@@ -219,7 +219,7 @@
                       <Label class="text-left mb-1">{{ $t('parent') }}</Label>
                       <keep-alive>
                         <MemberSelection :memberList="memberList" :initMember="member_parent_id"
-                          @memberChange="handleMemberChange" />
+                          :currentMember="current_member_id" @memberChange="handleMemberChange" />
                       </keep-alive>
                     </div>
                   </div>
@@ -348,9 +348,12 @@ const member_birthDate = computed(() => {
   return member.value.en.birthDate
 })
 
+const current_member_id = computed(() => {
+  return member.value?.id
+})
+
 const member_parent_id = computed(() => {
-  // return (typeof member.value?.parent == 'object') ? member.value.parent._id : member.value.parent
-  return "67e042b13b642de5375c7894"
+  return (typeof member.value?.parent == 'object') ? member.value.parent._id : member.value.parent
 })
 
 // Define methods
@@ -594,6 +597,7 @@ watch(
         previewImage.value = "https://" + previewImage.value;
       }
       _position.value = member.value.position
+      console.log(member.value, 'member .position')
     }
     showForm.value = props.showForm
   }, { immediate: true, deep: true })

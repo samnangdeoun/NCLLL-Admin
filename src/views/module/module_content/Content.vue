@@ -257,7 +257,7 @@
       </Tabs>
       <div class="controls flex justify-end px-2">
         <button
-          @click="$router.back()"
+          @click="$router.back()" type="button"
           class="flex p-1 bg-red-500 text-white rounded-lg"
         >
           <Icon icon="radix-icons:check" class="h-6 w-6" />

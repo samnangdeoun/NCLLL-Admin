@@ -1,8 +1,9 @@
 <template>
     <div class="w-full max-w-sm p-4 rounded-xl shadow-lg bg-white flex flex-col items-center">
-        <h1 class="text-center font-bold text-sm">{{ ministry.en.name }}</h1>
-        <div class="mt-3 w-full max-w-[25rem] max-h-[25rem]">
-            <img v-if="ministry.en.imageUrl" :src="ministry.en.imageUrl" alt="" class="w-full h-full object-cover rounded-lg">
+        <h1 class="text-center h-10 font-bold text-sm">{{ ministry.en.name }}</h1>
+        <div class="mt-3 max-w-[12rem] max-h-[12rem] w-[12rem] h-[12rem]">
+            <img v-if="ministry.en.imageUrl" :src="ministry.en.imageUrl" alt=""
+                class="w-full h-full object-cover rounded-lg">
         </div>
         <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-3 w-full">
             <button @click="emit('updateMinistry', ministry)"

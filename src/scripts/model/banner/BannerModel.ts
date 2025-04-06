@@ -1,5 +1,5 @@
 export const createBanner = (data: Partial<BannerModel> = {}): BannerModel => ({
-    id: data._id || '',
+    id: data._id || undefined,
     title: data.title || '',
     imageUrl: data.imageUrl || '',
 });

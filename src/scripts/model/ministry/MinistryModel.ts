@@ -1,5 +1,5 @@
 export const createMinistry = (data: Partial<MinistryModel> = {}): MinistryModel => ({
-    id: data._id || '',
+    id: data._id || undefined,
     en: data.en || { name: '', imageUrl: 'en' },
     kh: data.kh || { name: '', imageUrl: 'kh' },
 });

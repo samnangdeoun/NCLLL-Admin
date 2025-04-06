@@ -1,5 +1,5 @@
 export const createTag = (data: Partial<TagModel> = {}): TagModel => ({
-    id: data._id || '',
+    id: data._id || undefined,
     en: data.en || { name: '', lang: 'en' },
     kh: data.kh || { name: '', lang: 'kh' },
 });

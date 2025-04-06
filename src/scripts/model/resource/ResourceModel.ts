@@ -1,5 +1,5 @@
 export const createResource = (data: Partial<ResourceModel> = {}): ResourceModel => ({
-    id: data._id || '',
+    id: data._id || undefined,
     title: data.title || '',
     lang: data.lang || '',
     cover: data.cover || '',
