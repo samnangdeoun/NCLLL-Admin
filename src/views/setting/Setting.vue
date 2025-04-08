@@ -104,3 +104,15 @@ onMounted(async () => {
   await onLoadSetting();
 });
 </script>
+
+<style scoped>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table tr {
+    padding: 20px 20px;
+    border-bottom: 1px solid #ddd;
+}
+</style>
