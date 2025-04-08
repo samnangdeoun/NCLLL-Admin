@@ -4,6 +4,7 @@ const authAPI = () => {
     return {
         user_login               :       BASE_URL + "/auth/login",
         file_upload              :       BASE_URL + "/upload",
+        maintainence             :       BASE_URL + "/settings",
     }
 }
 

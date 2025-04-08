@@ -9,14 +9,14 @@
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
-        <DropdownMenuItem>
+        <DropdownMenuItem @click="onNavigator('SETTING')">
           <Settings class="mr-2 h-4 w-4" />
           <span>Settings</span>
-          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          <!-- <DropdownMenuShortcut>⌘S</DropdownMenuShortcut> -->
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem @click="onGithubNavigator">
+      <DropdownMenuItem @click="onNavigator('GITHUB')">
         <Github class="mr-2 h-4 w-4" />
         <span>GitHub</span>
       </DropdownMenuItem>
@@ -24,7 +24,7 @@
       <DropdownMenuItem @click="onSignOut">
         <LogOut class="mr-2 h-4 w-4" />
         <span>Log out</span>
-        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        <!-- <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> -->
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
@@ -67,8 +67,12 @@ import { removeCookie } from "@/scripts/cookie/cookie";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const onGithubNavigator = () => {
-  window.open("https://github.com/samnangdeoun/NCLLL-Admin", "_blank");
+const onNavigator = (option: string) => {
+  if (option == "SETTING") {
+    router.push({ name: "Setting" });
+  }else{
+    window.open("https://github.com/samnangdeoun/NCLLL-Admin", "_blank");
+  }
 };
 
 const onSignOut = () => {

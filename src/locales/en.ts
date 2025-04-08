@@ -86,4 +86,7 @@ export default {
     select_sub_category: "Select Sub Category",
     select_engagement_category: "Select Engagement Category",
     select_engagement_sub_category: "Select Engagement Sub Category",
+    maintenance_mode: "Maintenance Mode",
+    maintenance: "Maintenance",
+
 };

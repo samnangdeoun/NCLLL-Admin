@@ -75,6 +75,12 @@ const routes = [
         component: () => import("@/views/banner/Banner.vue"),
         meta: { title: "Banner", auth: true },
       },
+      {
+        path: "/setting",
+        name: "Setting",
+        component: () => import("@/views/setting/Setting.vue"),
+        meta: { title: "Setting" },
+      },
     ]
   },
   {
@@ -95,6 +101,7 @@ const routes = [
     component: () => import("../views/auth/Login.vue"),
     meta: { title: "Login" },
   },
+ 
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
