@@ -12,8 +12,8 @@ import KHMER from './locales/kh'
 const emitter = mitt()
 const i18n = createI18n({
     legacy: false,
-    locale: 'kh',
-    fallbackLocale: 'kh',
+    locale: 'en',
+    fallbackLocale: 'en',
     globalInjection: true,
     messages: {
         en: ENGLISH,

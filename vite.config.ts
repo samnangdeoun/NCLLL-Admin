@@ -11,7 +11,8 @@ export default defineConfig({
     }
   },
   define: {
-    global: 'window'
+    global: 'window',
+    
   },
   server: {
     port: 8888,

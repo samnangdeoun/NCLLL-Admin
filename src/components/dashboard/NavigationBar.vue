@@ -7,11 +7,7 @@
     </div>
     <div class="flex">
       <!-- <DarkMode /> -->
-      <Icon icon="radix-icons:github-logo" class="ml-3" />
-      <Icon icon="radix-icons:twitter-logo" class="ml-3" />
-      <Icon icon="radix-icons:linkedin-logo" class="ml-3" />
-      <!-- <UserNavigation class="ml-3" /> -->
-      <Icon icon="radix-icons:gear" class="ml-3" />
+      <DropDownSetting />
     </div>
   </nav>
 </template>
@@ -24,6 +20,8 @@ import { useAppStore } from "../../stores/useAppConfig";
 // import UserNavigation from '../UserNavigation.vue';
 import { ref } from "vue";
 import { useRoute } from 'vue-router';
+
+import DropDownSetting from "@/components/custom/DropDownSetting.vue";
 
 // Init store
 const store = useAppStore();
