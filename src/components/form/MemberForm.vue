@@ -45,8 +45,7 @@
                       <!-- Date of Birth -->
                       <div class="relative flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker v-model="member.kh.birthDate" :rules="[validationRules.required]"
-                          :initDate="member_birthDate" required class="col-span-3 w-full" />
+                        <VueDatePicker v-model="member.kh.birthDate" required class="col-span-3 w-full" />
                         <span v-if="!member.en.birthDate" class="absolute left-1 -bottom-5 text-xs text-red-500">
                           {{ $t('select_birth_date') }}
                         </span>
@@ -166,8 +165,7 @@
                       <!-- Date of Birth -->
                       <div class="relative flex flex-col items-start justify-center mb-4">
                         <Label class="text-left mb-1">{{ $t('birth_date') }}</Label>
-                        <DatePicker v-model="member.en.birthDate" :rules="[validationRules.required]"
-                          :initDate="member_birthDate" required class="col-span-3 w-full" />
+                        <VueDatePicker v-model="member.en.birthDate" required class="col-span-3 w-full" />
                         <span v-if="!member.en.birthDate" class="absolute left-1 -bottom-5 text-xs text-red-500">
                           {{ $t('select_birth_date') }}
                         </span>
@@ -301,7 +299,6 @@ import type MemberModel from '../../scripts/model/member/MemberModel.ts'
 // Components
 const Experience = defineAsyncComponent(() => import('../form/member/Experience.vue'))
 const CareerStatus = defineAsyncComponent(() => import('../form/member/CareerStatus.vue'))
-const DatePicker = defineAsyncComponent(() => import('../custom/DatePicker.vue'))
 const PositionSelection = defineAsyncComponent(() => import('../selection/Position.vue'))
 const MemberSelection = defineAsyncComponent(() => import('../selection/Member.vue'))
 
@@ -344,9 +341,6 @@ const position_id = computed(() => {
   return (typeof member.value.position == 'object') ? member.value.position._id : member.value.position
 })
 
-const member_birthDate = computed(() => {
-  return member.value.en.birthDate
-})
 
 const current_member_id = computed(() => {
   return member.value?.id
@@ -400,15 +394,6 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
 }
 
 const validationMemberForm = async () => {
-  if (!member.value.en.birthDate.trim() || !member.value.kh.birthDate.trim()) {
-    toast({
-      title: "Warning",
-      description: "BirthDate is required",
-      variant: "destructive",
-    });
-    return false;
-  }
-
   if (!member.value.en.name.trim()) {
     toast({
       title: "Warning",
@@ -472,7 +457,7 @@ const validationMemberForm = async () => {
 const onHandleSummitForm = async (e: Event) => {
   try {
     e.preventDefault();
-    member.value.position = (typeof member?.value?.position === 'object' ? member?.value.position?._id : member?.value?.position);
+    member.value.position = (typeof member?.value?.position === 'object' ? member?.value.position?._id : member?.value?.position) || "";
     if (!await validationMemberForm()) {
       return
     }

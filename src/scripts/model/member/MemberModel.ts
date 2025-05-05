@@ -1,3 +1,4 @@
+import type PositionModel from "../position/PositionModel"
 export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
     en: {
         imageUrl: data.en?.imageUrl || '',
@@ -46,7 +47,7 @@ export const createMember = (data: Partial<MemberModel> = {}): MemberModel => ({
         experience: data.kh?.experience || [],
     },
     parent: data?.parent || '',
-    position: data.position || '',
+    position: data.position || "",
     id: data._id || undefined,
 });
 
@@ -55,8 +56,17 @@ export default interface MemberModel {
     _id?: string;
     en: PersonalInfo;
     kh: PersonalInfo;
-    parent: string;
-    position: string;
+    parent: MemberModel | string;
+    position: PositionModel | string;
+}
+
+export default interface MemberModel {
+    id?: string;
+    _id?: string;
+    en: PersonalInfo;
+    kh: PersonalInfo;
+    parent: MemberModel | string;
+    position: PositionModel | string;
 }
 
 export interface PersonalInfo {
@@ -83,3 +93,4 @@ export interface CurrentAddress {
     city: string;
     country: string;
 }
+

@@ -34,6 +34,7 @@ import {
     PaginationNext,
     PaginationPrev,
 } from '../ui/pagination'
-const props = defineProps<{ meta: any }>();
+defineProps<{ meta: any }>();
+
 defineEmits(['pageChange', 'paginationPrev', 'paginationNext'])
 </script>

@@ -6,14 +6,14 @@ export const createPosition = (data: Partial<PositionModel> = {}): PositionModel
 
 
 export default interface PositionModel {
-    id?: string;
-    _id?: string;
+    id?: string | undefined;
+    _id?: string | undefined;
     en: PositionLevel;
     kh: PositionLevel;
 }
 
 export interface PositionLevel {
-    title: string;
+    title: string ;
     level: number;
 }
 

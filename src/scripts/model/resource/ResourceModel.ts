@@ -1,5 +1,6 @@
 export const createResource = (data: Partial<ResourceModel> = {}): ResourceModel => ({
     id: data._id || undefined,
+    _id: data._id || undefined,
     title: data.title || '',
     lang: data.lang || '',
     cover: data.cover || '',
@@ -20,5 +21,9 @@ export default interface ResourceModel {
     publishedAt: string,
     created_at?: Date,
     updated_at? : Date,
-    source: string
+    source: SourceModel | string
+}
+
+interface SourceModel {
+    _id: string | undefined,
 }

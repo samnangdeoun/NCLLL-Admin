@@ -292,7 +292,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'editor-update', 'editor-ready']);
 
 // Editor instance
-const editor = ref<Editor | null>(null);
+const editor = ref<any>(null);
 
 // Editor state tracking
 const editorInitialized = ref(false);

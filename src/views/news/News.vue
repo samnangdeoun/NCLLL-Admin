@@ -12,7 +12,6 @@
                     <TableRow class="w-full">
                         <TableHead class="w-[5%]">{{ $t('no') }}</TableHead>
                         <TableHead class="w-[20%]">{{ $t('name') }}</TableHead>
-                        <TableHead class="w-[20%]">{{ $t('name_kh') }}</TableHead>
                         <TableHead class="w-[30%]">{{ $t('description') }}</TableHead>
                         <TableHead class="w-[10%]">{{ $t('status') }}</TableHead>
                         <TableHead class="w-[15%] text-right">{{ $t('action') }}</TableHead>
@@ -25,9 +24,6 @@
                         </TableCell>
                         <TableCell>
                             {{ news?.en?.title }}
-                        </TableCell>
-                        <TableCell>
-                            {{ news?.kh?.title }}
                         </TableCell>
                         <TableCell>
                             {{ news.en.description }}

@@ -30,37 +30,19 @@
   </DropdownMenu>
 </template>
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Cloud,
-  CreditCard,
   Github,
-  Keyboard,
-  LifeBuoy,
   LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
   Settings,
-  User,
-  UserPlus,
-  Users,
 } from "lucide-vue-next";
 import { Icon } from "@iconify/vue";
 import { removeCookie } from "@/scripts/cookie/cookie";

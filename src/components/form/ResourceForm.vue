@@ -217,7 +217,7 @@ const handleFileInput = (event: { target: { files: any[]; }; }) => {
 
 const onHandleSummitForm = async () => {
   try {
-    resource.value.source = (typeof resource?.value?.source === 'object' ? resource?.value.source?._id : resource?.value?.source);
+    resource.value.source = (typeof resource?.value?.source === 'object' ? resource?.value.source?._id : resource?.value?.source) || "";
     const filePromises = [];
     if (_fileChange.value && _file.value) {
       filePromises.push(uploadFileHandler(_file.value).then(({ data, statusCode }) => {
