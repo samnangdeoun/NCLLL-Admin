@@ -90,7 +90,6 @@ import { Button } from '../../ui/button'
 import { Icon } from '@iconify/vue'
 import { useToast } from '../../ui/toast/use-toast'
 import { useI18n } from 'vue-i18n'
-import { validationRules } from '@/utils/validationRule'
 
 const { t } = useI18n();
 const { toast } = useToast();

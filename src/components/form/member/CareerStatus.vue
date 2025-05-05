@@ -88,7 +88,6 @@ import { ref, watch } from 'vue'
 import { Button } from '../../ui/button'
 import { Icon } from '@iconify/vue'
 import { useToast } from '../../ui/toast/use-toast'
-import { validationRules } from '@/utils/validationRule'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n();

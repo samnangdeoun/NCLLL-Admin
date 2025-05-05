@@ -41,8 +41,6 @@ import { Switch } from "@/components/ui/switch";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -51,13 +49,11 @@ import {
   retriveSettingHandler,
   updateSettingHandler,
 } from "@/scripts/handler/auth/AuthHandler.ts";
-import { ref, inject, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useToast } from "../../components/ui/toast/use-toast.ts";
-import type { Emitter } from "mitt";
 
 const showConfirmation = ref<boolean>(false);
 const { toast } = useToast();
-const emitter = inject<Emitter<{ [event: string]: unknown }>>("emitter");
 const maintenance_mode = ref<boolean>(false);
 
 const handleConfirm = async () => {
