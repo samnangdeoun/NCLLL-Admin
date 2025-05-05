@@ -88,5 +88,6 @@ export default {
     select_engagement_sub_category: "Select Engagement Sub Category",
     maintenance_mode: "Maintenance Mode",
     maintenance: "Maintenance",
-
+    nationality_kh: "Nationality KH",
+    place_of_birth_kh: "Place Of Birth KH"
 };

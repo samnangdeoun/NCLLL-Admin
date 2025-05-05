@@ -15,7 +15,6 @@
                         </TableHead>
                         <TableHead>{{ $t('name') }}</TableHead>
                         <TableHead>{{ $t('name_kh') }}</TableHead>
-                        <TableHead class="w-[40%]">{{ $t('position') }}</TableHead>
                         <TableHead class="text-right">
                             {{ $t('action') }}
                         </TableHead>
@@ -28,10 +27,6 @@
                         </TableCell>
                         <TableCell>{{ member.en.name }}</TableCell>
                         <TableCell>{{ member.kh.name }}</TableCell>
-                        <TableCell>
-                            {{ member.position?.kh?.title ? `${member.position?.kh.title}
-                            (${member.position?.en?.title})` : '' }}
-                        </TableCell>
                         <TableCell class=" flex justify-end gap-2">
                             <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateMember(member)">
                                 {{ $t('update') }}

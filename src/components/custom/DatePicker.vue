@@ -1,88 +1,106 @@
 <template>
-    <Popover>
-        <PopoverTrigger as-child>
-            <Button variant="outline" :class="cn(
-                'w-full justify-start text-left font-normal',
-                !modelValue && 'text-muted-foreground'
-            )">
-                <CalendarIcon class="mr-2 h-4 w-4" />
-                {{ formattedDate }}
-            </Button>
-        </PopoverTrigger>
-        <PopoverContent class="w-auto p-0 bg-white">
-            <Calendar v-model="localValue" initial-focus />
-        </PopoverContent>
-    </Popover>
+  <VueDatePicker
+    v-model="selectedDate"
+    model-type="dd.MM.yyyy"
+    :placeholder="placeholder"
+    :class="{ 'error-border': hasError }"
+  />
+  <p v-if="hasError" class="text-red-500 text-sm mt-1">
+    {{ errorMessage }}
+  </p>
 </template>
 
 <script setup lang="ts">
-import { Calendar } from '../ui/calendar'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { cn } from '../../lib/utils'
-import { Button } from '../ui/button'
-import { CalendarIcon } from 'lucide-vue-next'
-import { computed, ref, watch } from 'vue'
-import { CalendarDate } from '@internationalized/date'
-
-// Date Formatter
+import { ref, watch, onMounted } from "vue";
 
 interface Props {
-    modelValue?: Date | string | null
-    initDate?: Date | string | null
+  modelValue?: Date | string | null;
+  initDate?: Date | string | null;
+  rules?: Array<(value: any) => boolean | string>;
+  placeholder?: string;
+  class?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    modelValue: null,
-    initDate: null
-})
+  modelValue: null,
+  initDate: null,
+  rules: () => [],
+  placeholder: "Select date",
+  class: "",
+});
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: string | null): void
-    (e: 'onDateChange', value: string | null): void
-}>()
+  (e: "update:modelValue", value: string | null): void;
+  (e: "onDateChange", value: string | null): void;
+}>();
 
-// Convert JavaScript Date or string to CalendarDate
-const parsedModelValue = computed((): CalendarDate | null => {
-    if (!props.modelValue) return null
+const selectedDate = ref<Date | null>(null);
+const hasError = ref(false);
+const errorMessage = ref<string | null>(null);
 
-    const dateToConvert = props.modelValue instanceof Date
-        ? props.modelValue
-        : new Date(props.modelValue)
+onMounted(() => {
+  if (props.modelValue) {
+    selectedDate.value = typeof props.modelValue === "string" ? new Date(props.modelValue) : props.modelValue;
+  } else if (props.initDate) {
+    selectedDate.value = typeof props.initDate === "string" ? new Date(props.initDate) : props.initDate;
+  }
+});
 
-    return new CalendarDate(
-        dateToConvert.getFullYear(),
-        dateToConvert.getMonth() + 1,
-        dateToConvert.getDate()
-    )
-})
+const validateDate = (date: Date | string | null) => {
+  if (!props.rules || props.rules.length === 0) return true;
 
-// Format date or return empty string
-const formattedDate = computed((): string => {
-    if (!parsedModelValue.value) return 'Select a date'
-
-    return (new Date(
-        parsedModelValue.value.year,
-        parsedModelValue.value.month - 1,
-        parsedModelValue.value.day
-    ).toISOString().slice(0, 10))
-})
-
-// Reactive local value for v-model
-const localValue = ref<CalendarDate | null>(parsedModelValue.value)
-
-// Watch for changes and emit events
-watch(localValue, (newVal) => {
-    if (newVal) {
-        const dateToEmit = new Date(
-            newVal.year,
-            newVal.month - 1,
-            newVal.day
-        ).toISOString().slice(0, 10)
-        emit('update:modelValue', dateToEmit)
-        emit('onDateChange', dateToEmit)
-    } else {
-        emit('update:modelValue', null)
-        emit('onDateChange', null)
+  for (const rule of props.rules) {
+    const result = rule(date);
+    if (result !== true) {
+      errorMessage.value = typeof result === "string" ? result : "Invalid date";
+      return false;
     }
-})
+  }
+
+  errorMessage.value = null;
+  return true;
+};
+
+watch(selectedDate, (newDate) => {
+  if (props.rules && props.rules.length > 0) {
+    hasError.value = !validateDate(newDate);
+  }
+
+  emit("update:modelValue", newDate ? newDate.toISOString() : null);
+  emit("onDateChange", newDate ? newDate.toISOString() : null);
+});
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue && newValue !== selectedDate.value) {
+      selectedDate.value = typeof newValue === "string" ? new Date(newValue) : newValue;
+    } else if (newValue === null) {
+      selectedDate.value = null;
+    }
+  }
+);
+
+watch(
+  () => props.initDate,
+  (newValue) => {
+    if (newValue && !selectedDate.value) {
+      selectedDate.value = typeof newValue === "string" ? new Date(newValue) : newValue;
+
+      if (props.rules && props.rules.length > 0) {
+        hasError.value = !validateDate(selectedDate.value);
+      }
+
+      emit("update:modelValue", selectedDate.value ? selectedDate.value.toISOString() : null);
+      emit("onDateChange", selectedDate.value ? selectedDate.value.toISOString() : null);
+    }
+  }
+);
 </script>
+
+<style scoped>
+.error-border {
+  border: 1px solid red !important;
+}
+</style>
+

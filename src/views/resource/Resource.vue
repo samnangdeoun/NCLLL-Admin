@@ -12,7 +12,6 @@
                         <TableHead class="w-[4vw]">{{ $t('no') }}</TableHead>
                         <TableHead class="w-[5vw]">{{ $t('cover') }}</TableHead>
                         <TableHead class="w-[20vw]">{{ $t('title') }}</TableHead>
-                        <TableHead class="w-[20vw]">{{ $t('source') }}</TableHead>
                         <TableHead class="w-[16vw]">{{ $t('publish_date') }}</TableHead>
                         <TableHead class="text-right w-[15vw]">{{ $t('action') }}</TableHead>
                     </TableRow>
@@ -32,7 +31,6 @@
                             </div>
                         </TableCell>
                         <TableCell>{{ resource.title }}</TableCell>
-                        <TableCell>{{ resource.source.kh.name }} ({{ resource.source.en.name }})</TableCell>
                         <TableCell>{{ conversionUTCDate(resource.publishedAt) }}</TableCell>
                         <TableCell class="flex justify-end gap-2">
                             <button class="bg-green-600 rounded-md px-5 py-2" @click="onUpdateResource(resource)">
